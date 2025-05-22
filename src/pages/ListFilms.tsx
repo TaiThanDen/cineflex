@@ -1,3 +1,4 @@
+import React from "react";
 import MovieSection from "../components/MovieSection";
 
 const sections = [
@@ -34,7 +35,6 @@ const sections = [
         ep: "PD. 10",
         tm: "TM. 10",
       },
-      // ...thêm phim khác
     ],
   },
   {
@@ -80,28 +80,28 @@ const sections = [
         title: "Star Wars: Andor",
         subtitle: "Chiến Tranh Giữa Các Vì Sao",
         image:
-          "https://static.nutscdn.com/vimg/0-0/8290b8ce36c1fb7bc8d8707f81faebea.jpg",
+          "https://c4.wallpaperflare.com/wallpaper/123/991/646/avatar-blue-skin-james-cameron-s-movie-avatar-movie-poster-wallpaper-preview.jpg",
         ep: "PD. 11",
       },
       {
         title: "Chín Mảnh Ghép Bí Ẩn",
         subtitle: "Nine Puzzles",
         image:
-          "https://static.nutscdn.com/vimg/0-0/8290b8ce36c1fb7bc8d8707f81faebea.jpg",
+          "https://c4.wallpaperflare.com/wallpaper/123/991/646/avatar-blue-skin-james-cameron-s-movie-avatar-movie-poster-wallpaper-preview.jpg",
         ep: "PD. 4",
       },
       {
         title: "Chín Mảnh Ghép Bí Ẩn",
         subtitle: "Nine Puzzles",
         image:
-          "https://static.nutscdn.com/vimg/0-0/8290b8ce36c1fb7bc8d8707f81faebea.jpg",
+          "https://c4.wallpaperflare.com/wallpaper/123/991/646/avatar-blue-skin-james-cameron-s-movie-avatar-movie-poster-wallpaper-preview.jpg",
         ep: "PD. 4",
       },
       {
         title: "Chín Mảnh Ghép Bí Ẩn",
         subtitle: "Nine Puzzles",
         image:
-          "https://static.nutscdn.com/vimg/0-0/8290b8ce36c1fb7bc8d8707f81faebea.jpg",
+          "https://c4.wallpaperflare.com/wallpaper/123/991/646/avatar-blue-skin-james-cameron-s-movie-avatar-movie-poster-wallpaper-preview.jpg",
         ep: "PD. 4",
       },
     ],

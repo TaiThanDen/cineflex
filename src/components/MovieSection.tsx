@@ -24,7 +24,7 @@ const MovieSection: React.FC<MovieSectionProps> = ({
   showViewAll = false,
 }) => {
   return (
-    <div className="w-full">
+    <div className="w-full ">
       {title && (
         <div className="flex justify-between items-center mb-4 px-2">
           <h2 className="text-white text-xl font-semibold">{title}</h2>
@@ -36,23 +36,26 @@ const MovieSection: React.FC<MovieSectionProps> = ({
         </div>
       )}
 
-      <div className="overflow-x-auto">
+      <div className="overflow-visible scrollbar-hide">
         <div className="flex md:grid md:grid-cols-4 gap-4 px-2">
           {data.map((item, index) => (
             <div
               key={index}
               onClick={() => onSelect?.(item)}
-              className={`bg-[#2f3147] rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 min-w-[160px] md:min-w-0 ${
-                selectedTitle === item.title
-                  ? "border-violet-500"
-                  : "border-transparent"
-              }`}
+              className={`bg-[#2f3147] rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 min-w-[160px] md:min-w-0 group
+      ${
+        selectedTitle === item.title
+          ? "border-violet-500"
+          : "border-transparent"
+      }
+      hover:scale-120 hover:z-30 hover:shadow-2xl`}
+              style={{ position: "relative" }}
             >
               <div className="w-full h-[200px]">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               </div>
               <div className="p-2">

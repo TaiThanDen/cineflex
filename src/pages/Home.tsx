@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import HeroBanner from "../components/HeroBanner";
 import MobileHeroBanner from "../components/MobileHeroBanner";
 import ListFilms from "./ListFilms";
+import AdBannerPage from "./AdBannerPage";
 
 const HomePage = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -17,6 +18,7 @@ const HomePage = () => {
     <>
       {isMobile ? <MobileHeroBanner /> : <HeroBanner />}
       <ListFilms />
+      <AdBannerPage />
     </>
   );
 };
