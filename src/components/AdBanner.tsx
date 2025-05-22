@@ -1,5 +1,3 @@
-import React from "react";
-
 const ads = [
   {
     id: 1,
@@ -39,7 +37,7 @@ const ads = [
   },
 ];
 
-const AdBannerPage = () => {
+const AdBanner = () => {
   return (
     <div className="min-h-screen bg-[#23263a] text-white p-4">
       <h1 className="text-2xl font-bold text-center mb-6">Quảng cáo tài trợ</h1>
@@ -64,4 +62,4 @@ const AdBannerPage = () => {
   );
 };
 
-export default AdBannerPage;
+export default AdBanner;
