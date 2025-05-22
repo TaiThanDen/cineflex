@@ -10,6 +10,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
+import logo from "../assets/img/logo.jpg";
 
 type NavItem = {
   name: string;
@@ -33,7 +34,7 @@ export default function Navbar(): React.ReactElement {
       as="nav"
       className="fixed bg-gradient-to-b from-black/80 to-transparent absolute top-0 left-0 w-full z-50 "
     >
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div className="mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
@@ -49,12 +50,12 @@ export default function Navbar(): React.ReactElement {
               />
             </DisclosureButton>
           </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="flex shrink-0 items-center">
+          <div className="flex flex-1 items-center justify-center sm:justify-start">
+            <div className="flex shrink-0 items-center ">
               <img
-                alt="Your Company"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                className="h-8 w-auto"
+                alt="Logo Company"
+                src={logo}
+                className="h-12 w-auto rounded-lg"
               />
             </div>
             <div className="hidden sm:ml-6 sm:block">
