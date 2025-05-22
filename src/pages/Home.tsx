@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import HeroBanner from "../components/HeroBanner";
 import MobileHeroBanner from "../components/MobileHeroBanner";
+import ListFilms from "./ListFilms";
 
 const HomePage = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -12,7 +13,12 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  return <>{isMobile ? <MobileHeroBanner /> : <HeroBanner />}</>;
+  return (
+    <>
+      {isMobile ? <MobileHeroBanner /> : <HeroBanner />}
+      <ListFilms />
+    </>
+  );
 };
 
 export default HomePage;
