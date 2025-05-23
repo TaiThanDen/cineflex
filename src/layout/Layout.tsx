@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import VerticalSidebar from "./VerticalSidebar";
 import MobileBottomSidebar from "./MobileBottomSidebar";
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface props { children: ReactNode }
+
+const Layout = ({ children }: props) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

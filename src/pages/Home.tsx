@@ -1,34 +1,22 @@
-import { useEffect, useState } from "react";
-import FilmsMobileBanner from "../components/home/FilmsMobileBanner";
 import ListFilms from "../components/home/ListFilms";
 import AdBanner from "../components/AdBanner";
-import FilmsHeroBanner from "../components/home/FilmsHeroBanner";
 import AnimeHeroBanner from "../components/home/AnimeHeroBanner";
 import AnimeMobileBanner from "../components/home/AnimeMobileBanner";
-import VerticalSidebar from "../layout/VerticalSidebar"; // Thêm dòng này
-import MobileBottomSidebar from "../layout/MobileBottomSidebar";
-const HomePage = () => {
-  const [isMobile, setIsMobile] = useState(false);
+import { useIsMobile } from "../lib/hooks/use-mobile";
+import FilmsMobileBanner from "@/components/home/FilmsMobileBanner";
+import FilmsHeroBanner from "@/components/home/FilmsHeroBanner";
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+const HomePage = () => {
+  const isMobile = useIsMobile();
 
   return (
-    <div className="relative min-h-screen bg-[#384230]">
-      {/* Hide VerticalSidebar on mobile */}
-      {!isMobile && <VerticalSidebar />}
-      <>
-        {isMobile ? <FilmsMobileBanner /> : <FilmsHeroBanner />}
-        <ListFilms />
-        <AdBanner />
-        {isMobile ? <AnimeMobileBanner /> : <AnimeHeroBanner />}
-      </>
+    <div className="relative h-max bg-[#384230]">
+      {isMobile ? <FilmsMobileBanner /> : <FilmsHeroBanner />}
 
-      {isMobile && <MobileBottomSidebar />}
+      <ListFilms />
+      <AdBanner />
+
+      {isMobile ? <AnimeMobileBanner /> : <AnimeHeroBanner />}
     </div>
   );
 };
