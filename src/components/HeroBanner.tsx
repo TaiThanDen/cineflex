@@ -1,76 +1,47 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-const popularItems = [
-  {
-    title: "Minecraft Movie",
-    image:
-      "https://c4.wallpaperflare.com/wallpaper/736/411/582/star-wars-star-wars-the-rise-of-skywalker-movie-poster-poster-movie-characters-hd-wallpaper-preview.jpg",
-    content:
-      "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-    year: "2028",
-    seasons: "1",
-    rating: "PG",
-  },
-  {
-    title: "Final Destination Bloodlines",
-    image:
-      "https://c4.wallpaperflare.com/wallpaper/123/991/646/avatar-blue-skin-james-cameron-s-movie-avatar-movie-poster-wallpaper-preview.jpg",
-    content: "Death returns in a new chapter of the Final Destination saga.",
-    year: "2027",
-    seasons: "1",
-    rating: "R",
-  },
-  {
-    title: "Superman",
-    image:
-      "https://static.nutscdn.com/vimg/0-0/8290b8ce36c1fb7bc8d8707f81faebea.jpg",
-    content:
-      "Clark Kent, a journalist, discovers his superhuman abilities and becomes Superman.",
-    year: "2026",
-    seasons: "1",
-    rating: "PG-13",
-  },
-  {
-    title: "How to Train Your Dragon",
-    image:
-      "https://static.nutscdn.com/vimg/0-0/d413f57dd9cd406de09cde0e4d5d5002.jpg",
-    content:
-      "A young Viking befriends a dragon and learns to understand the creatures.",
-    year: "2025",
-    seasons: "1",
-    rating: "PG",
-  },
-  {
-    title: "Jurassic World Rebirth",
-    image:
-      "https://static.nutscdn.com/vimg/0-0/9fbc807ead43644630dcbe8b7bbd3ad3.jpg",
-    content:
-      "Dinosaurs roam the Earth again as scientists attempt to control them.",
-    year: "2024",
-    seasons: "1",
-    rating: "PG-13",
-  },
-  {
-    title: "M3GAN 2.0",
-    image:
-      "https://static.nutscdn.com/vimg/0-0/fcbbb620e45522e4262272c35d36ffd4.jpg",
-    content:
-      "A lifelike doll with artificial intelligence goes rogue and starts to kill.",
-    year: "2023",
-    seasons: "1",
-    rating: "R",
-  },
-];
+type Item = {
+  title: string;
+  image: string;
+  content: string;
+  year: string;
+  seasons: string;
+  rating: string;
+};
 
-const HeroBanner = () => {
+interface HeroBannerProps {
+  items: Item[];
+}
+
+const HeroBanner = ({ items }: HeroBannerProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [selected, setSelected] = useState(popularItems[0]);
+  const [selected, setSelected] = useState(items[0]);
+  const [autoIndex, setAutoIndex] = useState(0);
+  // Auto slide effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAutoIndex((prev) => (prev + 1) % items.length);
+    }, 10000); // 5s chuyển slide
+
+    return () => clearInterval(interval);
+  }, [items.length]);
+
+  // Sync selected with autoIndex
+  useEffect(() => {
+    setSelected(items[autoIndex]);
+  }, [autoIndex, items]);
+
+  // Khi user click chọn thủ công, reset autoIndex
+  const handleSelect = (item: Item, idx: number) => {
+    setSelected(item);
+    setAutoIndex(idx);
+  };
 
   return (
     <div
-      className=" relative w-full h-screen bg-cover text-white transition-all duration-500"
+      className=" relative w-full h-screen bg-cover text-white transition-all duration-500 "
       style={{
         backgroundImage: `url('${selected.image}')`,
       }}
@@ -92,7 +63,7 @@ const HeroBanner = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="text-sm uppercase tracking-wide font-semibold text-purple-400 mt-20">
-              SlothUI Original
+              CineFlex
             </div>
             <h1 className="text-5xl font-bold leading-tight">
               {selected.title}
@@ -132,7 +103,7 @@ const HeroBanner = () => {
       </div>
 
       {/* Popular Section */}
-      <div className="relative z-10 w-full px-8 pt-18  pb-20">
+      <div className="relative z-10 w-full px-8 pt-18 pb-20">
         <h2 className="text-white text-xl font-semibold mb-4">
           Popular on slothUI
         </h2>
@@ -145,7 +116,7 @@ const HeroBanner = () => {
             }
           }}
         >
-          {popularItems.map((item, index) => (
+          {items.map((item, index) => (
             <div
               key={index}
               className={`w-[230px] rounded-lg overflow-hidden relative flex-shrink-0 shadow-lg cursor-pointer border-2 transition-all duration-300 ${
@@ -153,7 +124,7 @@ const HeroBanner = () => {
                   ? "border-violet-500"
                   : "border-transparent"
               }`}
-              onClick={() => setSelected(item)}
+              onClick={() => handleSelect(item, index)}
             >
               <img
                 src={item.image}

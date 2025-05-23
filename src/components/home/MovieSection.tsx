@@ -24,7 +24,7 @@ const MovieSection: React.FC<MovieSectionProps> = ({
   showViewAll = false,
 }) => {
   return (
-    <div className="w-full ">
+    <div className="w-full">
       {title && (
         <div className="flex justify-between items-center mb-4 px-2">
           <h2 className="text-white text-xl font-semibold">{title}</h2>
@@ -36,20 +36,18 @@ const MovieSection: React.FC<MovieSectionProps> = ({
         </div>
       )}
 
-      <div className="overflow-visible scrollbar-hide">
-        <div className="flex md:grid md:grid-cols-4 gap-4 px-2">
+      {/* Container scrollable on mobile, grid on md+ */}
+      <div className="overflow-x-auto md:overflow-visible px-2 scrollbar-hide">
+        <div className="flex gap-3 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {data.map((item, index) => (
             <div
               key={index}
               onClick={() => onSelect?.(item)}
-              className={`bg-[#2f3147] rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 min-w-[160px] md:min-w-0 group
-      ${
-        selectedTitle === item.title
-          ? "border-violet-500"
-          : "border-transparent"
-      }
-      hover:scale-120 hover:z-30 hover:shadow-2xl`}
-              style={{ position: "relative" }}
+              className={`min-w-[48%] md:min-w-0 bg-[#2f3147] rounded-xl overflow-hidden cursor-pointer border-2 transition-transform duration-300 group ${
+                selectedTitle === item.title
+                  ? "border-violet-500"
+                  : "border-transparent"
+              } hover:scale-110 hover:z-30 hover:shadow-2xl`}
             >
               <div className="w-full h-[200px]">
                 <img
