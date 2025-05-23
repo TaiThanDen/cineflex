@@ -3,12 +3,8 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 import logo from "../assets/img/logo.jpg";
 
@@ -32,7 +28,7 @@ export default function Navbar(): React.ReactElement {
   return (
     <Disclosure
       as="nav"
-      className="fixed bg-gradient-to-b from-black/80 to-transparent absolute top-0 left-0 w-full z-50 "
+      className="fixed bg-gradient-to-b from-black/80 to-transparent md:left-10 left-0 right-0 top-0 w-full z-50 "
     >
       <div className="mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
@@ -79,7 +75,7 @@ export default function Navbar(): React.ReactElement {
               </div>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          {/* <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
               className="relative rounded-full  p-1 text-white hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
@@ -128,7 +124,7 @@ export default function Navbar(): React.ReactElement {
                 </MenuItem>
               </MenuItems>
             </Menu>
-          </div>
+          </div> */}
         </div>
       </div>
 

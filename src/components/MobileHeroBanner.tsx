@@ -19,7 +19,7 @@ interface MobileHeroBannerProps {
 
 const MobileHeroBanner: React.FC<MobileHeroBannerProps> = ({ data }) => {
   return (
-    <div className="w-full h-[80vh] bg-[#111] flex items-center justify-center overflow-hidden px-0">
+    <div className="w-full h-[80vh] bg-[#23263a] flex items-center justify-center overflow-hidden px-0">
       <Swiper
         effect="coverflow"
         grabCursor={true}

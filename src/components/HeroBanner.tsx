@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -18,10 +18,30 @@ interface HeroBannerProps {
 const HeroBanner = ({ items }: HeroBannerProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(items[0]);
+  const [autoIndex, setAutoIndex] = useState(0);
+  // Auto slide effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAutoIndex((prev) => (prev + 1) % items.length);
+    }, 10000); // 5s chuyển slide
+
+    return () => clearInterval(interval);
+  }, [items.length]);
+
+  // Sync selected with autoIndex
+  useEffect(() => {
+    setSelected(items[autoIndex]);
+  }, [autoIndex, items]);
+
+  // Khi user click chọn thủ công, reset autoIndex
+  const handleSelect = (item: Item, idx: number) => {
+    setSelected(item);
+    setAutoIndex(idx);
+  };
 
   return (
     <div
-      className=" relative w-full h-screen bg-cover text-white transition-all duration-500"
+      className=" relative w-full h-screen bg-cover text-white transition-all duration-500 "
       style={{
         backgroundImage: `url('${selected.image}')`,
       }}
@@ -83,7 +103,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
       </div>
 
       {/* Popular Section */}
-      <div className="relative z-10 w-full px-8 pt-18  pb-20">
+      <div className="relative z-10 w-full px-8 pt-18 pb-20">
         <h2 className="text-white text-xl font-semibold mb-4">
           Popular on slothUI
         </h2>
@@ -104,7 +124,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
                   ? "border-violet-500"
                   : "border-transparent"
               }`}
-              onClick={() => setSelected(item)}
+              onClick={() => handleSelect(item, index)}
             >
               <img
                 src={item.image}
