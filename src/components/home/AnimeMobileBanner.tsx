@@ -1,4 +1,3 @@
-import React from "react";
 import MobileHeroBanner from "../MobileHeroBanner";
 
 const defaultMovies = [
@@ -53,7 +52,7 @@ const defaultMovies = [
   },
 ];
 
-const FilmsMobileBanner: React.FC = () => {
+const FilmsMobileBanner = () => {
   return <MobileHeroBanner data={defaultMovies} />;
 };
 

@@ -1,4 +1,3 @@
-import React from "react";
 
 interface MovieItem {
   title: string;
@@ -16,13 +15,13 @@ interface MovieSectionProps {
   showViewAll?: boolean;
 }
 
-const MovieSection: React.FC<MovieSectionProps> = ({
+const MovieSection = ({
   title,
   data,
   selectedTitle,
   onSelect,
   showViewAll = false,
-}) => {
+} : MovieSectionProps) => {
   return (
     <div className="w-full">
       {title && (
@@ -47,7 +46,7 @@ const MovieSection: React.FC<MovieSectionProps> = ({
                 selectedTitle === item.title
                   ? "border-violet-500"
                   : "border-transparent"
-              } hover:scale-110 hover:z-30 hover:shadow-2xl`}
+              } hover:scale-110 hover:shadow-2xl`}
             >
               <div className="w-full h-[200px]">
                 <img

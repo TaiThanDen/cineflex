@@ -41,17 +41,17 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
 
   return (
     <div
-      className=" relative w-full h-screen bg-cover text-white transition-all duration-500 "
+      className="relative w-full h-max bg-cover text-white transition-all duration-500"
       style={{
         backgroundImage: `url('${selected.image}')`,
       }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#23263a] via-black/60 to-transparent" />
 
       {/* Animated Content */}
       <div
-        className="relative z-10 max-w-6xl px-8 py-20 flex flex-col gap-6"
+        className="relative w-full px-8 py-20 flex flex-col gap-6"
         style={{ maxHeight: "60vh" }} // Giới hạn chiều cao tổng thể content
       >
         <AnimatePresence mode="wait">
@@ -103,7 +103,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
       </div>
 
       {/* Popular Section */}
-      <div className="relative z-10 w-full px-8 pt-18 pb-20">
+      <div className="relative w-full px-8 pt-18 pb-20">
         <h2 className="text-white text-xl font-semibold mb-4">
           Popular on slothUI
         </h2>
@@ -119,11 +119,10 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className={`w-[230px] rounded-lg overflow-hidden relative flex-shrink-0 shadow-lg cursor-pointer border-2 transition-all duration-300 ${
-                selected.title === item.title
+              className={`w-[230px] rounded-lg overflow-hidden relative flex-shrink-0 shadow-lg cursor-pointer border-2 transition-all duration-300 ${selected.title === item.title
                   ? "border-violet-500"
                   : "border-transparent"
-              }`}
+                }`}
               onClick={() => handleSelect(item, index)}
             >
               <img
@@ -132,9 +131,9 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
                 className="w-full h-[150px] object-cover"
               />
               {/* Gradient overlay */}
-              <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-black/80 to-transparent z-10" />
+              <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-black/80 to-transparent " />
               {/* Title */}
-              <div className="absolute bottom-0 left-0 w-full px-3 pb-2 text-white text-sm font-medium z-20">
+              <div className="absolute bottom-0 left-0 w-full px-3 pb-2 text-white text-sm font-medium ">
                 {item.title}
               </div>
             </div>
