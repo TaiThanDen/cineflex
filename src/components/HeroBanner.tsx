@@ -47,7 +47,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
       }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#23263a] via-black/60 to-transparent z-0" />
 
       {/* Animated Content */}
       <div

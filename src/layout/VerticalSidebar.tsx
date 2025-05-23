@@ -10,11 +10,15 @@ import {
 
 const VerticalSidebar = () => {
   return (
-    <div className="fixed top-0 left-0 h-screen w-16  flex flex-col bg-black items-center justify-between py-4 border-r border-gray-800">
+    <div className="fixed top-0 left-0 h-screen w-16  flex flex-col bg-[#151725] items-center justify-between py-4 border-r border-gray-800">
       <div className="flex flex-col items-center gap-6 mt-2 z-10">
         {/* Logo/Initial */}
-        <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white text-lg font-bold">
-          S
+        <div className="w-10 h-10 rounded-full bg-[#5d6abf] flex items-center justify-center text-white text-lg font-bold">
+          <img
+            src="https://i.pravatar.cc/100"
+            alt="Avatar"
+            className="w-8 h-8 rounded-full "
+          />
         </div>
 
         {/* Navigation Icons */}
@@ -29,11 +33,6 @@ const VerticalSidebar = () => {
       {/* Bottom section */}
       <div className="flex flex-col items-center gap-4 z-10">
         <NavIcon icon={<Cog6ToothIcon className="h-6 w-6" />} />
-        <img
-          src="https://i.pravatar.cc/100"
-          alt="Avatar"
-          className="w-8 h-8 rounded-full border-2 border-purple-600"
-        />
       </div>
     </div>
   );

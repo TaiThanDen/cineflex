@@ -28,7 +28,7 @@ export default function Navbar(): React.ReactElement {
   return (
     <Disclosure
       as="nav"
-      className="fixed bg-gradient-to-b from-black/80 to-transparent md:left-10 left-0 right-0 top-0 w-full z-50 "
+      className="fixed bg-gradient-to-b from-[#23263a] to-transparent md:left-10 left-0 right-0 top-0 w-full z-50 "
     >
       <div className="mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
