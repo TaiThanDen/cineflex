@@ -1,7 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
 import { FaPlayCircle } from "react-icons/fa";
 
 interface MovieItem {
