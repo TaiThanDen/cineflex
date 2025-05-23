@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import Navbar from "./navbar";
+import Navbar from "../components/Navbar/Navbar";
 import Footer from "./footer";
 import VerticalSidebar from "./VerticalSidebar";
 import MobileBottomSidebar from "./MobileBottomSidebar";
@@ -19,7 +19,7 @@ const Layout = ({ children }: props) => {
 
   return (
     <div className="relative min-h-screen bg-[#384230]">
-      <Navbar />
+      <Navbar scrolled={true} />
       {!isMobile && <VerticalSidebar />}
       <div className={isMobile ? " pb-20" : "ml-16 "}>{children}</div>
       {isMobile && <MobileBottomSidebar />}
