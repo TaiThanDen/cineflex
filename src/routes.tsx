@@ -1,15 +1,22 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AppLayout from "./layout/Layout";
+import Navbar from "./layout/navbar";
+import Footer from "./layout/footer";
 import HomePage from "./pages/Home";
 
 const AppRoutes: React.FC = () => {
   return (
-    <AppLayout>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </AppLayout>
+    <>
+      <div className="w-screen">
+        <Navbar />
+        <Routes>
+          {/* Định tuyến đến HeroBanner */}
+          <Route path="/" element={<HomePage />} />
+          {/* Thêm các Route khác nếu cần */}
+        </Routes>
+        <Footer />
+      </div>
+    </>
   );
 };
 

@@ -5,8 +5,8 @@ import AdBanner from "../components/AdBanner";
 import FilmsHeroBanner from "../components/home/FilmsHeroBanner";
 import AnimeHeroBanner from "../components/home/AnimeHeroBanner";
 import AnimeMobileBanner from "../components/home/AnimeMobileBanner";
-import VerticalSidebar from "../layout/VerticalSidebar"; // Thêm dòng này
 import MobileBottomSidebar from "../layout/MobileBottomSidebar";
+import ListAnime from "../components/home/ListAnime";
 const HomePage = () => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -20,12 +20,13 @@ const HomePage = () => {
   return (
     <div className="relative min-h-screen bg-[#384230]">
       {/* Hide VerticalSidebar on mobile */}
-      {!isMobile && <VerticalSidebar />}
+      {/* {!isMobile && <VerticalSidebar />} */}
       <>
         {isMobile ? <FilmsMobileBanner /> : <FilmsHeroBanner />}
         <ListFilms />
         <AdBanner />
         {isMobile ? <AnimeMobileBanner /> : <AnimeHeroBanner />}
+        <ListAnime />
       </>
 
       {isMobile && <MobileBottomSidebar />}
