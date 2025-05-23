@@ -41,7 +41,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
 
   return (
     <div
-      className="relative w-full h-screen bg-cover text-white transition-all duration-500"
+      className="relative w-full h-max bg-cover text-white transition-all duration-500"
       style={{
         backgroundImage: `url('${selected.image}')`,
       }}
