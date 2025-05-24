@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "./navbar";
+import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import Navbar from "../components/Navbar/Navbar";
 import Footer from "./footer";
 import VerticalSidebar from "./VerticalSidebar";
 import MobileBottomSidebar from "./MobileBottomSidebar";
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface props { children: ReactNode }
+
+const Layout = ({ children }: props) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -16,7 +19,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="relative min-h-screen bg-[#384230]">
-      <Navbar />
+      <Navbar scrolled={true} />
       {!isMobile && <VerticalSidebar />}
       <div className={isMobile ? " pb-20" : "ml-16 "}>{children}</div>
       {isMobile && <MobileBottomSidebar />}
