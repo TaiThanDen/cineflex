@@ -90,7 +90,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
 
             {/* Buttons */}
             <div className="flex gap-4 mt-4">
-              <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded flex items-center gap-2">
+              <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded-2xl flex items-center gap-2">
                 <FaPlay />
                 <p>Watch Now</p>
               </button>
