@@ -21,7 +21,7 @@ const DropDown = ({ items, path, children }: props) => {
             <span className="relative h-full text-white">
                 <button
                     onClick={() => { setIsOpen(!isOpen) }}
-                    className={`flex lg:w-auto w-full items-center text-white opacity-50 hover:opacity-100 transition-colors cursor-pointer`}
+                    className={`flex lg:w-auto w-full items-center text-white opacity-100 transition-colors cursor-pointer`}
                 ><span className="lg:flex-none flex-1 items-start flex font-bold text-nowrap overflow-x-hidden">{children}</span><FaChevronDown className={`w-4 h-4 lg:flex-none flex-[0.2] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                 </button>
             </span>

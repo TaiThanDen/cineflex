@@ -9,7 +9,7 @@ interface props {
 const NavLink = ({path, children}: props) => {
     return (
         <li className='my-5'>
-            <Link to={path} className="opacity-50 hover:opacity-100 transition-colors font-bold text-nowrap overflow-x-hidden">
+            <Link to={path} className="opacity-100 transition-colors font-bold text-nowrap overflow-x-hidden">
                 {children}
             </Link>
         </li>
