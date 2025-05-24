@@ -5,6 +5,7 @@ import AnimeMobileBanner from "../components/home/AnimeMobileBanner";
 import { useIsMobile } from "../lib/hooks/use-mobile";
 import FilmsMobileBanner from "@/components/home/FilmsMobileBanner";
 import FilmsHeroBanner from "@/components/home/FilmsHeroBanner";
+import ListAnime from "@/components/home/ListAnime";
 
 const HomePage = () => {
   const isMobile = useIsMobile();
@@ -17,6 +18,8 @@ const HomePage = () => {
       <AdBanner />
 
       {isMobile ? <AnimeMobileBanner /> : <AnimeHeroBanner />}
+
+      <ListAnime />
     </div>
   );
 };

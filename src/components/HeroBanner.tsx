@@ -62,7 +62,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="text-sm uppercase tracking-wide font-semibold text-purple-400 mt-20">
+            <div className="text-sm uppercase tracking-wide font-semibold text-[#7f22fe] mt-20">
               CineFlex
             </div>
             <h1 className="text-5xl font-bold leading-tight">
@@ -90,7 +90,7 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
 
             {/* Buttons */}
             <div className="flex gap-4 mt-4">
-              <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded-2xl flex items-center gap-2">
+              <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded flex items-center gap-2">
                 <FaPlay />
                 <p>Watch Now</p>
               </button>
