@@ -1,12 +1,11 @@
-import HeroBanner from "../HeroBanner";
+import PopularAnimeSection from "./PopularAnimeSection";
 import { unifiedData } from "../data/mockdata";
 import { useState } from "react";
-import PopularAnimeSection from "./PopularAnimeSection";
-import type { AnimeItem } from "../data/AnimeItem"; // Use AnimeItem
+import type { MovieItem } from "../data/Movie";
+import HeroBanner from "../HeroBanner";
 
 const AnimeHeroBanner = () => {
-  // Ensure episodes is always present for AnimeItem
-  const AnimeData: AnimeItem[] = unifiedData
+  const AnimeData: MovieItem[] = unifiedData
     .filter((item) => item.type === "anime")
     .map((item) => ({
       ...item,
@@ -15,7 +14,6 @@ const AnimeHeroBanner = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  // Handle empty AnimeData
   if (AnimeData.length === 0) {
     return (
       <div className="text-white text-center py-20">⚠️ No anime found.</div>
@@ -24,7 +22,7 @@ const AnimeHeroBanner = () => {
 
   const selected = AnimeData[selectedIndex];
 
-  const handleSelect = (_: AnimeItem, index: number) => {
+  const handleSelect = (_: MovieItem, index: number) => {
     setSelectedIndex(index);
   };
 

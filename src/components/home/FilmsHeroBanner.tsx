@@ -1,7 +1,7 @@
 import { useState } from "react";
 import HeroBanner from "../HeroBanner";
 import { unifiedData } from "../data/mockdata";
-import PopularSection from "./PopularSection";
+import PopularSection from "./PopularFilmSection";
 import type { MovieItem } from "../data/Movie";
 
 const FilmsHeroBanner = () => {

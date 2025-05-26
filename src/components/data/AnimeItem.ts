@@ -4,5 +4,5 @@ export interface AnimeItem extends MovieItem {
   episodes: {
     title: string;
     thumbnail: string;
-  }[]; // đảm bảo không được undefined
+  }[];
 }

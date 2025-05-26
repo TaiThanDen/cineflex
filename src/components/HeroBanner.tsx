@@ -95,9 +95,9 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
             </p>
 
             <div className="flex gap-4 mt-4">
-              <button 
+              <button
                 className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded flex items-center gap-2"
-                onClick={handleWatchNow}  
+                onClick={handleWatchNow}
               >
                 <FaPlay />
                 <p>Watch Now</p>

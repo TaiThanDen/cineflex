@@ -1,22 +1,20 @@
-// components/PopularSection.tsx
 import { useRef } from "react";
-import type { MovieItem } from "../data/Movie";
 
-interface PopularSectionProps {
-  items: MovieItem[];
+interface PopularSectionProps<T> {
+  items: T[];
   selectedTitle: string;
-  onSelect: (item: MovieItem, index: number) => void;
+  onSelect: (item: T, index: number) => void;
 }
 
-const PopularSection = ({
+const ReusablePopularSection = <T extends { title: string; image: string }>({
   items,
   selectedTitle,
   onSelect,
-}: PopularSectionProps) => {
+}: PopularSectionProps<T>) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative z-10 w-full pl-0 pt-18 pb-20">
+    <div className="relative z-10 w-full pl-0 pt-18">
       <h2 className="text-white text-xl font-semibold mb-4">
         Popular on CineFlex
       </h2>
@@ -55,4 +53,4 @@ const PopularSection = ({
   );
 };
 
-export default PopularSection;
+export default ReusablePopularSection;

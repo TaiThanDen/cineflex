@@ -1,35 +1,30 @@
 import PopularSectionReusable from "../PopularSectionReusable";
 import type { MovieItem } from "../data/Movie";
 
-interface PopularAnimeSectionProps {
+interface PopularFilmSectionProps {
   items: MovieItem[];
   selectedTitle: string;
   onSelect: (item: MovieItem, index: number) => void;
 }
 
-const PopularAnimeSection = ({
+const PopularFilmSection = ({
   items,
   selectedTitle,
   onSelect,
-}: PopularAnimeSectionProps) => {
-  // Lọc ra anime và đảm bảo episodes luôn là []
-  const animeItems = items
-    .filter((item) => item.type === "anime")
-    .map((item) => ({
-      ...item,
-      episodes: item.episodes ?? [],
-    }));
+}: PopularFilmSectionProps) => {
+  // Lọc ra chỉ những phim có type là "film"
+  const filmItems = items.filter((item) => item.type === "film");
 
   return (
     <PopularSectionReusable<MovieItem>
-      items={animeItems}
+      items={filmItems}
       selectedTitle={selectedTitle}
       onSelect={onSelect}
       getImage={(item) => item.image}
       getTitle={(item) => item.title}
-      sectionTitle="Popular Anime on CineFlex"
+      sectionTitle="Popular on CineFlex"
     />
   );
 };
 
-export default PopularAnimeSection;
+export default PopularFilmSection;
