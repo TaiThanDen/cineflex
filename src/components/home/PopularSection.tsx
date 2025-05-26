@@ -16,7 +16,7 @@ const PopularSection = ({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative z-10 w-screen pl-0 px-8 pt-18 pb-20">
+    <div className="relative z-10 w-full pl-0 pt-18 pb-20">
       <h2 className="text-white text-xl font-semibold mb-4">
         Popular on CineFlex
       </h2>
