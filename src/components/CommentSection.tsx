@@ -27,7 +27,7 @@ const mockComments = [
 
 const CommentSection = () => {
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(mockComments);
+  const [comments] = useState(mockComments);
 
   return (
     <div className="w-full bg-[#23263a] lg:w-2/3 p-6 rounded-lg">
