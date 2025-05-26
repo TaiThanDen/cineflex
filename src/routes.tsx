@@ -6,6 +6,8 @@ import { useIsMobile } from "./lib/hooks/use-mobile";
 import VerticalSidebar from "./layout/VerticalSidebar";
 import MobileBottomSidebar from "./layout/MobileBottomSidebar";
 import { useRef, useState } from "react";
+import PreviewFilm from "./pages/PreviewFilm";
+import AdsPage from "../src/components/AdsPage";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -33,6 +35,9 @@ const AppRoutes = () => {
             <Routes>
               {/* Định tuyến đến HeroBanner */}
               <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/ads" element={<AdsPage />} />
+              <Route path="/preview/:id" element={<PreviewFilm />} />
               {/* Thêm các Route khác nếu cần */}
             </Routes>
             <Footer />
