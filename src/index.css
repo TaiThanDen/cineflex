@@ -43,9 +43,9 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+/* button:hover {
   border-color: #4f47e5;
-}
+} */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -73,4 +73,9 @@ button:focus-visible {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+button:focus,
+button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }

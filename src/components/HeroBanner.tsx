@@ -1,58 +1,63 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-
-type Item = {
-  title: string;
-  image: string;
-  content: string;
-  year: string;
-  seasons: string;
-  rating: string;
-};
+import { useNavigate } from "react-router-dom";
+import type { UnifiedItem } from "./data/Movie";
 
 interface HeroBannerProps {
-  items: Item[];
+  items: UnifiedItem[];
+  children?: React.ReactNode;
 }
 
-const HeroBanner = ({ items }: HeroBannerProps) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [selected, setSelected] = useState(items[0]);
-  const [autoIndex, setAutoIndex] = useState(0);
-  // Auto slide effect
+const HeroBanner = ({ items, children }: HeroBannerProps) => {
+  const navigate = useNavigate();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const selected = items[selectedIndex];
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setAutoIndex((prev) => (prev + 1) % items.length);
-    }, 10000); // 5s chuyển slide
-
+      setSelectedIndex((prev) => (prev + 1) % items.length);
+    }, 10000);
     return () => clearInterval(interval);
   }, [items.length]);
 
-  // Sync selected with autoIndex
-  useEffect(() => {
-    setSelected(items[autoIndex]);
-  }, [autoIndex, items]);
+  const user = {
+    isPro: false,
+  };
 
-  // Khi user click chọn thủ công, reset autoIndex
-  const handleSelect = (item: Item, idx: number) => {
-    setSelected(item);
-    setAutoIndex(idx);
+  const handleWatchNow = () => {
+    const movieId =
+      selected.id || selected.title.replace(/\s+/g, "-").toLowerCase();
+
+    const hasWatchedAds = sessionStorage.getItem("adsWatched");
+
+    if (user.isPro || hasWatchedAds) {
+      navigate(`/preview/${movieId}`);
+    } else {
+      navigate("/ads", {
+        state: { redirectTo: `/preview/${movieId}` },
+      });
+    }
+  };
+
+  const handleMoreInfo = () => {
+    const movieId =
+      selected.id || selected.title.replace(/\s+/g, "-").toLowerCase();
+    navigate(`/preview/${movieId}`);
   };
 
   return (
     <div
-      className=" relative w-full h-screen bg-cover text-white transition-all duration-500 "
-      style={{
-        backgroundImage: `url('${selected.image}')`,
-      }}
+      className="relative w-full h-screen bg-cover text-white transition-all duration-500"
+      style={{ backgroundImage: `url('${selected.image}')` }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#23263a] via-black/60 to-transparent z-0" />
 
-      {/* Animated Content */}
+      {/* Banner Content */}
       <div
         className="relative z-10 max-w-6xl px-8 py-20 flex flex-col gap-6"
-        style={{ maxHeight: "60vh" }} // Giới hạn chiều cao tổng thể content
+        style={{ maxHeight: "60vh" }}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -80,7 +85,6 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
               </span>
             </div>
 
-            {/* Giới hạn chiều cao content và cho phép cuộn */}
             <p
               className="text-gray-300 max-w-xl text-sm leading-relaxed overflow-y-auto scrollbar-hide"
               style={{ maxHeight: "100px" }}
@@ -88,13 +92,18 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
               {selected.content}
             </p>
 
-            {/* Buttons */}
             <div className="flex gap-4 mt-4">
-              <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded-2xl flex items-center gap-2">
+              <button
+                className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded-2xl flex items-center gap-2"
+                onClick={handleWatchNow}
+              >
                 <FaPlay />
                 <p>Watch Now</p>
               </button>
-              <button className="bg-white/20 hover:bg-white/30 text-white font-medium px-6 py-2 rounded">
+              <button
+                className="bg-white/20 hover:bg-white/30 text-white font-medium px-6 py-2 rounded"
+                onClick={handleMoreInfo}
+              >
                 <p>More Info</p>
               </button>
             </div>
@@ -102,45 +111,8 @@ const HeroBanner = ({ items }: HeroBannerProps) => {
         </AnimatePresence>
       </div>
 
-      {/* Popular Section */}
-      <div className="relative z-10 w-full px-8 pt-18 pb-20">
-        <h2 className="text-white text-xl font-semibold mb-4">
-          Popular on slothUI
-        </h2>
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
-          onWheel={(e) => {
-            if (scrollRef.current) {
-              scrollRef.current.scrollLeft += e.deltaY;
-            }
-          }}
-        >
-          {items.map((item, index) => (
-            <div
-              key={index}
-              className={`w-[230px] rounded-lg overflow-hidden relative flex-shrink-0 shadow-lg cursor-pointer border-2 transition-all duration-300 ${
-                selected.title === item.title
-                  ? "border-violet-500"
-                  : "border-transparent"
-              }`}
-              onClick={() => handleSelect(item, index)}
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-[150px] object-cover"
-              />
-              {/* Gradient overlay */}
-              <div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-black/80 to-transparent z-10" />
-              {/* Title */}
-              <div className="absolute bottom-0 left-0 w-full px-3 pb-2 text-white text-sm font-medium z-20">
-                {item.title}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* ✅ Chỉ render nội dung phụ không ảnh hưởng animation */}
+      <div className="relative z-10 w-full px-8 pb-8">{children}</div>
     </div>
   );
 };
