@@ -8,22 +8,23 @@ import MobileBottomSidebar from "./layout/MobileBottomSidebar";
 import { useRef, useState } from "react";
 import PreviewFilm from "./pages/PreviewFilm";
 import AdsPage from "../src/components/AdsPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
 
-
   return (
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
         {!isMobile && <VerticalSidebar />}
-        <div 
-          ref={containerRef} 
+        <div
+          ref={containerRef}
           className="w-full h-full overflow-y-auto relative"
           onScroll={() => {
-            const container = containerRef.current;;
+            const container = containerRef.current;
             if (!container) return;
 
             setScrolled(container.scrollTop > 100);
@@ -38,15 +39,14 @@ const AppRoutes = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
               <Route path="/preview/:id" element={<PreviewFilm />} />
-              {/* Thêm các Route khác nếu cần */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
             <Footer />
           </div>
           {isMobile && <MobileBottomSidebar />}
         </div>
-        
       </div>
-
     </div>
   );
 };

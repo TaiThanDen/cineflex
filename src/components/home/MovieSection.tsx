@@ -1,4 +1,3 @@
-
 interface MovieItem {
   title: string;
   image: string;
@@ -21,7 +20,7 @@ const MovieSection = ({
   selectedTitle,
   onSelect,
   showViewAll = false,
-} : MovieSectionProps) => {
+}: MovieSectionProps) => {
   return (
     <div className="w-full">
       {title && (

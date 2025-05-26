@@ -165,4 +165,19 @@ export const unifiedData: MovieItem[] = [
       { title: "Episode 2: World Reset", thumbnail: "/images/anime/nobody_ep2.jpg" },
     ],
   },
+  {
+    id: "nobody-remembers",
+    title: "Why Does Nobody Remember Me in This World?",
+    image: "https://static.nutscdn.com/vimg/0-0/8edd6d53b882d4ecb09d642830ba3d1f.jpg",
+    type: "anime",
+    genre: "Fantasy",
+    content: "Kai là người duy nhất nhớ về thế giới cũ nơi con người chiến thắng.",
+    year: "2024",
+    seasons: "1",
+    rating: "PG-13",
+    episodes: [
+      { title: "Episode 1: Forgotten Hero", thumbnail: "/images/anime/nobody_ep1.jpg" },
+      { title: "Episode 2: World Reset", thumbnail: "/images/anime/nobody_ep2.jpg" },
+    ],
+  },
 ];
