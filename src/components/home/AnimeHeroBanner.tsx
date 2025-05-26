@@ -24,7 +24,7 @@ const AnimeHeroBanner = () => {
 
   const selected = AnimeData[selectedIndex];
 
-  const handleSelect = (item: AnimeItem, index: number) => {
+  const handleSelect = (_: AnimeItem, index: number) => {
     setSelectedIndex(index);
   };
 

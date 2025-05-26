@@ -10,7 +10,7 @@ const FilmsHeroBanner = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selected = filmData[selectedIndex];
 
-  const handleSelect = (item: MovieItem, index: number) => {
+  const handleSelect = (_: MovieItem, index: number) => {
     setSelectedIndex(index);
   };
 

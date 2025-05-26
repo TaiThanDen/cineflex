@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import type { UnifiedItem } from "./data/Movie";
+import type { MovieItem } from "./data/Movie";
 
 interface HeroBannerProps {
-  items: UnifiedItem[];
+  items: MovieItem[];
   children?: React.ReactNode;
 }
 
@@ -48,7 +48,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
 
   return (
     <div
-      className="relative w-full h-max bg-cover text-white transition-all duration-500"
+      className="relative w-full h-max bg-cover text-white transition-all duration-500 overflow-x-hidden"
       style={{
         backgroundImage: `url('${selected.image}')`,
       }}
