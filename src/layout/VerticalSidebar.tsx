@@ -6,6 +6,7 @@ import {
   BoltIcon,
   BellIcon,
   Cog6ToothIcon,
+  ClockIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/assets/img/logo.jpg";
 import { Link } from "react-router-dom";
@@ -29,6 +30,9 @@ const VerticalSidebar = () => {
           <UserIcon className="h-6 w-6" />
         </Link>
         <CalendarIcon className="h-6 w-6" />
+        <Link to="/continue" className="text-white hover:text-purple-500">
+          <ClockIcon className="h-6 w-6" />
+        </Link>
         <BoltIcon className="h-6 w-6" />
         <BellIcon className="h-6 w-6" />
       </div>
