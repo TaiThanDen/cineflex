@@ -34,7 +34,7 @@ const recommended = [
 
 const RecommendedList = () => {
   return (
-    <div className="w-full mb-4 pl-2 bg-[#23263a] lg:w-1/3">
+    <div className="w-full mb-4 pl-2 bg-[#23263a]">
       <h2 className="text-xl font-bold mb-4">Đề xuất cho bạn</h2>
       <div className="space-y-4">
         {recommended.map((item) => (

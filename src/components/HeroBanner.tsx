@@ -3,6 +3,7 @@ import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import type { MovieItem } from "./data/Movie";
+import { Link } from "react-router-dom";
 
 interface HeroBannerProps {
   items: MovieItem[];
@@ -20,25 +21,6 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
     }, 10000);
     return () => clearInterval(interval);
   }, [items.length]);
-
-  const user = {
-    isPro: false,
-  };
-
-  const handleWatchNow = () => {
-    const movieId =
-      selected.id || selected.title.replace(/\s+/g, "-").toLowerCase();
-
-    const hasWatchedAds = sessionStorage.getItem("adsWatched");
-
-    if (user.isPro || hasWatchedAds) {
-      navigate(`/preview/${movieId}`);
-    } else {
-      navigate("/ads", {
-        state: { redirectTo: `/preview/${movieId}` },
-      });
-    }
-  };
 
   const handleMoreInfo = () => {
     const movieId =
@@ -95,13 +77,12 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
             </p>
 
             <div className="flex gap-4 mt-4">
-              <button
-                className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded flex items-center gap-2"
-                onClick={handleWatchNow}
-              >
-                <FaPlay />
-                <p>Watch Now</p>
-              </button>
+              <Link to={"/watch"}>
+                <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded flex items-center gap-2">
+                  <FaPlay />
+                  <p>Watch Now</p>
+                </button>
+              </Link>
               <button
                 className="bg-white/20 hover:bg-white/30 text-white font-medium px-6 py-2 rounded"
                 onClick={handleMoreInfo}
