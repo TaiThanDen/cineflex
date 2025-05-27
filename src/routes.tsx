@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/profile";
 import Continue from "./pages/continue";
+import WatchFilm from "./pages/WatchFilm";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -45,6 +46,7 @@ const AppRoutes = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/continue" element={<Continue />} />
+              <Route path="/watch" element={<WatchFilm />} />
             </Routes>
             <Footer />
           </div>
