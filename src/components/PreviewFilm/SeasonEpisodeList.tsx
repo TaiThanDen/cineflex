@@ -16,7 +16,7 @@ const SeasonEpisodeList = ({ seasonsData }: SeasonEpisodeListProps) => {
   const currentSeason = seasonsData.find((s) => s.season === activeSeason);
 
   return (
-    <div className="px-8 pt-10">
+    <div className="px-8 pl-0 pt-10">
       {/* Tab Season */}
       <div className="flex gap-6 mb-6 border-b border-gray-600 overflow-x-auto">
         {seasonsData.map((s) => (

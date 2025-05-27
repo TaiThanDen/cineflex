@@ -10,6 +10,7 @@ import PreviewFilm from "./pages/PreviewFilm";
 import AdsPage from "../src/components/AdsPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/profile";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -41,6 +42,7 @@ const AppRoutes = () => {
               <Route path="/preview/:id" element={<PreviewFilm />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
             <Footer />
           </div>
