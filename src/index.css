@@ -51,7 +51,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -65,7 +65,7 @@ button:focus-visible {
 }
 @theme{
   --animate-spin-slow: spin 6s linear infinite;
-}
+} */
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

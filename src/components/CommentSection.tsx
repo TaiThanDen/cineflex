@@ -30,7 +30,7 @@ const CommentSection = () => {
   const [comments] = useState(mockComments);
 
   return (
-    <div className="w-full bg-[#23263a] lg:w-2/3 p-6 rounded-lg">
+    <div className="w-full pl-0 bg-[#23263a] p-6 rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
       <textarea
         className="w-full p-3 rounded bg-[#2f3147] text-white border-none focus:outline-none"

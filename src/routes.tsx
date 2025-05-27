@@ -11,6 +11,7 @@ import AdsPage from "../src/components/AdsPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/profile";
+import WatchFilm from "./pages/WatchFilm";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -43,6 +44,7 @@ const AppRoutes = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/watch" element={<WatchFilm />} />
             </Routes>
             <Footer />
           </div>
