@@ -1,4 +1,5 @@
-import { FaHome, FaHeart, FaUser, FaPlay } from "react-icons/fa";
+import { FaHome, FaHeart, FaUser, FaPlay, FaRedo } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const MobileBottomSidebar = () => {
   return (
@@ -11,6 +12,10 @@ const MobileBottomSidebar = () => {
         <FaPlay className="text-lg mb-1" />
         <span className="text-xs">Play</span>
       </button>
+      <Link to="/continue" className="flex flex-col items-center text-white">
+        <FaRedo className="text-lg mb-1" />
+        <span className="text-xs">Continue</span>
+      </Link>
       <button className="flex flex-col items-center text-white">
         <FaHeart className="text-lg mb-1" />
         <span className="text-xs">Like</span>
