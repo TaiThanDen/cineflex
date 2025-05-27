@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Xem Phim - CineFlex</title>
+        <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+    }
+    .video-container {
+      background-color: #000;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+    }
+    .left-column {
+      flex: 3;
+      min-width: 300px;
+    }
+    .right-column {
+      flex: 1;
+      min-width: 250px;
+    }
+    .section {
+      background-color: #1b1b1b;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .comment-box {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .comment-box textarea {
+      width: 100%;
+      background: #2a2a2a;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      resize: none;
+    }
+    .comment-box button {
+      margin-top: 10px;
+      background: #eac76f;
+      color: #000;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+    </head>
+    <body>
+
+        <!-- Video Player Section -->
+        <div class="video-container">
+            <video controls>
+                <source src="sample.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ HTML5 video.
+            </video>
+        </div>
+
+        <!-- Content Area -->
+        <div class="main-content">
+
+            <!-- Left Content -->
+            <div class="left-column">
+                <div class="section">
+                    <h2>Thông Tin Phim</h2>
+                    <p><strong>Tên:</strong> Lãnh Địa Tử Chiến</p>
+                    <p><strong>Thể loại:</strong> Hành động, Hình sự</p>
+                    <p><strong>Nội dung:</strong> Hai gia tộc tội phạm khét
+                        tiếng ở London... (mô tả rút gọn)</p>
+                </div>
+
+                <div class="section">
+                    <h2>Danh sách tập</h2>
+                    <p>Phần 1: <button>Tập 1</button> <button>Tập 2</button>
+                        ...</p>
+                </div>
+
+                <div class="section">
+                    <h2>Bình luận</h2>
+                    <div class="comment-box">
+                        <textarea rows="3"
+                            placeholder="Viết bình luận..."></textarea>
+                        <button>Gửi</button>
+                    </div>
+                    <p>💬 Sonalexis: Chưa ra tập 8 àk</p>
+                    <p>💬 LOGB: xem dc tại 1.1.1.1 nha</p>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-column">
+                <div class="section">
+                    <h2>Đề xuất cho bạn</h2>
+                    <p>🎬 Tom Segura: Những Ý Nghĩ Xấu</p>
+                    <p>🎬 Mê Hoặc</p>
+                    <p>🎬 Chiếc Xe Duster</p>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

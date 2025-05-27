@@ -4,11 +4,28 @@ import SeasonEpisodeList from "../components/PreviewFilm/SeasonEpisodeList";
 import { unifiedData } from "../components/data/mockdata";
 import CommentSection from "../components/CommentSection";
 import RecommendedList from "@/components/RecommendedList";
+import MovieInfoCard from "@/components/MovieInfoCard";
+import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
+import { useState } from "react";
 
+const data = [
+  {
+    season: 1,
+    episodes: [
+      { title: "Tập 1" },
+      { title: "Tập 2" },
+      { title: "Tập 3" },
+      { title: "Tập 4" },
+      { title: "Tập 5" },
+    ],
+  },
+];
 const PreviewFilm = () => {
   const { id } = useParams();
   // Tìm cả film và anime
   const movie = unifiedData.find((m) => m.id === id);
+  const [currentSeason, setCurrentSeason] = useState(0);
+  const [currentEpisode, setCurrentEpisode] = useState(0);
 
   if (!movie) return <p className="text-white p-8">⚠️ Movie not found</p>;
 
@@ -21,9 +38,30 @@ const PreviewFilm = () => {
           }
         />
       </HeroBanner>
+      <div className="flex flex-col lg:flex-row gap-6 px-6 mt-6">
+        {/* Info bên trái */}
+        <div className="lg:w-2/4 w-full">
+          <MovieInfoCard />
+        </div>
+
+        {/* Tập bên phải */}
+        <div className="lg:w-2/4 w-full">
+          <SeasonEpisodeMiniList
+            data={data}
+            currentSeason={currentSeason}
+            currentEpisode={currentEpisode}
+            onSeasonChange={(index) => setCurrentSeason(index)}
+            onEpisodeSelect={(index) => setCurrentEpisode(index)}
+          />
+        </div>
+      </div>
       <div className="flex flex-col lg:flex-row gap-8 text-white mt-10 px-6 bg-[#23263a]">
-        <RecommendedList />
-        <CommentSection />
+        <div className="lg:w-1/3 w-full">
+          <RecommendedList />
+        </div>
+        <div className="lg:w-2/3 w-full">
+          <CommentSection />
+        </div>
       </div>
     </div>
   );
