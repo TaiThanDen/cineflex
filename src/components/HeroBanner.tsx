@@ -76,7 +76,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
               {selected.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-sm text-gray-300">
+            <div className="flex items-center gap-4 text-sm text-gray-200">
               <span>{selected.year}</span>
               <span>•</span>
               <span>
@@ -88,7 +88,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
             </div>
 
             <p
-              className="text-gray-300 max-w-xl text-sm leading-relaxed overflow-y-auto scrollbar-hide"
+              className="text-gray-200 max-w-xl text-sm leading-relaxed overflow-y-auto scrollbar-hide"
               style={{ maxHeight: "100px" }}
             >
               {selected.content}
