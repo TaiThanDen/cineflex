@@ -19,13 +19,6 @@ import {
   FaCheck,
 } from "react-icons/fa6";
 import { MdFullscreen } from "react-icons/md";
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import TestVideo from "../../assets/videos/test.mp4";
->>>>>>> 2709c53 ( add new comment section, recommend for u, movie info, watch film page)
-=======
->>>>>>> 9b8a562 ( add new comment section, recommend for u, movie info, watch film page)
 
 const VideoPlayer = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -207,15 +200,7 @@ const VideoPlayer = () => {
         <video
           ref={videoRef}
           className="w-full h-auto object-contain"
-<<<<<<< HEAD
-<<<<<<< HEAD
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-=======
-          src={TestVideo}
->>>>>>> 2709c53 ( add new comment section, recommend for u, movie info, watch film page)
-=======
-          src="https://rr4---sn-8pxuuxa-nbo6r.googlevideo.com/videoplayback?expire=1748359379&ei=c4Q1aJDqM67Es8IPiIyVoAo&ip=125.234.97.122&id=o-AItCjmsGljyaboMEh9zErMUkIgig1BkTPt7ovR-W-dcJ&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&met=1748337779%2C&mh=2m&mm=31%2C26&mn=sn-8pxuuxa-nbo6r%2Csn-ogul7ne6&ms=au%2Conr&mv=m&mvi=4&pl=20&rms=au%2Cau&gcr=vn&initcwndbps=1831250&bui=AY1jyLPmE-VRPUUTBjzDcPA_XhKTxp4P27Jsqome6ilJl5Fu33KwIO1sn-uZBXltaEx1C4eGc07uF4vV&vprv=1&svpuc=1&mime=video%2Fmp4&ns=UzLnjJvpDNFX6pfIXNILMbwQ&rqh=1&gir=yes&clen=315798900&ratebypass=yes&dur=5809.214&lmt=1742764057648397&mt=1748337417&fvip=4&lmw=1&c=TVHTML5&sefc=1&txp=5438534&n=gEjV6d4-hS17Wg&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cratebypass%2Cdur%2Clmt&lsparams=met%2Cmh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Crms%2Cinitcwndbps&lsig=APaTxxMwRAIgFiiFLLVLUlCrlP0irzbBuWMt2aMZ2dGAzgfGj2dasEgCIHyIKGzHJ3NMqR0Sd5Je0hZ4IQk4bfGmIyYnAT3w6smY&sig=AJfQdSswRgIhALXTxqA7XXG9GhmZ39w3PPWkJF3ZfcnIs8k1HDcHJuUVAiEA8cSvF3lLPx5UuzqE-dQc28lFqm1-hOksC9xdiLAE-Nk%3D&title=Sena%20Chill%20Mixtape%20%232%20-%20Lamsung026%20ft%20Sena%20%3A%20Nhac%20Lak"
->>>>>>> 9b8a562 ( add new comment section, recommend for u, movie info, watch film page)
           onClick={togglePlay}
         />
 
