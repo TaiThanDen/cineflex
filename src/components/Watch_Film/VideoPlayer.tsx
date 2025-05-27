@@ -19,6 +19,10 @@ import {
   FaCheck,
 } from "react-icons/fa6";
 import { MdFullscreen } from "react-icons/md";
+<<<<<<< HEAD
+=======
+import TestVideo from "../../assets/videos/test.mp4";
+>>>>>>> 2709c53 ( add new comment section, recommend for u, movie info, watch film page)
 
 const VideoPlayer = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -200,7 +204,11 @@ const VideoPlayer = () => {
         <video
           ref={videoRef}
           className="w-full h-auto object-contain"
+<<<<<<< HEAD
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+=======
+          src={TestVideo}
+>>>>>>> 2709c53 ( add new comment section, recommend for u, movie info, watch film page)
           onClick={togglePlay}
         />
 
