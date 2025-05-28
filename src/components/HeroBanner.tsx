@@ -18,7 +18,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setSelectedIndex((prev) => (prev + 1) % items.length);
-    }, 10000);
+    }, 50000);
     return () => clearInterval(interval);
   }, [items.length]);
 
