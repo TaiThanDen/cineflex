@@ -4,6 +4,7 @@ import MovieInfoCard from "@/components/MovieInfoCard";
 import CommentSection from "@/components/CommentSection";
 import RecommendedList from "@/components/RecommendedList";
 import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
+import Tabs from "@/components/Tabs";
 
 const data = [
   {
@@ -25,34 +26,40 @@ function WatchFilm() {
   return (
     <div className="bg-[#23263a] min-h-screen text-white">
       <VideoPlayer />
-      {/* Thông tin phim */}
-      <div className="flex flex-col lg:flex-row gap-6 px-6 mt-6">
-        {/* Info bên trái */}
-        <div className="lg:w-2/4 w-full">
-          <MovieInfoCard />
-        </div>
 
-        {/* Tập bên phải */}
-        <div className="lg:w-2/4 w-full">
-          <SeasonEpisodeMiniList
-            data={data}
-            currentSeason={currentSeason}
-            currentEpisode={currentEpisode}
-            onSeasonChange={(index) => setCurrentSeason(index)}
-            onEpisodeSelect={(index) => setCurrentEpisode(index)}
-          />
-        </div>
-      </div>
-
-      {/* Comment + Đề xuất */}
-      <div className="flex flex-col lg:flex-row gap-6 px-6 mt-6">
-        <div className="lg:w-2/3">
-          <CommentSection />
-        </div>
-        <div className=" w-auto lg:w-1/3">
-          <RecommendedList />
-        </div>
-      </div>
+      {/* Tabs */}
+      <Tabs
+        tabs={[
+          {
+            label: "Thông tin phim",
+            key: "info",
+            content: <MovieInfoCard />,
+          },
+          {
+            label: "Tập phim",
+            key: "episodes",
+            content: (
+              <SeasonEpisodeMiniList
+                data={data}
+                currentSeason={currentSeason}
+                currentEpisode={currentEpisode}
+                onSeasonChange={setCurrentSeason}
+                onEpisodeSelect={setCurrentEpisode}
+              />
+            ),
+          },
+          {
+            label: "Bình luận",
+            key: "comments",
+            content: <CommentSection />,
+          },
+          {
+            label: "Đề xuất",
+            key: "recommend",
+            content: <RecommendedList />,
+          },
+        ]}
+      />
     </div>
   );
 }

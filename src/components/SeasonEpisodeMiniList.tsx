@@ -19,7 +19,7 @@ const SeasonEpisodeMiniList = ({
   if (!currentData) return null;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-4">
       <div className="flex items-center gap-4">
         <h2 className="text-xl font-bold flex-1 ">
           📂 Phần {currentData.season}

@@ -18,7 +18,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setSelectedIndex((prev) => (prev + 1) % items.length);
-    }, 10000);
+    }, 5000); // 5 giây
     return () => clearInterval(interval);
   }, [items.length]);
 
@@ -40,8 +40,8 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
 
       {/* Banner Content */}
       <div
-        className="relative w-full px-8 py-20 flex flex-col gap-6"
-        style={{ maxHeight: "60vh" }} // Giới hạn chiều cao tổng thể content
+        className="relative w-full px-4 sm:px-8 py-10 sm:py-20 flex flex-col gap-4 sm:gap-6"
+        style={{ maxHeight: "60vh" }}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -51,14 +51,14 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="text-sm uppercase tracking-wide font-semibold text-[#7f22fe] mt-20">
+            <div className="text-xs sm:text-sm uppercase tracking-wide font-semibold text-[#7f22fe] mt-10 sm:mt-20">
               CineFlex
             </div>
-            <h1 className="text-5xl font-bold leading-tight">
+            <h1 className="text-2xl sm:text-5xl font-bold leading-tight break-words">
               {selected.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-sm text-gray-200">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-200">
               <span>{selected.year}</span>
               <span>•</span>
               <span>
@@ -70,21 +70,21 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
             </div>
 
             <p
-              className="text-gray-200 max-w-xl text-sm leading-relaxed overflow-y-auto scrollbar-hide"
-              style={{ maxHeight: "100px" }}
+              className="text-gray-200 max-w-full sm:max-w-xl text-xs sm:text-sm leading-relaxed overflow-y-auto scrollbar-hide"
+              style={{ maxHeight: "60px" }}
             >
               {selected.content}
             </p>
 
-            <div className="flex gap-4 mt-4">
-              <Link to={"/watch"}>
-                <button className="bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-2 rounded flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-2 sm:mt-4 w-full">
+              <Link to={"/watch"} className="w-full sm:w-auto">
+                <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium px-4 sm:px-6 py-2 rounded flex items-center justify-center gap-2">
                   <FaPlay />
                   <p>Watch Now</p>
                 </button>
               </Link>
               <button
-                className="bg-white/20 hover:bg-white/30 text-white font-medium px-6 py-2 rounded"
+                className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white font-medium px-4 sm:px-6 py-2 rounded"
                 onClick={handleMoreInfo}
               >
                 <p>More Info</p>
@@ -94,8 +94,10 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
         </AnimatePresence>
       </div>
 
-      {/* ✅ Chỉ render nội dung phụ không ảnh hưởng animation */}
-      <div className="relative z-10 w-full px-8 pb-8">{children}</div>
+      {/* Nội dung phụ */}
+      <div className="relative z-10 w-full px-4 sm:px-8 pb-4 sm:pb-8">
+        {children}
+      </div>
     </div>
   );
 };
