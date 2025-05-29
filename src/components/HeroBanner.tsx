@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 interface HeroBannerProps {
   items: MovieItem[];
   children?: React.ReactNode;
+  selectedIndex?: number; // thêm optional
+  setSelectedIndex?: (idx: number) => void; // thêm optional
 }
 
 const HeroBanner = ({ items, children }: HeroBannerProps) => {
