@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { unifiedData } from "../data/mockdata";
 import MovieInfoCard from "../MovieInfoCard";
@@ -24,7 +24,6 @@ const data = [
 
 const MobilePreviewFilm = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const movie = unifiedData.find((m) => m.id === id);
 
   const [currentSeason, setCurrentSeason] = useState(0);
