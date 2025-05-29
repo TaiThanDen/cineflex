@@ -7,6 +7,7 @@ import VerticalSidebar from "./layout/VerticalSidebar";
 import MobileBottomSidebar from "./layout/MobileBottomSidebar";
 import { useRef, useState } from "react";
 import PreviewFilm from "./pages/PreviewFilm";
+import MobilePreviewFilm from "./components/PreviewFilm/MobilePreviewFilm";
 import AdsPage from "../src/components/AdsPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -41,7 +42,10 @@ const AppRoutes = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
-              <Route path="/preview/:id" element={<PreviewFilm />} />
+              <Route
+                path="/preview/:id"
+                element={isMobile ? <MobilePreviewFilm /> : <PreviewFilm />}
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />

@@ -8,6 +8,8 @@ import MovieInfoCard from "@/components/MovieInfoCard";
 import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
 import { useState } from "react";
 import Tabs from "@/components/Tabs";
+import { useIsMobile } from "../lib/hooks/use-mobile";
+import MobilePreviewFilm from "../components/PreviewFilm/MobilePreviewFilm";
 
 const data = [
   {
@@ -21,14 +23,17 @@ const data = [
     ],
   },
 ];
+
 const PreviewFilm = () => {
+  const isMobile = useIsMobile();
   const { id } = useParams();
-  // Tìm cả film và anime
   const movie = unifiedData.find((m) => m.id === id);
   const [currentSeason, setCurrentSeason] = useState(0);
   const [currentEpisode, setCurrentEpisode] = useState(0);
 
   if (!movie) return <p className="text-white p-8">⚠️ Movie not found</p>;
+
+  if (isMobile) return <MobilePreviewFilm />;
 
   return (
     <div className="min-h-screen bg-[#23263a] text-white">

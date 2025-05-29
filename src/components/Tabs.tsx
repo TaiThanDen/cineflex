@@ -35,7 +35,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, initialKey }) => {
           </button>
         ))}
       </div>
-      <div className="mt-6 pl-3">
+      <div className="mt-6 pl-3 pr-3">
         {tabs.find((tab) => tab.key === activeTab)?.content}
       </div>
     </div>

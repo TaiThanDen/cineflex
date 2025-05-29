@@ -183,7 +183,7 @@ const VideoPlayer = () => {
   };
 
   return (
-    <div className="bg-[#23263a] text-white w-full min-h-0 pt-15  sm:min-h-screen relative">
+    <div className="bg-[#23263a] text-white w-full min-h-0 pt-15  sm:min-h-screen relative ">
       {/* Overlay Cinema Mode */}
       {cinemaMode && (
         <div
@@ -200,6 +200,7 @@ const VideoPlayer = () => {
         <video
           ref={videoRef}
           className="w-full h-auto object-contain"
+          autoPlay
           src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
           onClick={togglePlay}
         />
@@ -244,7 +245,7 @@ const VideoPlayer = () => {
                   <span>Chất lượng</span>
                   <span>4K</span>
                 </div>
-                <div className="flex justify-between text-gray-400">
+                <div className="flex justify-between text-gray-400  ">
                   <span>Phụ đề</span>
                   <span>Tùy chỉnh</span>
                 </div>
@@ -285,24 +286,30 @@ const VideoPlayer = () => {
             <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2 sm:gap-3">
               {/* Nhóm nút trái */}
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
-                <button onClick={togglePlay} className="text-2xl sm:text-3xl">
+                <button
+                  onClick={togglePlay}
+                  className="text-2xl sm:text-3xl cursor-pointer hover:text-yellow-400"
+                >
                   {isPlaying ? <FaRegCirclePause /> : <FaRegCirclePlay />}
                 </button>
                 <button
                   onClick={() => skip(-10)}
-                  className="text-lg sm:text-2xl"
+                  className="text-lg sm:text-2xl cursor-pointer hover:text-yellow-400"
                 >
                   <RiReplay10Fill />
                 </button>
                 <button
                   onClick={() => skip(10)}
-                  className="text-lg sm:text-2xl"
+                  className="text-lg sm:text-2xl cursor-pointer hover:text-yellow-400"
                 >
                   <RiForward10Fill />
                 </button>
                 {/* Volume chỉ hiện trên desktop */}
                 <div className="hidden sm:flex items-center gap-2 group">
-                  <button onClick={toggleMute} className="text-xl">
+                  <button
+                    onClick={toggleMute}
+                    className="text-xl cursor-pointer hover:text-yellow-400"
+                  >
                     {volume === 0 ? <FaVolumeXmark /> : <FaVolumeHigh />}
                   </button>
                   <div className="relative w-32 h-1 bg-gray-600 rounded-full overflow-hidden group-hover:h-2 transition-all">
@@ -323,19 +330,32 @@ const VideoPlayer = () => {
                 </div>
               </div>
               {/* Nhóm nút phải */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xl sm:text-2xl">
-                <PiSubtitlesBold title="Phụ đề" />
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xl sm:text-2xl  ">
+                <PiSubtitlesBold
+                  title="Phụ đề"
+                  className="cursor-pointer hover:text-yellow-400"
+                />
                 <button onClick={toggleCinemaMode}>
                   <PiTelevisionSimpleBold
                     title="Chế độ rạp"
-                    className={cinemaMode ? "text-yellow-400" : ""}
+                    className={
+                      cinemaMode
+                        ? "text-yellow-400"
+                        : "cursor-pointer hover:text-yellow-400"
+                    }
                   />
                 </button>
                 <button onClick={() => setShowSettings((prev) => !prev)}>
-                  <RiSettingsLine title="Cài đặt" />
+                  <RiSettingsLine
+                    title="Cài đặt"
+                    className="cursor-pointer hover:text-yellow-400"
+                  />
                 </button>
                 <button onClick={toggleFullscreen}>
-                  <MdFullscreen title="Toàn màn hình" />
+                  <MdFullscreen
+                    title="Toàn màn hình"
+                    className="cursor-pointer hover:text-yellow-400"
+                  />
                 </button>
               </div>
             </div>
@@ -344,19 +364,19 @@ const VideoPlayer = () => {
             {!isFullscreen && (
               <div className="flex items-center justify-between mt-2 text-white/80 text-sm">
                 <div className="flex gap-6">
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1 cursor-pointer hover:text-yellow-400">
                     <FaRegHeart />
                     <span> Yêu thích</span>
                   </span>
-                  <span>
+                  <span className="cursor-pointer hover:text-yellow-400">
                     Chuyển tập{" "}
-                    <span className="bg-yellow-400 text-black px-1 rounded text-xs ml-1">
+                    <span className="bg-yellow-400 text-black px-1 rounded text-xs ml-1 ">
                       ON
                     </span>
                   </span>
                   <button
                     onClick={handleShare}
-                    className="flex items-center gap-1 hover:underline"
+                    className="flex items-center gap-1 hover:underline cursor-pointer hover:text-yellow-400"
                     title="Chia sẻ"
                   >
                     <PiShareFatBold /> Chia sẻ

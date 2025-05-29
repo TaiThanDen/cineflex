@@ -13,18 +13,22 @@ interface MovieItem {
 
 interface MobileHeroBannerProps {
   data: MovieItem[];
+  title?: string;
 }
 
-const MobileHeroBanner = ({ data }: MobileHeroBannerProps) => {
+const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
   const navigate = useNavigate();
 
   const handleMoreInfo = (movie: MovieItem) => {
-    // Ví dụ: chuyển đến trang preview phim
+    // chuyển đến trang preview phim
     navigate(`/preview/${movie.title.replace(/\s+/g, "-").toLowerCase()}`);
   };
 
   return (
-    <div className="w-full h-[80vh] bg-[#23263a] flex items-center justify-center overflow-hidden px-0">
+    <div className="w-full h-[80dvh] bg-[#23263a] flex flex-col items-center justify-center overflow-hidden px-0">
+      <h2 className="text-xl font-extrabold text-purple-300 uppercase mb-3 mt-8">
+        {title}
+      </h2>
       <Swiper
         effect="coverflow"
         grabCursor={true}
