@@ -53,7 +53,7 @@ const defaultMovies = [
 ];
 
 const AnimeMobileBanner = () => {
-  return <MobileHeroBanner data={defaultMovies} title="Popular Anime " />;
+  return <MobileHeroBanner data={defaultMovies} title="Popular Anime" />;
 };
 
 export default AnimeMobileBanner;
