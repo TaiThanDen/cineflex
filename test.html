@@ -1,124 +1,174 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Xem Phim - CineFlex</title>
-        <style>
+  <head>
+    <meta charset="UTF-8">
+    <title>Đối Tác | Demo Logo Slider</title>
+    <style>
     body {
+      background: #181a20;
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #fff;
+      padding: 0;
     }
-    .video-container {
-      background-color: #000;
-      height: 60vh;
+    h2 {
+      text-align: center;
+      margin-top: 30px;
+      letter-spacing: 2px;
+    }
+    .logo-slider {
+      width: 100%;
+      overflow: hidden;
+      background: #22252b;
+      padding: 20px 0;
+      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.12);
+      margin: 40px 0;
+    }
+    .logo-track {
       display: flex;
+      animation: scroll 20s linear infinite;
+      width: calc(180px * 12); /* Số logo x chiều rộng 1 logo */
+    }
+    .logo-item {
+      flex: 0 0 180px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      margin: 0 20px;
+      text-align: center;
     }
-    .video-container video {
-      width: 100%;
-      height: 100%;
+    .logo-item img {
+      width: 160px;
+      height: 90px; /* 16:9 */
       object-fit: contain;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 6px 0 rgba(0,0,0,0.08);
+      transition: transform .2s;
     }
-    .main-content {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-      gap: 20px;
+    .logo-item img:hover {
+      transform: scale(1.08);
     }
-    .left-column {
-      flex: 3;
-      min-width: 300px;
+    .logo-item a {
+      color: #ffd600;
+      font-size: 15px;
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 500;
     }
-    .right-column {
-      flex: 1;
-      min-width: 250px;
+    .logo-item a:hover {
+      color: #1e90ff;
+      text-decoration: underline;
     }
-    .section {
-      background-color: #1b1b1b;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-    .comment-box {
-      width: 100%;
-      margin-top: 10px;
-    }
-    .comment-box textarea {
-      width: 100%;
-      background: #2a2a2a;
-      color: #fff;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      resize: none;
-    }
-    .comment-box button {
-      margin-top: 10px;
-      background: #eac76f;
-      color: #000;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
   </style>
-    </head>
-    <body>
-
-        <!-- Video Player Section -->
-        <div class="video-container">
-            <video controls>
-                <source src="sample.mp4" type="video/mp4">
-                Trình duyệt của bạn không hỗ trợ HTML5 video.
-            </video>
+  </head>
+  <body>
+    <h2>ĐỐI TÁC</h2>
+    <div class="logo-slider">
+      <div class="logo-track">
+        <!-- Lặp lại 2 lần để slider liên tục -->
+        <div class="logo-item">
+          <a href="https://rophim.com" target="_blank">
+            <img
+              src="https://pbs.twimg.com/card_img/1926163454253019136/-s4tv89n?format=jpg&name=medium"
+              alt="Rophim Logo">
+          </a>
         </div>
+        <div class="logo-item">
+          <a href="https://www.netflix.com" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+              alt="Netflix Logo">
 
-        <!-- Content Area -->
-        <div class="main-content">
-
-            <!-- Left Content -->
-            <div class="left-column">
-                <div class="section">
-                    <h2>Thông Tin Phim</h2>
-                    <p><strong>Tên:</strong> Lãnh Địa Tử Chiến</p>
-                    <p><strong>Thể loại:</strong> Hành động, Hình sự</p>
-                    <p><strong>Nội dung:</strong> Hai gia tộc tội phạm khét
-                        tiếng ở London... (mô tả rút gọn)</p>
-                </div>
-
-                <div class="section">
-                    <h2>Danh sách tập</h2>
-                    <p>Phần 1: <button>Tập 1</button> <button>Tập 2</button>
-                        ...</p>
-                </div>
-
-                <div class="section">
-                    <h2>Bình luận</h2>
-                    <div class="comment-box">
-                        <textarea rows="3"
-                            placeholder="Viết bình luận..."></textarea>
-                        <button>Gửi</button>
-                    </div>
-                    <p>💬 Sonalexis: Chưa ra tập 8 àk</p>
-                    <p>💬 LOGB: xem dc tại 1.1.1.1 nha</p>
-                </div>
-            </div>
-
-            <!-- Right Sidebar -->
-            <div class="right-column">
-                <div class="section">
-                    <h2>Đề xuất cho bạn</h2>
-                    <p>🎬 Tom Segura: Những Ý Nghĩ Xấu</p>
-                    <p>🎬 Mê Hoặc</p>
-                    <p>🎬 Chiếc Xe Duster</p>
-                </div>
-            </div>
-
+          </a>
         </div>
+        <div class="logo-item">
+          <a href="https://fptplay.vn" target="_blank">
+            <img
+              src="https://theme.zdassets.com/theme_assets/2445237/5ac82464c873401ec472cb925db8c86b9f9df910.png"
+              alt="FPT Play Logo">
 
-    </body>
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://tv360.vn" target="_blank">
+            <img
+              src="https://viettel-digital.com/wp-content/uploads/2024/03/TV360-logo.webp"
+              alt="TV360 Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://tv.apple.com" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Apple_TV_Plus_Logo.svg/2560px-Apple_TV_Plus_Logo.svg.png"
+              alt="Apple TV Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://tv.google.com" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Google_TV_logo.svg/2560px-Google_TV_logo.svg.png"
+              alt="Google TV Logo">
+
+          </a>
+        </div>
+        <!-- Thêm logo lặp lại cho hiệu ứng liên tục -->
+        <div class="logo-item">
+          <a href="https://rophim.com" target="_blank">
+            <img
+              src="https://pbs.twimg.com/card_img/1926163454253019136/-s4tv89n?format=jpg&name=medium"
+              alt="Rophim Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://www.netflix.com" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+              alt="Netflix Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://fptplay.vn" target="_blank">
+            <img
+              src="https://theme.zdassets.com/theme_assets/2445237/5ac82464c873401ec472cb925db8c86b9f9df910.png"
+              alt="FPT Play Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://tv360.vn" target="_blank">
+            <img
+              src="https://viettel-digital.com/wp-content/uploads/2024/03/TV360-logo.webp"
+              alt="TV360 Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://tv.apple.com" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_TV%2B_logo.svg"
+              alt="Apple TV Logo">
+
+          </a>
+        </div>
+        <div class="logo-item">
+          <a href="https://tv.google.com" target="_blank">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Google_TV_logo.svg"
+              alt="Google TV Logo">
+
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

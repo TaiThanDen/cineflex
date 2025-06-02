@@ -20,6 +20,8 @@ import {
 } from "react-icons/fa6";
 import { MdFullscreen } from "react-icons/md";
 
+const AD_URL = "https://example.com";
+
 const VideoPlayer = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +37,7 @@ const VideoPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [showAdPopup, setShowAdPopup] = useState(false);
   const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -99,6 +102,22 @@ const VideoPlayer = () => {
         clearTimeout(hideControlsTimeout.current);
     };
   }, [isFullscreen]);
+
+  // Thêm sự kiện onPause cho video
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const handlePause = () => {
+      const last = localStorage.getItem("lastAdRedirect");
+      const now = Date.now();
+      // Nếu chưa từng chuyển hướng hoặc đã hơn 10 phút thì hiện popup
+      if (!last || now - parseInt(last, 10) > 10 * 60 * 1000) {
+        setShowAdPopup(true);
+      }
+    };
+    video.addEventListener("pause", handlePause);
+    return () => video.removeEventListener("pause", handlePause);
+  }, []);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -182,21 +201,41 @@ const VideoPlayer = () => {
     return `${m}:${s}`;
   };
 
+  // Hàm đóng popup và tiếp tục phát video
+  const handleCloseAd = () => {
+    // Lưu thời gian chuyển hướng vào localStorage
+    localStorage.setItem("lastAdRedirect", Date.now().toString());
+    window.open(AD_URL, "_blank");
+    setShowAdPopup(false);
+    // Không cần play video vì đã chuyển hướng
+  };
+
   return (
     <div className="bg-[#23263a] text-white w-full min-h-0 pt-15  sm:min-h-screen relative ">
-      {/* Overlay Cinema Mode */}
-      {cinemaMode && (
-        <div
-          className="fixed inset-0 bg-black z-40 transition-all duration-300"
-          onClick={toggleCinemaMode}
-        />
-      )}
-
       <div
         ref={containerRef}
         className={`bg-[#23263a] h-auto w-full relative flex items-center justify-center z-50`}
         tabIndex={0}
       >
+        {/* Popup quảng cáo khi pause */}
+        {showAdPopup && (
+          <div className="absolute inset-0 bg-black/70 z-[100] flex flex-col items-center sm:w-auto justify-center">
+            <div className="bg-white rounded-lg p-4 shadow-lg flex flex-col items-center">
+              <img
+                src="https://static.nutscdn.com/vimg/0-0/784543799c537bda4c8f8b9c1757bfc3.jpg"
+                alt="Quảng cáo"
+                className="max-w-xs w-full mb-4"
+              />
+              <button
+                onClick={handleCloseAd}
+                className="bg-[#23263a] text-white px-6 py-2 rounded mt-2 text-lg font-semibold hover:bg-[#3a3a4a] transition"
+              >
+                Đóng và Xem Tiếp
+              </button>
+            </div>
+          </div>
+        )}
+
         <video
           ref={videoRef}
           className="w-full h-auto object-contain"
