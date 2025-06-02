@@ -322,7 +322,7 @@ const VideoPlayer = () => {
         {/* Controls */}
         {showControls && (
           <div className="absolute bottom-0 w-full p-2 sm:p-4 bg-gradient-to-t from-[#23263a] to-transparent text-white text-xs sm:text-sm space-y-2 z-50 transition-all">
-            <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2 sm:gap-3">
+            <div className="flex flex-wrap items-center justify-between sm:justify-between gap-2 sm:gap-3">
               {/* Nhóm nút trái */}
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
                 <button
