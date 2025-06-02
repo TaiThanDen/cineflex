@@ -212,6 +212,13 @@ const VideoPlayer = () => {
 
   return (
     <div className="bg-[#23263a] text-white w-full min-h-0 pt-15  sm:min-h-screen relative ">
+      {/* Overlay Cinema Mode */}
+      {cinemaMode && (
+        <div
+          className="fixed inset-0 bg-black z-40 transition-all duration-300"
+          onClick={toggleCinemaMode}
+        />
+      )}
       <div
         ref={containerRef}
         className={`bg-[#23263a] h-auto w-full relative flex items-center justify-center z-50`}
