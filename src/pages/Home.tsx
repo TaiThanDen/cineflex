@@ -5,7 +5,7 @@ import { useIsMobile } from "../lib/hooks/use-mobile";
 import FilmsMobileBanner from "@/components/home/FilmsMobileBanner";
 import FilmsHeroBanner from "@/components/home/FilmsHeroBanner";
 import ListAnime from "@/components/home/ListAnime";
-import Partners from "@/pages/partners";
+import Partners from "@/pages/Partners";
 const HomePage = () => {
   const isMobile = useIsMobile();
 
