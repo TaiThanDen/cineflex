@@ -53,8 +53,23 @@ const VideoPlayer = () => {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const handleTimeUpdate = () => setCurrentTime(video.currentTime);
-    const handleLoadedMetadata = () => setDuration(video.duration);
+    const handleTimeUpdate = () => {
+      setCurrentTime(video.currentTime);
+      // Save to localStorage every second
+      localStorage.setItem("videoProgress", video.currentTime.toString());
+    };
+    const handleLoadedMetadata = () => {
+      setDuration(video.duration);
+      const savedProgress = localStorage.getItem("videoProgress");
+      if (savedProgress) {
+        const time = parseFloat(savedProgress);
+        if (!isNaN(time) && time < video.duration) {
+          video.currentTime = time;
+          setCurrentTime(time);
+        }
+      }
+    };
+
 
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("loadedmetadata", handleLoadedMetadata);
@@ -209,6 +224,20 @@ const VideoPlayer = () => {
     setShowAdPopup(false);
     // Không cần play video vì đã chuyển hướng
   };
+  const togglePiP = async () => {
+  const video = videoRef.current;
+  if (!video) return;
+
+  try {
+    if (document.pictureInPictureElement) {
+      await document.exitPictureInPicture();
+    } else {
+      await video.requestPictureInPicture();
+    }
+  } catch (err) {
+    console.error("PiP Error:", err);
+  }
+};
 
   return (
     <div className="bg-[#23263a] text-white w-full min-h-0 pt-15  sm:min-h-screen relative ">
@@ -377,6 +406,12 @@ const VideoPlayer = () => {
               </div>
               {/* Nhóm nút phải */}
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xl sm:text-2xl  ">
+                <button onClick={togglePiP} title="Picture-in-Picture">
+                <svg className="w-6 h-6 hover:text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 7h-6v6h6V7z" />
+                  <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5h-2V5H5v14h6v2H5a2 2 0 0 1-2-2V5z" />
+                </svg>
+              </button>
                 <PiSubtitlesBold
                   title="Phụ đề"
                   className="cursor-pointer hover:text-yellow-400"

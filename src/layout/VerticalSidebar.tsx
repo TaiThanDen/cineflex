@@ -33,7 +33,9 @@ const VerticalSidebar = () => {
         <Link to="/continue" className="text-white hover:text-purple-500">
           <ClockIcon className="h-6 w-6" />
         </Link>
-        <BoltIcon className="h-6 w-6" />
+        <Link to="/plans" className="text-white hover:text-purple-500">
+          <BoltIcon className="h-6 w-6" />
+        </Link>
         <BellIcon className="h-6 w-6" />
       </div>
       <div className="flex flex-col items-center gap-4 z-10 text-white">
