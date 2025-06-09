@@ -16,7 +16,7 @@ const plans: Plan[] = [
     price: "$0",
     features: [
       "Access to almost all shows and movies",
-      "A generous amount ads",
+      "A generous amount of ads",
       "Like a whole lot of ads",
     ],
     cta: "Current Plan",
