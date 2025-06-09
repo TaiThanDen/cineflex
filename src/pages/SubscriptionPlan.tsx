@@ -50,7 +50,7 @@ const SubscriptionPlans: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] py-20 px-4">
-      <h1 className="text-4xl font-bold text-white text-center mb-4">Subscription Plans</h1>
+      <h1 className="text-4xl font-bold font-sans text-white text-center mb-4">Subscription Plans</h1>
       <p className="text-center text-gray-300 max-w-2xl mx-auto mb-10">
         Choose the plan that's right for you. Upgrade to remove ads and unlock exclusive content.
       </p>

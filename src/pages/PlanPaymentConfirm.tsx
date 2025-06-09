@@ -25,22 +25,22 @@ const PlanPaymentConfirm: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] px-4">
       <div className="bg-[#1e1e2f] text-white p-10 rounded-3xl shadow-2xl w-full max-w-xl">
-        <h1 className="text-3xl font-bold mb-4 text-center">Confirm Your Subscription</h1>
+        <h1 className="text-2xl font-sans font-semibold mb-4 text-center">Confirm Your Subscription</h1>
 
         <div className="border border-gray-600 rounded-lg p-6 space-y-4">
           <div className="flex justify-between text-gray-300">
             <span>Plan:</span>
-            <span className="font-semibold text-white">{planName}</span>
+            <span className="font-bold font-sans text-white">{planName}</span>
           </div>
           <div className="flex justify-between text-gray-300">
             <span>Billing Cycle:</span>
-            <span className="font-semibold text-white">{billingCycle}</span>
+            <span className="font-semibold font-sans text-white">{billingCycle}</span>
           </div>
           <div className="flex justify-between text-gray-300">
             <span>Email:</span>
-            <span className="font-semibold text-white">{userEmail}</span>
+            <span className="font-semibold font-sans text-white">{userEmail}</span>
           </div>
-          <div className="flex justify-between text-lg font-bold text-white border-t pt-4 border-gray-600">
+          <div className="flex justify-between text-lg font-bold font-sans text-white border-t pt-4 border-gray-600">
             <span>Total:</span>
             <span>{price}</span>
           </div>
