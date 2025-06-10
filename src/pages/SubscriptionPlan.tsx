@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle } from "lucide-react";
+import { FaCheckCircle } from "react-icons/fa";
 
 interface Plan {
   name: string;
@@ -50,9 +50,12 @@ const SubscriptionPlans: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] py-20 px-4">
-      <h1 className="text-4xl font-bold font-sans text-white text-center mb-4">Subscription Plans</h1>
+      <h1 className="text-4xl font-bold font-sans text-white text-center mb-4">
+        Subscription Plans
+      </h1>
       <p className="text-center text-gray-300 max-w-2xl mx-auto mb-10">
-        Choose the plan that's right for you. Upgrade to remove ads and unlock exclusive content.
+        Choose the plan that's right for you. Upgrade to remove ads and unlock
+        exclusive content.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -62,11 +65,14 @@ const SubscriptionPlans: React.FC = () => {
             className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-8 border hover:text-purple-400 border-gray-700"
           >
             <h2 className="text-2xl font-semibold mb-2">{plan.name}</h2>
-            <p className="text-4xl font-bold text-purple-500 mb-4">{plan.price}<span className="text-base font-normal text-gray-400"> /mo</span></p>
+            <p className="text-4xl font-bold text-purple-500 mb-4">
+              {plan.price}
+              <span className="text-base font-normal text-gray-400"> /mo</span>
+            </p>
             <ul className="space-y-3 mb-6">
               {plan.features.map((feature, idx) => (
                 <li key={idx} className="flex items-center text-gray-300">
-                  <CheckCircle className="text-green-400 w-5 h-5 mr-2" />
+                  <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
                   {feature}
                 </li>
               ))}
@@ -87,7 +93,8 @@ const SubscriptionPlans: React.FC = () => {
       </div>
 
       <p className="text-center text-gray-400 mt-10">
-        100% secure payment method with <strong className="text-purple-500">NO</strong> money back guarantee.
+        100% secure payment method with{" "}
+        <strong className="text-purple-500">NO</strong> money back guarantee.
       </p>
 
       <div className="flex justify-center mt-6">
