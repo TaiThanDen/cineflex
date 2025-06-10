@@ -14,6 +14,8 @@ import Register from "./pages/Register";
 import Profile from "./pages/profile";
 import Continue from "./pages/continue";
 import WatchFilm from "./pages/WatchFilm";
+import SubscriptionPlan from "./pages/SubscriptionPlan";
+import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -51,6 +53,8 @@ const AppRoutes = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/continue" element={<Continue />} />
               <Route path="/watch" element={<WatchFilm />} />
+              <Route path="/plans" element={<SubscriptionPlan />} />
+              <Route path="/payment" element={<PlanPaymentConfirm />} />
             </Routes>
             <Footer />
           </div>
