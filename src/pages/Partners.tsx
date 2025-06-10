@@ -5,7 +5,7 @@ const Partners: Partner[] = [
   {
     name: "Rophim",
     href: "https://rophim.com",
-    img: "https://pbs.twimg.com/card_img/1926163454253019136/-s4tv89n?format=jpg&name=medium",
+    img: "https://pbs.twimg.com/card_img/1924415558994501632/Z7A7RA6E?format=jpg&name=medium",
   },
   {
     name: "Netflix",
