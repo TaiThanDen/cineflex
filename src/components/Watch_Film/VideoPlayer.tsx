@@ -22,7 +22,11 @@ import { MdFullscreen } from "react-icons/md";
 
 const AD_URL = "https://example.com";
 
-const VideoPlayer = () => {
+type VideoPlayerProps = {
+  movieName: string;
+};
+
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -271,7 +275,6 @@ const VideoPlayer = () => {
             </div>
           </div>
         )}
-
         <video
           ref={videoRef}
           className="w-full h-auto object-contain"
@@ -403,6 +406,9 @@ const VideoPlayer = () => {
                     />
                   </div>
                 </div>
+                <span className="ml-4 text-sm tracking-wide font-semibold text-white">
+                  <p>{movieName}</p>
+                </span>
               </div>
               {/* Nhóm nút phải */}
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xl sm:text-2xl  ">

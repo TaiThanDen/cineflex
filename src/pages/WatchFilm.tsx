@@ -25,7 +25,7 @@ function WatchFilm() {
 
   return (
     <div className="bg-[#23263a] min-h-screen text-white">
-      <VideoPlayer />
+      <VideoPlayer movieName="Big Buck Bunny S1E9" />
 
       {/* Tabs */}
       <Tabs
