@@ -3,9 +3,9 @@ import type { Partner } from "../components/PartnerSlider";
 // Danh sách đầy đủ các đối tác như file test
 const Partners: Partner[] = [
   {
-    name: "Rophim",
+    name: "Amazon Prime Video",
     href: "https://rophim.com",
-    img: "https://pbs.twimg.com/card_img/1924415558994501632/Z7A7RA6E?format=jpg&name=medium",
+    img: "https://stadt-bremerhaven.de/wp-content/uploads/2021/11/Amazon-Prime-Logo.jpg",
   },
   {
     name: "Netflix",

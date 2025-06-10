@@ -8,7 +8,7 @@ import MobileBottomSidebar from "./layout/MobileBottomSidebar";
 import { useRef, useState } from "react";
 import PreviewFilm from "./pages/PreviewFilm";
 import MobilePreviewFilm from "./components/PreviewFilm/MobilePreviewFilm";
-import AdsPage from "../src/components/AdsPage";
+import AdsPage from "./pages/AdsPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/profile";
@@ -41,7 +41,6 @@ const AppRoutes = () => {
           <div className="absolute top-0 left-0 w-full h-max">
             <Routes>
               {/* Định tuyến đến HeroBanner */}
-              <Route path="/" element={<HomePage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
               <Route
