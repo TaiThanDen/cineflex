@@ -39,14 +39,6 @@ const Login = () => (
               className="w-full px-4 py-3 rounded-lg bg-[#3a3d4d] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
           </div>
-          <div>
-            <label className="block text-white mb-1">Confirm Password</label>
-            <input
-              type="password"
-              placeholder="Enter your password here"
-              className="w-full px-4 py-3 rounded-lg bg-[#3a3d4d] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400"
-            />
-          </div>
           <button
             type="submit"
             className="w-full mt-4 bg-purple-400 hover:bg-purple-500 text-[#23263a] font-semibold py-3 rounded-lg transition"

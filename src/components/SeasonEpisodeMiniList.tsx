@@ -33,7 +33,7 @@ const SeasonEpisodeMiniList = ({
             onClick={() => onEpisodeSelect(idx)}
             className={`px-4 h-[50px] w-auto py-2 rounded ${
               currentEpisode === idx
-                ? "bg-[#fdc700] text-black"
+                ? "bg-purple-500 text-black"
                 : "bg-[#2f3147] text-white"
             }`}
           >

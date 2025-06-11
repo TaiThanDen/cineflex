@@ -32,6 +32,9 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+html {
+    scroll-behavior: smooth;
+  }
 
 /* button {
   border-radius: 8px;
@@ -78,4 +81,24 @@ button:focus,
 button:focus-visible {
   outline: none !important;
   box-shadow: none !important;
+}
+/* Thin, transparent scrollbar */
+.thin-scrollbar:-webkit-scrollbar {
+  width: 6px;
+  background: transparent; /* Ẩn nền thanh cuộn */
+}
+
+.thin-scrollbar:-webkit-scrollbar-track {
+  background: transparent; /* Ẩn nền track */
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* Màu thumb */
+  border-radius: 4px;
+}
+
+/* Firefox support */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent; /* Thumb xám, track trong suốt */
 }

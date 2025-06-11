@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, matchPath, useLocation } from "react-router";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./layout/footer";
 import HomePage from "./pages/Home";
@@ -21,14 +21,20 @@ const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation(); // Thêm dòng này
+
+  const isWatchPage =
+    matchPath("/watch/:id", location.pathname) ||
+    location.pathname === "/watch";
 
   return (
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
-        {!isMobile && <VerticalSidebar />}
+        {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
+        {!isMobile && (!isWatchPage || scrolled) && <VerticalSidebar />}
         <div
           ref={containerRef}
-          className="w-full h-full overflow-y-auto relative"
+          className="w-full scrollbar-hide h-full overflow-y-auto relative"
           onScroll={() => {
             const container = containerRef.current;
             if (!container) return;
@@ -36,7 +42,10 @@ const AppRoutes = () => {
             setScrolled(container.scrollTop > 100);
           }}
         >
-          <Navbar scrolled={scrolled} />
+          {/* Chỉ render Navbar khi KHÔNG phải trang /watch, hoặc đã scroll ở /watch */}
+          {location.pathname !== "/watch" || scrolled ? (
+            <Navbar scrolled={scrolled} />
+          ) : null}
           {/* Hide VerticalSidebar on mobile */}
           <div className="absolute top-0 left-0 w-full h-max">
             <Routes>

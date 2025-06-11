@@ -1,4 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
+import MuxPlayer from "@mux/mux-player-react";
+import VideoControls from "../VideoControls";
+
 import {
   PiSubtitlesBold,
   PiTelevisionSimpleBold,
@@ -74,7 +77,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
       }
     };
 
-
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("loadedmetadata", handleLoadedMetadata);
     return () => {
@@ -122,21 +124,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
     };
   }, [isFullscreen]);
 
-  // Thêm sự kiện onPause cho video
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    const handlePause = () => {
-      const last = localStorage.getItem("lastAdRedirect");
-      const now = Date.now();
-      // Nếu chưa từng chuyển hướng hoặc đã hơn 10 phút thì hiện popup
-      if (!last || now - parseInt(last, 10) > 10 * 60 * 1000) {
-        setShowAdPopup(true);
-      }
-    };
-    video.addEventListener("pause", handlePause);
-    return () => video.removeEventListener("pause", handlePause);
-  }, []);
+  // Thêm hàm xử lý pause cho MuxPlayer
+  const handleMuxPause = () => {
+    const last = localStorage.getItem("lastAdRedirect");
+    const now = Date.now();
+    if (!last || now - parseInt(last, 10) > 10 * 60 * 1000) {
+      setShowAdPopup(true);
+    }
+  };
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -229,22 +224,76 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
     // Không cần play video vì đã chuyển hướng
   };
   const togglePiP = async () => {
-  const video = videoRef.current;
-  if (!video) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-  try {
-    if (document.pictureInPictureElement) {
-      await document.exitPictureInPicture();
-    } else {
-      await video.requestPictureInPicture();
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      } else {
+        await video.requestPictureInPicture();
+      }
+    } catch (err) {
+      console.error("PiP Error:", err);
     }
-  } catch (err) {
-    console.error("PiP Error:", err);
-  }
-};
+  };
+
+  // Phím tắt tiện ích khi xem phim
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        document.activeElement &&
+        (document.activeElement.tagName === "INPUT" ||
+          document.activeElement.tagName === "TEXTAREA")
+      )
+        return;
+      switch (e.key) {
+        case " ":
+          e.preventDefault();
+          togglePlay();
+          break;
+        case "m":
+        case "M":
+          toggleMute();
+          break;
+        case "f":
+        case "F":
+          toggleFullscreen();
+          break;
+        case "c":
+        case "C":
+          toggleCinemaMode();
+          break;
+        case "ArrowRight":
+          skip(10);
+          break;
+        case "ArrowLeft":
+          skip(-10);
+          break;
+        case "ArrowUp":
+          setVolume((v) => {
+            const newVol = Math.min(1, v + 0.05);
+            if (videoRef.current) videoRef.current.volume = newVol;
+            return newVol;
+          });
+          break;
+        case "ArrowDown":
+          setVolume((v) => {
+            const newVol = Math.max(0, v - 0.05);
+            if (videoRef.current) videoRef.current.volume = newVol;
+            return newVol;
+          });
+          break;
+        default:
+          break;
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isPlaying, volume, cinemaMode, isFullscreen, playbackRate]);
 
   return (
-    <div className="bg-[#23263a] text-white w-full min-h-0 pt-15  sm:min-h-screen relative ">
+    <div className="bg-[#23263a] text-white w-full min-h-0 pt-0 sm:min-h-full relative ">
       {/* Overlay Cinema Mode */}
       {cinemaMode && (
         <div
@@ -254,12 +303,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
       )}
       <div
         ref={containerRef}
-        className={`bg-[#23263a] h-auto w-full relative flex items-center justify-center z-50`}
+        className="relative w-full flex justify-center items-center"
+        style={{ height: "100vh", minHeight: "0" }} // Sửa ở đây
         tabIndex={0}
       >
         {/* Popup quảng cáo khi pause */}
         {showAdPopup && (
-          <div className="absolute inset-0 bg-black/70 z-[100] flex flex-col items-center sm:w-auto justify-center">
+          <div className="absolute inset-0 bg-black/70 z-50 flex flex-col items-center justify-center">
             <div className="bg-white rounded-lg p-4 shadow-lg flex flex-col items-center">
               <img
                 src="https://static.nutscdn.com/vimg/0-0/784543799c537bda4c8f8b9c1757bfc3.jpg"
@@ -275,36 +325,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
             </div>
           </div>
         )}
-        <video
-          ref={videoRef}
-          className="w-full h-auto object-contain"
+        <MuxPlayer
+          className="w-full h-full object-contain bg-black"
+          style={{
+            width: "100vw",
+            height: "100vh",
+            aspectRatio: "16/9",
+            background: "black",
+          }}
+          playbackId="eRD022N7dgl5J02T3e9LZuuRJxVEUzQNjp2MZH1qTs102Q"
           autoPlay
-          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-          onClick={togglePlay}
+          metadata={{
+            video_title: "Solo Leveling-S1E1-1080P",
+            viewer_user_id: "Placeholder (optional)",
+          }}
+          onPause={handleMuxPause} // Thêm dòng này
         />
-
-        {/* Thanh tiến trình video */}
-        {showControls && (
-          <div className="absolute left-0 right-0 bottom-20 px-2 sm:px-4 z-50 mb-3 sm:mb-5">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <span className="text-xs w-10 sm:w-12 text-right">
-                {formatTime(currentTime)}
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={duration || 0}
-                step={0.1}
-                value={currentTime}
-                onChange={handleSeek}
-                className="flex-1 accent-[#7008e7] h-1"
-              />
-              <span className="text-xs w-10 sm:w-12">
-                {formatTime(duration)}
-              </span>
-            </div>
-          </div>
-        )}
 
         {/* Settings Dropdown */}
         {showSettings && showControls && (
@@ -359,126 +395,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
         )}
 
         {/* Controls */}
-        {showControls && (
-          <div className="absolute bottom-0 w-full p-2 sm:p-4 bg-gradient-to-t from-[#23263a] to-transparent text-white text-xs sm:text-sm space-y-2 z-50 transition-all">
-            <div className="flex flex-wrap items-center justify-between sm:justify-between gap-2 sm:gap-3">
-              {/* Nhóm nút trái */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
-                <button
-                  onClick={togglePlay}
-                  className="text-2xl sm:text-3xl cursor-pointer hover:text-yellow-400"
-                >
-                  {isPlaying ? <FaRegCirclePause /> : <FaRegCirclePlay />}
-                </button>
-                <button
-                  onClick={() => skip(-10)}
-                  className="text-lg sm:text-2xl cursor-pointer hover:text-yellow-400"
-                >
-                  <RiReplay10Fill />
-                </button>
-                <button
-                  onClick={() => skip(10)}
-                  className="text-lg sm:text-2xl cursor-pointer hover:text-yellow-400"
-                >
-                  <RiForward10Fill />
-                </button>
-                {/* Volume chỉ hiện trên desktop */}
-                <div className="hidden sm:flex items-center gap-2 group">
-                  <button
-                    onClick={toggleMute}
-                    className="text-xl cursor-pointer hover:text-yellow-400"
-                  >
-                    {volume === 0 ? <FaVolumeXmark /> : <FaVolumeHigh />}
-                  </button>
-                  <div className="relative w-32 h-1 bg-gray-600 rounded-full overflow-hidden group-hover:h-2 transition-all">
-                    <div
-                      className="absolute top-0 left-0 h-full bg-white rounded-full"
-                      style={{ width: `${volume * 100}%` }}
-                    ></div>
-                    <input
-                      type="range"
-                      min={0}
-                      max={1}
-                      step={0.01}
-                      value={volume}
-                      onChange={handleVolume}
-                      className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <span className="ml-4 text-sm tracking-wide font-semibold text-white">
-                  <p>{movieName}</p>
-                </span>
-              </div>
-              {/* Nhóm nút phải */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xl sm:text-2xl  ">
-                <button onClick={togglePiP} title="Picture-in-Picture">
-                <svg className="w-6 h-6 hover:text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 7h-6v6h6V7z" />
-                  <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5h-2V5H5v14h6v2H5a2 2 0 0 1-2-2V5z" />
-                </svg>
-              </button>
-                <PiSubtitlesBold
-                  title="Phụ đề"
-                  className="cursor-pointer hover:text-yellow-400"
-                />
-                <button onClick={toggleCinemaMode}>
-                  <PiTelevisionSimpleBold
-                    title="Chế độ rạp"
-                    className={
-                      cinemaMode
-                        ? "text-yellow-400"
-                        : "cursor-pointer hover:text-yellow-400"
-                    }
-                  />
-                </button>
-                <button onClick={() => setShowSettings((prev) => !prev)}>
-                  <RiSettingsLine
-                    title="Cài đặt"
-                    className="cursor-pointer hover:text-yellow-400"
-                  />
-                </button>
-                <button onClick={toggleFullscreen}>
-                  <MdFullscreen
-                    title="Toàn màn hình"
-                    className="cursor-pointer hover:text-yellow-400"
-                  />
-                </button>
-              </div>
-            </div>
-
-            {/* Ẩn các chức năng phụ khi ở full screen */}
-            {!isFullscreen && (
-              <div className="flex items-center justify-between mt-2 text-white/80 text-sm">
-                <div className="flex gap-6">
-                  <span className="flex items-center gap-1 cursor-pointer hover:text-yellow-400">
-                    <FaRegHeart />
-                    <span> Yêu thích</span>
-                  </span>
-                  <span className="cursor-pointer hover:text-yellow-400">
-                    Chuyển tập{" "}
-                    <span className="bg-yellow-400 text-black px-1 rounded text-xs ml-1 ">
-                      ON
-                    </span>
-                  </span>
-                  <button
-                    onClick={handleShare}
-                    className="flex items-center gap-1 hover:underline cursor-pointer hover:text-yellow-400"
-                    title="Chia sẻ"
-                  >
-                    <PiShareFatBold /> Chia sẻ
-                  </button>
-                  {copied && (
-                    <span className="text-[#5c69ff] ml-2 animate-pulse">
-                      Đã copy link!
-                    </span>
-                  )}
-                </div>
-                {/* <span className="text-red-500">📣 Báo lỗi</span> */}
-              </div>
-            )}
-          </div>
-        )}
+        {/* {showControls && (
+          <VideoControls
+            isPlaying={isPlaying}
+            currentTime={currentTime}
+            duration={duration}
+            volume={volume}
+            playbackRate={playbackRate}
+            cinemaMode={cinemaMode}
+            isFullscreen={isFullscreen}
+            showSettings={showSettings}
+            showSpeedMenu={showSpeedMenu}
+            speedOptions={speedOptions}
+            copied={copied}
+            onPlayPause={togglePlay}
+            onSkip={skip}
+            onVolume={handleVolume}
+            onMute={toggleMute}
+            onSeek={handleSeek}
+            onPiP={togglePiP}
+            onCinemaMode={toggleCinemaMode}
+            onSettings={() => setShowSettings((prev) => !prev)}
+            onFullscreen={toggleFullscreen}
+            onShare={handleShare}
+            onChangeSpeed={changePlaybackRate}
+            setShowSpeedMenu={setShowSpeedMenu}
+            formatTime={formatTime}
+          />
+        )} */}
       </div>
     </div>
   );
