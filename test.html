@@ -1,17 +1,681 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trình chiếu video từ Mux</title>
-    <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartNurse Dashboard Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f9;
+      color: #212121;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: #f9fbfc;
+      box-shadow: 0 0 25px rgb(0 0 0 / 0.05);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 15px;
+      position: relative;
+    }
+    .sidebar .logo {
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar .logo svg {
+      width: 30px;
+      height: 30px;
+      fill: #6f63f6;
+    }
+    .sidebar nav {
+      flex-grow: 1;
+    }
+    .sidebar nav ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .sidebar nav ul li {
+      margin-bottom: 15px;
+      font-size: 15px;
+      color: #636363;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .sidebar nav ul li.active, .sidebar nav ul li:hover {
+      background: #d9d9ff;
+      color: #6f63f6;
+      font-weight: 600;
+    }
+    /* Icons (simple) */
+    .sidebar nav ul li svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+    /* Support button */
+    .sidebar .support-btn {
+      background: #6f63f6;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      user-select: none;
+      box-shadow: 0 0 12px rgb(111 99 246 / 0.4);
+      transition: background-color 0.3s ease;
+    }
+    .sidebar .support-btn:hover {
+      background: #574ddf;
+    }
+    .sidebar .logout {
+      color: #e65454;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      font-size: 14px;
+    }
+    .sidebar .logout svg {
+      stroke-width: 2;
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Main container */
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      background: #f8fafc;
+      padding: 20px 30px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #dde5ef;
+      margin-bottom: 20px;
+    }
+    .search-box input {
+      width: 350px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      border: none;
+      background: #f4f8ff;
+      font-size: 15px;
+      outline: none;
+      box-shadow: inset 0 0 10px rgb(0 0 0 / 0.05);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .btn-upload {
+      background: #f2747f;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 6px 12px rgb(242 116 127 / 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .btn-upload:hover {
+      background: #d95867;
+    }
+    .icon-btn {
+      cursor: pointer;
+      font-size: 20px;
+      position: relative;
+      color: #494949;
+    }
+    .icon-btn .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #f43f5e;
+      color: white;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-weight: 700;
+    }
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Dashboard Overview */
+    .overview {
+      display: flex;
+      gap: 25px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: white;
+      padding: 18px 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgb(0 0 0 / 0.06);
+      flex: 1 1 250px;
+      min-width: 250px;
+      position: relative;
+    }
+    .stat-card h3 {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .stat-main {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-main .percent {
+      color: #25c564;
+      font-weight: 600;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+    }
+    .stat-main .percent svg {
+      margin-left: 4px;
+      width: 14px;
+      height: 14px;
+      fill: #25c564;
+    }
+    .stat-details {
+      display: flex;
+      gap: 10px;
+      font-size: 13px;
+      color: #6b7a94;
+    }
+    .stat-detail {
+      background: #e6f2fb;
+      padding: 6px 12px;
+      border-radius: 10px;
+      flex-grow: 1;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #2d394f;
+      box-shadow: inset 0 0 12px rgb(0 0 0 / 0.05);
+    }
+    /* Special background colors */
+    .podcast .free {
+      background: #ffe7e7;
+      color: #b04040;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 10px;
+      margin-right: 8px;
+      display: inline-block;
+    }
+    .podcast .premium {
+      background: #ffe3b4;
+      color: #9a7400;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .add-new-btn {
+      background: black;
+      color: white;
+      border-radius: 10px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      float: right;
+    }
+    .add-new-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: white;
+      stroke-width: 2;
+    }
+    /* Total quizzes card */
+    .quiz-card {
+      background: #d4e3ff;
+      color: #3242d6;
+      text-align: center;
+      font-weight: 700;
+      position: relative;
+    }
+    .quiz-card .stat-main {
+      font-size: 32px;
+    }
+    .quiz-card .add-new-btn {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    /* Charts section */
+    .charts-section {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .chart-box {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      flex: 1 1 400px;
+      box-shadow: 0 0 35px rgb(0 0 0 / 0.07);
+      min-width: 400px;
+    }
+    .chart-title {
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #2d394f;
+    }
+
+    /* Table section */
+    .table-section {
+      background: white;
+      border-radius: 20px;
+      padding: 20px 25px;
+      box-shadow: 0 0 35px rgb(0 0 0 / 0.07);
+      overflow-x: auto;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .table-header h3 {
+      font-weight: 700;
+      color: #2d394f;
+    }
+    .table-header a {
+      text-decoration: none;
+      color: #4949ff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table thead tr {
+      border-bottom: 1px solid #e4e8f7;
+    }
+    table thead th {
+      text-align: left;
+      padding: 12px 10px;
+      color: #5f6d92;
+      font-weight: 600;
+    }
+    table tbody tr {
+      border-bottom: 1px solid #e8ecf8;
+    }
+    table tbody tr:last-child {
+      border-bottom: none;
+    }
+    table tbody td {
+      padding: 14px 10px;
+      color: #3b3b3b;
+      font-weight: 600;
+    }
+    table tbody td.status {
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 8px 14px;
+      width: 120px;
+      text-align: center;
+    }
+    .status.free {
+      background: #a6dca6;
+      color: #0e5e0e;
+    }
+    .status.premium {
+      background: #ffd577;
+      color: #624a00;
+    }
+    table tbody td.actions {
+      color: #4a46f2;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
   </head>
   <body>
-    <h1>Video Demo từ Mux</h1>
-    <mux-player
-      playback-id="eRD022N7dgl5J02T3e9LZuuRJxVEUzQNjp2MZH1qTs102Q"
-      metadata-video-title="Tên video của bạn"
-      metadata-viewer-user-id="user-id-001"
-      style="width: 100%; max-width: 800px; aspect-ratio: 16/9;"></mux-player>
+    <aside class="sidebar">
+      <div class="logo">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" fill="#6f63f6" />
+          <path fill="white" d="M20 24l24 16-24 16z" />
+        </svg>
+        <span>SmartNurse</span>
+      </div>
+      <nav>
+        <ul>
+          <li class="active">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><path
+                d="M3 12l18 0" /></svg>
+            Dashboard
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12"
+                r="3" /></svg>
+            Manage Podcast
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12"
+                r="4" /></svg>
+            Manage Quiz
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><path
+                d="M5 12h14" /></svg>
+            Manage Users
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12"
+                r="2" /></svg>
+            Subscription
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><path
+                d="M12 4v16" /></svg>
+            Content Moderation
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12"
+                r="1" /></svg>
+            Settings
+          </li>
+        </ul>
+      </nav>
+
+      <button class="support-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white"
+          viewBox="0 0 24 24"><path
+            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" /></svg>
+        Support
+      </button>
+
+      <div class="logout">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+          stroke="currentColor" viewBox="0 0 24 24"><path
+            d="M17 16l4-4-4-4M7 12h14" /></svg>
+        Logout
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <header>
+        <div class="search-box">
+          <input type="search" placeholder="Search" />
+        </div>
+        <div class="header-actions">
+          <button class="btn-upload">Upload</button>
+          <div class="icon-btn" title="Notifications">
+            &#128276;
+            <span class="badge">3</span>
+          </div>
+          <div class="avatar" title="User Profile">
+            <img src="https://randomuser.me/api/portraits/women/79.jpg"
+              alt="User" />
+          </div>
+        </div>
+      </header>
+
+      <section class="overview">
+        <!-- Total Users -->
+        <div class="stat-card">
+          <h3>Total Users</h3>
+          <div class="stat-main">
+            155,000
+            <span class="percent" title="+2.5% from last month">
+              +2.5%
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" width="14" height="14"><path
+                  d="M12 19V5m7 7-7-7-7 7" /></svg>
+            </span>
+          </div>
+          <div class="stat-details">
+            <div class="stat-detail">Active users: 37,898</div>
+            <div class="stat-detail">New Signups: 83,832</div>
+            <div class="stat-detail">Subscribed: 35%</div>
+          </div>
+        </div>
+
+        <!-- Total Podcasts -->
+        <div class="stat-card podcast">
+          <h3>Total Podcasts</h3>
+          <div class="stat-main">322</div>
+          <div>
+            <span class="free">Free: 110</span>
+            <span class="premium">Premium: 212</span>
+          </div>
+        </div>
+
+        <!-- Total Quizzes -->
+        <div class="stat-card quiz-card">
+          <h3>Total Quizzes</h3>
+          <div class="stat-main">3,273</div>
+          <button class="add-new-btn" title="Add New Quiz">
+            + Add New
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path
+                stroke-linejoin="round" stroke-linecap="round" stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="charts-section">
+        <div class="chart-box">
+          <div class="chart-title">User Growth</div>
+          <div id="userGrowthChart" style="height: 280px;"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Revenue Summary From Subscribers</div>
+          <div id="revenueChart" style="height: 280px;"></div>
+        </div>
+      </section>
+
+      <section class="table-section">
+        <div class="table-header">
+          <h3>Most Popular Podcast</h3>
+          <a href="#">View All</a>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Podcast Title</th>
+              <th>Status</th>
+              <th>Total Players</th>
+              <th>Podcaster</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>NCLEX Masterclass</td>
+              <td class="status premium">Premium</td>
+              <td>12,500</td>
+              <td>Nursing Excellence</td>
+              <td class="actions">View</td>
+            </tr>
+            <tr>
+              <td>Pathophysiology</td>
+              <td class="status free">Free</td>
+              <td>9,200</td>
+              <td>NursePrep</td>
+              <td class="actions">View</td>
+            </tr>
+            <tr>
+              <td>Pharmacology</td>
+              <td class="status premium">Premium</td>
+              <td>8,700</td>
+              <td>UWorld NCLEX Prep</td>
+              <td class="actions">View</td>
+            </tr>
+            <tr>
+              <td>NCLEX Fast Review</td>
+              <td class="status free">Free</td>
+              <td>7,600</td>
+              <td>Kaplan Nursing</td>
+              <td class="actions">View</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <script>
+    var userGrowthOptions = {
+      chart: {
+        type: 'bar',
+        height: 280,
+        toolbar: { show: false }
+      },
+      series: [
+        {
+          name: 'New Sign-In',
+          data: [31000, 37000, 29000, 33000, 39000, 40000]
+        },
+        {
+          name: 'Subscribers',
+          data: [18000, 31000, 22000, 19000, 26000, 18000]
+        }
+      ],
+      colors: ['#1E90FF', '#20C997'],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '50%',
+        }
+      },
+      dataLabels: { enabled: false },
+      stroke: { show: true, width: 2, colors: ['transparent'] },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      },
+      yaxis: {
+        title: { text: 'Users' },
+        min: 0,
+      },
+      legend: { position: 'top' },
+      tooltip: {
+        shared: true,
+        intersect: false,
+      }
+    };
+
+    var revenueOptions = {
+      chart: {
+        type: 'area',
+        height: 280,
+        toolbar: { show: false }
+      },
+      dataLabels: { enabled: false }, // Thêm dòng này để tắt số trên spline
+      series: [{
+        name: 'Revenue',
+        data: [0, 5000, 15000, 12000, 20000, 23000, 18000, 27000, 30000]
+      }],
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.5,
+          opacityTo: 0.1,
+          stops: [0, 90, 100]
+        }
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      },
+      yaxis: {
+        title: { text: 'Revenue ($)' },
+        min: 0,
+      },
+      tooltip: {
+        enabled: true,
+        theme: 'dark',
+        y: {
+          formatter: function (val) {
+            return "$" + val.toLocaleString();
+          }
+        }
+      }
+    };
+
+    ApexCharts.exec = function () {};
+    var userGrowthChart = new ApexCharts(document.querySelector("#userGrowthChart"), userGrowthOptions);
+    userGrowthChart.render();
+
+    var revenueChart = new ApexCharts(document.querySelector("#revenueChart"), revenueOptions);
+    revenueChart.render();
+  </script>
   </body>
 </html>

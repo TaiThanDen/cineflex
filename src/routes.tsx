@@ -1,4 +1,4 @@
-import { Routes, Route, matchPath, useLocation } from "react-router";
+import { Routes, Route, matchPath, useLocation, Outlet } from "react-router";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./layout/footer";
 import HomePage from "./pages/Home";
@@ -16,7 +16,9 @@ import Continue from "./pages/continue";
 import WatchFilm from "./pages/WatchFilm";
 import SubscriptionPlan from "./pages/SubscriptionPlan";
 import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
-
+import AdminPage from "./pages/admin/admin";
+import MovieAdminPage from "./pages/admin/MovieAdminPage";
+import LayoutAdmin from "./layout/LayoutAdmin";
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,12 +28,15 @@ const AppRoutes = () => {
   const isWatchPage =
     matchPath("/watch/:id", location.pathname) ||
     location.pathname === "/watch";
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
         {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
-        {!isMobile && (!isWatchPage || scrolled) && <VerticalSidebar />}
+        {!isMobile && !isAdminPage && (!isWatchPage || scrolled) && (
+          <VerticalSidebar />
+        )}
         <div
           ref={containerRef}
           className="w-full scrollbar-hide h-full overflow-y-auto relative"
@@ -43,13 +48,13 @@ const AppRoutes = () => {
           }}
         >
           {/* Chỉ render Navbar khi KHÔNG phải trang /watch, hoặc đã scroll ở /watch */}
-          {location.pathname !== "/watch" || scrolled ? (
+          {!isAdminPage && (location.pathname !== "/watch" || scrolled) ? (
             <Navbar scrolled={scrolled} />
           ) : null}
           {/* Hide VerticalSidebar on mobile */}
           <div className="absolute top-0 left-0 w-full h-max">
             <Routes>
-              {/* Định tuyến đến HeroBanner */}
+              {/* Các route public */}
               <Route path="/" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
               <Route
@@ -63,10 +68,27 @@ const AppRoutes = () => {
               <Route path="/watch" element={<WatchFilm />} />
               <Route path="/plans" element={<SubscriptionPlan />} />
               <Route path="/payment" element={<PlanPaymentConfirm />} />
+              {/* Route admin bọc bằng LayoutAdmin */}
+              <Route
+                path="/admin"
+                element={
+                  <LayoutAdmin>
+                    {" "}
+                    <Outlet />{" "}
+                  </LayoutAdmin>
+                }
+              >
+                <Route path="dashboard" element={<AdminPage />} />
+                <Route path="movies" element={<MovieAdminPage />}>
+                  <Route path=":id" element={<MovieAdminPage />} />
+                </Route>
+                {/* Thêm các route admin khác ở đây */}
+              </Route>
             </Routes>
             <Footer />
           </div>
-          {isMobile && <MobileBottomSidebar />}
+          {/* Chỉ render MobileBottomSidebar khi KHÔNG phải trang admin */}
+          {isMobile && !isAdminPage && <MobileBottomSidebar />}
         </div>
       </div>
     </div>
