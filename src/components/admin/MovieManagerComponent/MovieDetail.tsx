@@ -122,7 +122,7 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
         {showAddSeason && (
           <AddSeasonModal
             onClose={() => setShowAddSeason(false)}
-            onAdd={(seasonNumber) => {
+            onAdd={() => {
               // Xử lý thêm mùa phim ở đây
               setShowAddSeason(false);
             }}
@@ -131,7 +131,7 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
         {showAddEpisode && (
           <AddEpisodeModal
             onClose={() => setShowAddEpisode(false)}
-            onAdd={(episode) => {
+            onAdd={() => {
               // Xử lý thêm tập phim ở đây
               setShowAddEpisode(false);
             }}

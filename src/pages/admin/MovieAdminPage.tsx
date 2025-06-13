@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MovieGrid from "../../components/admin/MovieManagerComponent/MovieGrid";
 import MovieDetail from "../../components/admin/MovieManagerComponent/MovieDetail";
@@ -163,14 +163,12 @@ export default function MovieAdminPage() {
   const { id } = useParams();
 
   // State quản lý page (list/detail), id phim đang xem, popup, tập đang edit...
-  const [page, setPage] = useState<"list" | "detail">("list");
-  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
   const [editEpisode, setEditEpisode] = useState<{
     movieId: string;
     seasonIdx: number;
     episodeIdx: number;
   } | null>(null);
-  const [movieData, setMovieData] = useState(initialMovieData);
+  const [movieData] = useState(initialMovieData);
 
   // Hàm chọn phim
   const handleSelectMovie = (movieId: string) => {
@@ -178,10 +176,6 @@ export default function MovieAdminPage() {
   };
 
   // Hàm quay lại danh sách
-  const handleBackToList = () => {
-    setSelectedMovieId(null);
-    setPage("list");
-  };
 
   // Hàm mở popup edit
   const handleEditEpisode = (

@@ -1,5 +1,5 @@
 import React from "react";
-import { MdOutlineSearch, MdOutlineCloudUpload } from "react-icons/md";
+import { MdOutlineCloudUpload } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 

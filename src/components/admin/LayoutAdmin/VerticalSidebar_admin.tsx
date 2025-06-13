@@ -9,8 +9,7 @@ import {
   LuLifeBuoy,
   LuLogOut,
 } from "react-icons/lu";
-import { MdMovie, MdOutlineAccountCircle } from "react-icons/md";
-import { FaRegComments, FaBlog } from "react-icons/fa";
+import { MdMovie } from "react-icons/md";
 import Logo from "../../../assets/img/logo.png";
 import { Link, useLocation } from "react-router-dom";
 

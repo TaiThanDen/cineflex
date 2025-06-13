@@ -1,27 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import MuxPlayer from "@mux/mux-player-react";
-import VideoControls from "../VideoControls";
 
-import {
-  PiSubtitlesBold,
-  PiTelevisionSimpleBold,
-  PiShareFatBold,
-  PiCaretLeftBold,
-} from "react-icons/pi";
-import {
-  RiSettingsLine,
-  RiReplay10Fill,
-  RiForward10Fill,
-} from "react-icons/ri";
-import {
-  FaRegCirclePlay,
-  FaRegCirclePause,
-  FaVolumeHigh,
-  FaVolumeXmark,
-  FaRegHeart,
-  FaCheck,
-} from "react-icons/fa6";
-import { MdFullscreen } from "react-icons/md";
+import { PiCaretLeftBold } from "react-icons/pi";
+import { FaCheck } from "react-icons/fa6";
 
 const AD_URL = "https://example.com";
 
@@ -29,20 +10,19 @@ type VideoPlayerProps = {
   movieName: string;
 };
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [prevVolume, setPrevVolume] = useState(1);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings] = useState(false);
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [cinemaMode, setCinemaMode] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  const [, setCurrentTime] = useState(0);
+  const [, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [showAdPopup, setShowAdPopup] = useState(false);
   const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -148,13 +128,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
   const skip = (sec: number) => {
     if (videoRef.current) videoRef.current.currentTime += sec;
   };
-
-  const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const vol = parseFloat(e.target.value);
-    setVolume(vol);
-    if (videoRef.current) videoRef.current.volume = vol;
-  };
-
   const toggleMute = () => {
     if (volume > 0) {
       setPrevVolume(volume);
@@ -180,40 +153,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
 
   const speedOptions = [0.25, 0.5, 1, 1.25, 1.5, 2];
 
-  // Chia sẻ: Copy URL
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      setCopied(false);
-    }
-  };
-
   // Chế độ rạp
   const toggleCinemaMode = () => setCinemaMode((v) => !v);
-
-  // Đổi thời gian khi kéo thanh tiến trình
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = parseFloat(e.target.value);
-    if (videoRef.current) {
-      videoRef.current.currentTime = time;
-      setCurrentTime(time);
-    }
-  };
-
-  // Định dạng thời gian mm:ss
-  const formatTime = (t: number) => {
-    if (isNaN(t)) return "00:00";
-    const m = Math.floor(t / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = Math.floor(t % 60)
-      .toString()
-      .padStart(2, "0");
-    return `${m}:${s}`;
-  };
 
   // Hàm đóng popup và tiếp tục phát video
   const handleCloseAd = () => {
@@ -222,20 +163,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieName }) => {
     window.open(AD_URL, "_blank");
     setShowAdPopup(false);
     // Không cần play video vì đã chuyển hướng
-  };
-  const togglePiP = async () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    try {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      } else {
-        await video.requestPictureInPicture();
-      }
-    } catch (err) {
-      console.error("PiP Error:", err);
-    }
   };
 
   // Phím tắt tiện ích khi xem phim
