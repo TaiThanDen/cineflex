@@ -18,31 +18,37 @@ const navItems = [
   {
     label: "Dashboard",
     icon: <LuLayoutDashboard size={18} />,
-    active: true,
+    to: "/admin/dashboard",
   },
   {
     label: "Manage Movie",
     icon: <MdMovie size={18} />,
+    to: "/admin/movies",
   },
   {
     label: "Manage Quiz",
     icon: <LuListChecks size={18} />,
+    // to: "/admin/quiz", // Thêm đường dẫn nếu có
   },
   {
     label: "Manage Users",
     icon: <LuUsers size={18} />,
+    // to: "/admin/users",
   },
   {
     label: "Subscription",
     icon: <LuCreditCard size={18} />,
+    // to: "/admin/subscription",
   },
   {
     label: "Content Moderation",
     icon: <LuShieldCheck size={18} />,
+    // to: "/admin/moderation",
   },
   {
     label: "Settings",
     icon: <LuSettings size={18} />,
+    // to: "/admin/settings",
   },
 ];
 
@@ -83,37 +89,51 @@ const VerticalSidebar: React.FC = () => {
       <nav style={{ flexGrow: 1 }}>
         <ul style={{ listStyle: "none", paddingLeft: 0, margin: 0 }}>
           {navItems.map((item) => (
-            <li
-              key={item.label}
-              className={item.active ? "active" : ""}
-              style={{
-                marginBottom: 15,
-                fontSize: 15,
-                color: item.active ? "#6f63f6" : "#636363",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "6px 12px",
-                borderRadius: 10,
-                userSelect: "none",
-                background: item.active ? "#d9d9ff" : undefined,
-                fontWeight: item.active ? 600 : 400,
-                transition: "background-color 0.3s, color 0.3s",
-              }}
-            >
-              {item.icon}
-              {item.label}
+            <li key={item.label} style={{ marginBottom: 15 }}>
+              {item.to ? (
+                <Link
+                  to={item.to}
+                  style={{
+                    fontSize: 15,
+                    color: location.pathname.startsWith(item.to)
+                      ? "#6f63f6"
+                      : "#636363",
+                    background: location.pathname.startsWith(item.to)
+                      ? "#d9d9ff"
+                      : undefined,
+                    fontWeight: location.pathname.startsWith(item.to)
+                      ? 600
+                      : 400,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "6px 12px",
+                    borderRadius: 10,
+                    textDecoration: "none",
+                    transition: "background-color 0.3s, color 0.3s",
+                  }}
+                >
+                  {item.icon}
+                  {item.label}
+                </Link>
+              ) : (
+                <div
+                  style={{
+                    fontSize: 15,
+                    color: "#636363",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "6px 12px",
+                    borderRadius: 10,
+                  }}
+                >
+                  {item.icon}
+                  {item.label}
+                </div>
+              )}
             </li>
           ))}
-          <li>
-            <Link
-              to="/admin/movies"
-              className={location.pathname === "/admin/movies" ? "active" : ""}
-            >
-              Quản lý phim
-            </Link>
-          </li>
         </ul>
       </nav>
       <button
