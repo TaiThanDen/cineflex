@@ -32,7 +32,7 @@ const navItems = [
   {
     label: "Manage Users",
     icon: <LuUsers size={18} />,
-    // to: "/admin/users",
+    to: "/admin/users",
   },
   {
     label: "Subscription",

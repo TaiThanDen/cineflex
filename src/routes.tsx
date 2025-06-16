@@ -18,6 +18,7 @@ import SubscriptionPlan from "./pages/SubscriptionPlan";
 import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 import AdminPage from "./pages/admin/admin";
 import MovieAdminPage from "./pages/admin/MovieAdminPage";
+import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
 import LayoutAdmin from "./layout/LayoutAdmin";
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -78,11 +79,14 @@ const AppRoutes = () => {
                   </LayoutAdmin>
                 }
               >
+
                 <Route path="dashboard" element={<AdminPage />} />
                 <Route path="movies" element={<MovieAdminPage />}>
                   <Route path=":id" element={<MovieAdminPage />} />
                 </Route>
                 {/* Thêm các route admin khác ở đây */}
+                <Route path="users" element={<UserAdminPage />} />
+                <Route path="users/:id" element={<UserAdminPage />} />
               </Route>
             </Routes>
             <Footer />

@@ -19,12 +19,20 @@ const initialMovieData = [
             name: "Pilot",
             url: "https://cineflex.com/pilot",
             duration: "58 phút",
+            comments: [
+              { user: "Minh", content: "Tập đầu quá cuốn, diễn xuất đỉnh thật!", time: "2025-06-13 19:00", status: "hiện" },
+              { user: "Lan", content: "Thấy hơi chậm nhưng setup tình huống ổn.", time: "2025-06-13 19:05", status: "ẩn" }
+            ],
           },
           {
             id: "2",
             name: "Cat's in the Bag...",
             url: "https://cineflex.com/episode2",
             duration: "48 phút",
+            comments: [
+              { user: "Nam", content: "Tập này gay cấn hơn nhiều!", time: "2025-06-13 19:10", status: "hiện" },
+              { user: "Hà", content: "Tình tiết bắt đầu hấp dẫn rồi.", time: "2025-06-13 19:15", status: "ẩn" }
+            ],
           },
         ],
       },
@@ -36,12 +44,20 @@ const initialMovieData = [
             name: "Seven Thirty-Seven",
             url: "https://cineflex.com/breaking-bad/s2e1",
             duration: "47 phút",
+            comments: [
+              { user: "Hùng", content: "Mở đầu mùa 2 căng thẳng thật.", time: "2025-06-13 19:20", status:"ẩn" },
+              { user: "Trúc", content: "Thích cách họ phát triển nhân vật Walter.", time: "2025-06-13 19:25", status: "hiện" }
+            ],
           },
           {
             id: "2",
             name: "Grilled",
             url: "https://cineflex.com/breaking-bad/s2e2",
             duration: "50 phút",
+            comments: [
+              { user: "An", content: "Tập này nghẹt thở luôn.", time: "2025-06-13 19:30", status: "hiện" },
+              { user: "Quân", content: "Combo hành động + tâm lý quá đỉnh!", time: "2025-06-13 19:35", status: "ẩn" }
+            ],
           },
         ],
       },
@@ -64,12 +80,20 @@ const initialMovieData = [
             name: "The Vanishing of Will Byers",
             url: "https://cineflex.com/stranger-things/s1e1",
             duration: "47 phút",
+            comments: [
+              { user: "Linh", content: "Tập đầu mở ra nhiều bí ẩn hấp dẫn!", time: "2025-06-13 19:40", status: "hiện" },
+              { user: "Khoa", content: "Không khí rùng rợn nhưng cuốn.", time: "2025-06-13 19:45", status: "ẩn" }
+            ],
           },
           {
             id: "2",
             name: "The Weirdo on Maple Street",
             url: "https://cineflex.com/stranger-things/s1e2",
             duration: "55 phút",
+            comments: [
+              { user: "Dũng", content: "Eleven xuất hiện quá ấn tượng!", time: "2025-06-13 19:50", status: "ẩn" },
+              { user: "My", content: "Diễn xuất của bọn nhỏ rất tự nhiên.", time: "2025-06-13 19:55", status: "hiện" }
+            ],
           },
         ],
       },
@@ -92,12 +116,20 @@ const initialMovieData = [
             name: "Efectuar lo acordado",
             url: "https://cineflex.com/money-heist/s1e1",
             duration: "47 phút",
+            comments: [
+              { user: "Phúc", content: "Mở màn vụ cướp rất thông minh.", time: "2025-06-13 20:00", status: "hiện" },
+              { user: "Trang", content: "Tình tiết cực kỳ logic và hấp dẫn.", time: "2025-06-13 20:05", status: "ẩn" }
+            ],
           },
           {
             id: "2",
             name: "Imprudencias letales",
             url: "https://cineflex.com/money-heist/s1e2",
             duration: "41 phút",
+            comments: [
+              { user: "Hiếu", content: "Bắt đầu thấy hồi hộp rồi đây!", time: "2025-06-13 20:10", status: "ẩn" },
+              { user: "Vy", content: "Tokyo là nhân vật quá cá tính.", time: "2025-06-13 20:15", status: "hiện" }
+            ],
           },
         ],
       },
@@ -120,12 +152,20 @@ const initialMovieData = [
             name: "Openings",
             url: "https://cineflex.com/queens-gambit/s1e1",
             duration: "59 phút",
+            comments: [
+              { user: "Nhung", content: "Không ngờ cờ vua lại cuốn thế này!", time: "2025-06-13 20:20", status: "hiện" },
+              { user: "Bình", content: "Beth có ánh mắt rất cuốn hút.", time: "2025-06-13 20:25", status: "ẩn" }
+            ],
           },
           {
             id: "2",
             name: "Exchanges",
             url: "https://cineflex.com/queens-gambit/s1e2",
             duration: "65 phút",
+            comments: [
+              { user: "Tâm", content: "Diễn biến nội tâm rất rõ ràng.", time: "2025-06-13 20:30", status: "hiện" },
+              { user: "Hòa", content: "Phim đẹp từ âm nhạc tới góc quay.", time: "2025-06-13 20:35", status: "ẩn" }
+            ],
           },
         ],
       },
@@ -148,6 +188,10 @@ const initialMovieData = [
             name: "Enter: Naruto Uzumaki!",
             url: "https://cineflex.com/naruto/s1e1",
             duration: "23 phút",
+            comments: [
+              { user: "Long", content: "Tuổi thơ ùa về! Naruto quá dễ thương.", time: "2025-06-13 20:40", status: "hiện" },
+              { user: "Thảo", content: "Tập đầu hài hước, dễ thương và ý nghĩa.", time: "2025-06-13 20:45", status: "ẩn" }
+            ]
           },
         ],
       },
@@ -212,10 +256,11 @@ export default function MovieAdminPage() {
       )}
       {id && selectedMovie && (
         <MovieDetail
-          movie={selectedMovie}
-          onBack={() => navigate("/admin/movies")}
-          onEditEpisode={handleEditEpisode}
-        />
+            movie={selectedMovie}
+            onBack={() => navigate("/admin/movies")}
+            onEditEpisode={handleEditEpisode} onDeleteMovie={function (): void {
+          throw new Error("Function not implemented.");
+        }}        />
       )}
       {/* Popup chỉnh sửa tập phim */}
       {editEpisode && episodeEditData && (
