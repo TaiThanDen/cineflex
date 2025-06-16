@@ -75,7 +75,26 @@ export const put = async <TRequest, TResponse>(
         throw new Error(error || "PUT request failed");
     }
 
-    return (response.json() ?? {}) as Promise<TResponse>;
+    // If there's no content, return an empty object
+    if (response.status === 204) return {} as TResponse;
+
+    const contentType = response.headers.get("Content-Type");
+
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error || "POST request failed");
+    }
+
+    if (contentType?.includes("application/json")) {
+        return (await response.json()) as TResponse;
+    } else if (contentType?.includes("text/")) {
+        return (await response.text()) as TResponse;
+    } else if (contentType?.includes("application/octet-stream") || contentType?.includes("blob")) {
+        return (await response.blob()) as TResponse;
+    } else {
+        // fallback for unknown types
+        return (await response.text()) as TResponse;
+    }
 };
 
 export const del = async <TResponse>(
@@ -96,5 +115,24 @@ export const del = async <TResponse>(
         throw new Error(error || "DELETE request failed");
     }
 
-    return (response.json() ?? {} as TResponse);
+    // If there's no content, return an empty object
+    if (response.status === 204) return {} as TResponse;
+
+    const contentType = response.headers.get("Content-Type");
+
+    if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error || "POST request failed");
+    }
+
+    if (contentType?.includes("application/json")) {
+        return (await response.json()) as TResponse;
+    } else if (contentType?.includes("text/")) {
+        return (await response.text()) as TResponse;
+    } else if (contentType?.includes("application/octet-stream") || contentType?.includes("blob")) {
+        return (await response.blob()) as TResponse;
+    } else {
+        // fallback for unknown types
+        return (await response.text()) as TResponse;
+    }
 };
