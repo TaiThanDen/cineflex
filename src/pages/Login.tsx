@@ -6,10 +6,11 @@ import { post } from "@/lib/api";
 import { type LoginCredentials } from "@/lib/types/LoginCredentials";
 import Auth from "@/context/Auth";
 import { useContext } from "react";
+import ApiException from "@/lib/exceptions/ApiException";
 
 const schema = z.object({
-  email: z.string().email("Email không hợp lệ"),
-  password: z.string().min(8)
+  email: z.string().email('Email không hợp lệ'),
+  password: z.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
 })
 
 type FormFields = z.infer<typeof schema>;
@@ -33,11 +34,11 @@ const Login = () => {
       setAuth(token);
     }
     catch (e) {
-      if (!(e instanceof Error)){
+      if (!(e instanceof ApiException)){
         setError('root', {message: 'caught an unknown error'})
       }
       try {
-        const err = e as Error;
+        const err = e as ApiException;
         const errorObject = JSON.parse(err.message);
         setError('root', { message: `${errorObject.detail}` });
       } catch {

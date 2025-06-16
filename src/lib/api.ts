@@ -1,18 +1,20 @@
+import ApiException from "./exceptions/ApiException";
+
 // const BASE_API_URL: string = (process.env.BASE_API_URL ?? "https://cineflex-api.onrender.com/api");
 const BASE_API_URL: string = 'https://cineflex-api.onrender.com/api';
 
 export const get = async <T>(
     url: string,
-    config: RequestInit = {}
+    headers: HeadersInit = {}
 ): Promise<T> => {
     const response = await fetch(`${BASE_API_URL}/${url}`, {
-        ...config,
+        headers: headers,
         method: "GET",
     });
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error || "GET request failed");
+        throw new ApiException(response.status, error);
     }
 
     return (response.json() ?? {}) as Promise<T>;
@@ -21,14 +23,13 @@ export const get = async <T>(
 export const post = async <TRequest, TResponse>(
     url: string,
     body?: TRequest,
-    config: RequestInit = {}
+    headers: HeadersInit = {}
 ): Promise<TResponse> => {
     const response = await fetch(`${BASE_API_URL}/${url}`, {
-        ...config,
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            ...(config.headers || {}),
+            ...headers,
         },
         body: body ? JSON.stringify(body) : undefined,
     });
@@ -40,7 +41,7 @@ export const post = async <TRequest, TResponse>(
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error || "POST request failed");
+        throw new ApiException(response.status, error);
     }
 
     if (contentType?.includes("application/json")) {
@@ -58,21 +59,20 @@ export const post = async <TRequest, TResponse>(
 export const put = async <TRequest, TResponse>(
     url: string,
     body?: TRequest,
-    config: RequestInit = {}
+    headers: HeadersInit = {}
 ): Promise<TResponse> => {
     const response = await fetch(`${BASE_API_URL}/${url}`, {
-        ...config,
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            ...(config.headers || {}),
+            ...headers
         },
         body: body ? JSON.stringify(body) : undefined,
     });
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error || "PUT request failed");
+        throw new ApiException(response.status, error);
     }
 
     // If there's no content, return an empty object
@@ -82,7 +82,7 @@ export const put = async <TRequest, TResponse>(
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error || "POST request failed");
+        throw new ApiException(response.status, error);
     }
 
     if (contentType?.includes("application/json")) {
@@ -99,14 +99,13 @@ export const put = async <TRequest, TResponse>(
 
 export const del = async <TResponse>(
     url: string,
-    config: RequestInit = {}
+    headers: HeadersInit = {}
 ): Promise<TResponse> => {
     const response = await fetch(`${BASE_API_URL}/${url}`, {
-        ...config,
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            ...(config.headers || {}),
+            ...headers
         },
     });
 
@@ -122,7 +121,7 @@ export const del = async <TResponse>(
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error || "POST request failed");
+        throw new ApiException(response.status, error);
     }
 
     if (contentType?.includes("application/json")) {
