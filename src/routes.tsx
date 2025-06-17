@@ -20,6 +20,7 @@ import AdminPage from "./pages/admin/admin";
 import MovieAdminPage from "./pages/admin/MovieAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
 import LayoutAdmin from "./layout/LayoutAdmin";
+import Landing from "./pages/landing.tsx";
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,12 +31,13 @@ const AppRoutes = () => {
     matchPath("/watch/:id", location.pathname) ||
     location.pathname === "/watch";
   const isAdminPage = location.pathname.startsWith("/admin");
+  const isLandingPage = location.pathname === "/";
 
   return (
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
         {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
-        {!isMobile && !isAdminPage && (!isWatchPage || scrolled) && (
+        {!isMobile && !isAdminPage && !isLandingPage && (!isWatchPage || scrolled) && (
           <VerticalSidebar />
         )}
         <div
@@ -56,7 +58,8 @@ const AppRoutes = () => {
           <div className="absolute top-0 left-0 w-full h-max">
             <Routes>
               {/* Các route public */}
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<Landing />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
               <Route
                 path="/preview/:id"
