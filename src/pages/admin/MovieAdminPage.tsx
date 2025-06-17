@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import MovieGrid from "../../components/admin/MovieManagerComponent/MovieGrid";
 import MovieDetail from "../../components/admin/MovieManagerComponent/MovieDetail";
 import EditEpisodeModal from "../../components/admin/MovieManagerComponent/EditEpisodeModal";

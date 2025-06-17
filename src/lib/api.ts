@@ -1,137 +1,44 @@
-import ApiException from "./exceptions/ApiException";
+import * as request from '@/lib/request';
+import { type LoginCredentials } from '@/lib/types/LoginCredentials';
+import { type RegisterCredential } from './types/RegisterCredential';
+import type { Account } from './types/Account';
+import type { Show } from './types/Show';
+import type { Season } from './types/Season';
+import type { Episode } from './types/Episode';
 
-// const BASE_API_URL: string = (process.env.BASE_API_URL ?? "https://cineflex-api.onrender.com/api");
-const BASE_API_URL: string = 'https://cineflex-api.onrender.com/api';
 
-export const get = async <T>(
-    url: string,
-    headers: HeadersInit = {}
-): Promise<T> => {
-    const response = await fetch(`${BASE_API_URL}/${url}`, {
-        headers: headers,
-        method: "GET",
-    });
+export const login = async (credentials: LoginCredentials) : Promise<string> => {
+    const auth = await request.post<LoginCredentials, string>('authentication/login', credentials);
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new ApiException(response.status, error);
-    }
+    return auth;
+}
 
-    return (response.json() ?? {}) as Promise<T>;
-};
+export const register = async (credentials: RegisterCredential) : Promise<string> => {
+    const account = await request.post<RegisterCredential, Account>('authentication/register', credentials);
 
-export const post = async <TRequest, TResponse>(
-    url: string,
-    body?: TRequest,
-    headers: HeadersInit = {}
-): Promise<TResponse> => {
-    const response = await fetch(`${BASE_API_URL}/${url}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            ...headers,
-        },
-        body: body ? JSON.stringify(body) : undefined,
-    });
+    return account.email;
+}
 
-    // If there's no content, return an empty object
-    if (response.status === 204) return {} as TResponse;
+export const me = async () : Promise<Account> => {
+    const account = await request.get<Account>('authentication/profile');
 
-    const contentType = response.headers.get("Content-Type");
+    return account; 
+}
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new ApiException(response.status, error);
-    }
+export const getShowById = async (id: string) : Promise<Show> => {
+    const show = await request.get<Show>(`shows/${id}`);
 
-    if (contentType?.includes("application/json")) {
-        return (await response.json()) as TResponse;
-    } else if (contentType?.includes("text/")) {
-        return (await response.text()) as TResponse;
-    } else if (contentType?.includes("application/octet-stream") || contentType?.includes("blob")) {
-        return (await response.blob()) as TResponse;
-    } else {
-        // fallback for unknown types
-        return (await response.text()) as TResponse;
-    }
-};
+    return show;
+}
 
-export const put = async <TRequest, TResponse>(
-    url: string,
-    body?: TRequest,
-    headers: HeadersInit = {}
-): Promise<TResponse> => {
-    const response = await fetch(`${BASE_API_URL}/${url}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            ...headers
-        },
-        body: body ? JSON.stringify(body) : undefined,
-    });
+export const getSeasonsByShowId = async (id: string) : Promise<Season[]> => {
+    const seasons = await request.get<Season[]>(`shows/${id}/seasons`);
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new ApiException(response.status, error);
-    }
+    return seasons;
+}
 
-    // If there's no content, return an empty object
-    if (response.status === 204) return {} as TResponse;
+export const getEpisodesBySeasonId = async (id: string) : Promise<Episode[]> => {
+    const episodes = await request.get<Episode[]>(`seasons/${id}/episodes`);
 
-    const contentType = response.headers.get("Content-Type");
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new ApiException(response.status, error);
-    }
-
-    if (contentType?.includes("application/json")) {
-        return (await response.json()) as TResponse;
-    } else if (contentType?.includes("text/")) {
-        return (await response.text()) as TResponse;
-    } else if (contentType?.includes("application/octet-stream") || contentType?.includes("blob")) {
-        return (await response.blob()) as TResponse;
-    } else {
-        // fallback for unknown types
-        return (await response.text()) as TResponse;
-    }
-};
-
-export const del = async <TResponse>(
-    url: string,
-    headers: HeadersInit = {}
-): Promise<TResponse> => {
-    const response = await fetch(`${BASE_API_URL}/${url}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            ...headers
-        },
-    });
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(error || "DELETE request failed");
-    }
-
-    // If there's no content, return an empty object
-    if (response.status === 204) return {} as TResponse;
-
-    const contentType = response.headers.get("Content-Type");
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new ApiException(response.status, error);
-    }
-
-    if (contentType?.includes("application/json")) {
-        return (await response.json()) as TResponse;
-    } else if (contentType?.includes("text/")) {
-        return (await response.text()) as TResponse;
-    } else if (contentType?.includes("application/octet-stream") || contentType?.includes("blob")) {
-        return (await response.blob()) as TResponse;
-    } else {
-        // fallback for unknown types
-        return (await response.text()) as TResponse;
-    }
-};
+    return episodes;
+}

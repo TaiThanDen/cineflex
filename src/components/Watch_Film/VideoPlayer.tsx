@@ -10,7 +10,7 @@ type VideoPlayerProps = {
   movieName: string;
 };
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({}) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);

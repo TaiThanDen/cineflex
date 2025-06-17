@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import type { MovieItem } from "./data/Movie";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import type { Show } from "@/lib/types/Show";
 
 interface HeroBannerProps {
-  items: MovieItem[];
+  items: Show[];
   children?: React.ReactNode;
   selectedIndex?: number; // thêm optional
   setSelectedIndex?: (idx: number) => void; // thêm optional
@@ -25,8 +25,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
   }, [items.length]);
 
   const handleMoreInfo = () => {
-    const movieId =
-      selected.id || selected.title.replace(/\s+/g, "-").toLowerCase();
+    const movieId = selected.id
     navigate(`/preview/${movieId}`);
   };
 
@@ -34,7 +33,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
     <div
       className="relative w-full h-max bg-cover text-white transition-all duration-500 overflow-x-hidden"
       style={{
-        backgroundImage: `url('${selected.image}')`,
+        backgroundImage: `url('${selected.thumbnail}')`,
       }}
     >
       {/* Overlay */}
@@ -61,13 +60,13 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
             </h1>
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-200">
-              <span>{selected.year}</span>
+              <span>{(new Date(selected.releaseDate)).getFullYear()}</span>
               <span>•</span>
               <span>
-                {selected.seasons} Season{selected.seasons !== "1" && "s"}
+                5 Seasons
               </span>
               <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">
-                {selected.rating}
+                {/* {selected.rating} */}
               </span>
             </div>
 
@@ -75,7 +74,7 @@ const HeroBanner = ({ items, children }: HeroBannerProps) => {
               className="text-gray-200 max-w-full sm:max-w-xl text-xs sm:text-sm leading-relaxed overflow-y-auto scrollbar-hide"
               style={{ maxHeight: "60px" }}
             >
-              {selected.content}
+              {selected.description}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-2 sm:mt-4 w-full">

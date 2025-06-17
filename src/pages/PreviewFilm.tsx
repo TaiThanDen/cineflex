@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import HeroBanner from "../components/HeroBanner";
 import SeasonEpisodeList from "../components/PreviewFilm/SeasonEpisodeList";
 import { unifiedData } from "../components/data/mockdata";
@@ -10,6 +10,8 @@ import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import { useIsMobile } from "../lib/hooks/use-mobile";
 import MobilePreviewFilm from "../components/PreviewFilm/MobilePreviewFilm";
+import { useQueries } from "@tanstack/react-query";
+import { getSeasonsByShowId, getShowById } from "@/lib/api";
 
 const data = [
   {
@@ -27,20 +29,45 @@ const data = [
 const PreviewFilm = () => {
   const isMobile = useIsMobile();
   const { id } = useParams();
-  const movie = unifiedData.find((m) => m.id === id);
+
+  const result = useQueries({
+    queries: [
+      {
+        queryKey: ['show', id],
+        queryFn: () => getShowById(id!),
+        enabled: !!id
+      },
+      {
+        queryKey: ['seasons_of_show', id],
+        queryFn: () => getSeasonsByShowId(id!),
+        enabled: !!id
+      }
+    ]
+  })
+
+  const [showResult, seasonResult] = result;
+
+
+  const movie = unifiedData.find((m) => m.id === 'desperate-mrs-seonju');
   const [currentSeason, setCurrentSeason] = useState(0);
   const [currentEpisode, setCurrentEpisode] = useState(0);
+
+  if (showResult.isLoading || seasonResult.isLoading) return <p>Loading data</p>;
+
+  if (showResult.isError || seasonResult.isError) return <p>Error</p>;
 
   if (!movie) return <p className="text-white p-8">⚠️ Movie not found</p>;
 
   if (isMobile) return <MobilePreviewFilm />;
 
+  seasonResult.data?.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate))
+
   return (
     <div className="min-h-screen bg-[#23263a] text-white">
-      <HeroBanner items={[movie]}>
+      <HeroBanner items={[showResult.data!]}>
         <SeasonEpisodeList
-          seasonsData={
-            movie.seasonsData || [{ season: 1, episodes: movie.episodes || [] }]
+          seasons={
+            seasonResult.data!
           }
         />
       </HeroBanner>

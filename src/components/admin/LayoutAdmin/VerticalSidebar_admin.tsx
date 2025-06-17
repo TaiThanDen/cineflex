@@ -11,7 +11,7 @@ import {
 } from "react-icons/lu";
 import { MdMovie } from "react-icons/md";
 import Logo from "../../../assets/img/logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 const navItems = [
   {

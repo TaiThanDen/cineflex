@@ -1,5 +1,5 @@
-  import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router";
 import { FaSearch, FaBars } from "react-icons/fa";
 import NavLink from "./NavLink";
 import DropDown from "./DropDown";

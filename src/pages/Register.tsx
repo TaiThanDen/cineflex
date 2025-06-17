@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { post } from "@/lib/api";
-import { type RegisterCredential } from "@/lib/types/RegisterCredential";
-import type { Account } from "@/lib/types/Account";
 import ApiException from "@/lib/exceptions/ApiException";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { register as registerAPI } from "@/lib/api";
 
 const schema = z.object({
   username: z.string().min(5, 'Username phải có tối thiểu 5 ký tự'),
@@ -20,6 +21,11 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { mutateAsync: registerUser } = useMutation({
+    mutationFn: registerAPI
+  })
+
   const {
     register,
     handleSubmit,
@@ -31,13 +37,14 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const account = await post<RegisterCredential, Account>('authentication/register', {
+      const email = await registerUser({
         email: data.email,
         username: data.username,
         password: data.password
       });
 
-      console.log(account);
+      navigate('/login');
+      toast(`Đã tạo tài khoản cho email: ${email}, vui lòng kiểm tra hộp thư để xác nhận emai.`);
     }
     catch (e) {
       if (!(e instanceof ApiException)){
@@ -133,7 +140,7 @@ const Register = () => {
               type="submit"
               className="w-full mt-4 bg-purple-500 hover:bg-purple-700 text-[#23263a] font-semibold py-3 rounded-lg transition"
             >
-              Đăng ký
+              {isSubmitting ? 'Đang đăng ký' : 'Đăng ký'}
             </button>
 
           </form>
