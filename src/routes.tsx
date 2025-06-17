@@ -21,6 +21,7 @@ import MovieAdminPage from "./pages/admin/MovieAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
 import LayoutAdmin from "./layout/LayoutAdmin";
 import Landing from "./pages/landing.tsx";
+import MailVerify from "./pages/mail-verify.tsx";
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +72,7 @@ const AppRoutes = () => {
               <Route path="/continue" element={<Continue />} />
               <Route path="/watch" element={<WatchFilm />} />
               <Route path="/plans" element={<SubscriptionPlan />} />
+              <Route path="/verify" element={<MailVerify />} />
               <Route path="/payment" element={<PlanPaymentConfirm />} />
               {/* Route admin bọc bằng LayoutAdmin */}
               <Route
