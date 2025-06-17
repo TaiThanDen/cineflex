@@ -18,7 +18,10 @@ import SubscriptionPlan from "./pages/SubscriptionPlan";
 import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 import AdminPage from "./pages/admin/admin";
 import MovieAdminPage from "./pages/admin/MovieAdminPage";
+import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
 import LayoutAdmin from "./layout/LayoutAdmin";
+import Landing from "./pages/landing.tsx";
+import MailVerify from "./pages/mail-verify.tsx";
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,12 +32,13 @@ const AppRoutes = () => {
     matchPath("/watch/:id", location.pathname) ||
     location.pathname === "/watch";
   const isAdminPage = location.pathname.startsWith("/admin");
+  const isLandingPage = location.pathname === "/";
 
   return (
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
         {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
-        {!isMobile && !isAdminPage && (!isWatchPage || scrolled) && (
+        {!isMobile && !isAdminPage && !isLandingPage && (!isWatchPage || scrolled) && (
           <VerticalSidebar />
         )}
         <div
@@ -55,7 +59,8 @@ const AppRoutes = () => {
           <div className="absolute top-0 left-0 w-full h-max">
             <Routes>
               {/* Các route public */}
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<Landing />} />
+              <Route path="/home" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
               <Route
                 path="/preview/:id"
@@ -67,6 +72,7 @@ const AppRoutes = () => {
               <Route path="/continue" element={<Continue />} />
               <Route path="/watch" element={<WatchFilm />} />
               <Route path="/plans" element={<SubscriptionPlan />} />
+              <Route path="/verify" element={<MailVerify />} />
               <Route path="/payment" element={<PlanPaymentConfirm />} />
               {/* Route admin bọc bằng LayoutAdmin */}
               <Route
@@ -78,11 +84,14 @@ const AppRoutes = () => {
                   </LayoutAdmin>
                 }
               >
+
                 <Route path="dashboard" element={<AdminPage />} />
                 <Route path="movies" element={<MovieAdminPage />}>
                   <Route path=":id" element={<MovieAdminPage />} />
                 </Route>
                 {/* Thêm các route admin khác ở đây */}
+                <Route path="users" element={<UserAdminPage />} />
+                <Route path="users/:id" element={<UserAdminPage />} />
               </Route>
             </Routes>
             <Footer />
