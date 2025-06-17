@@ -34,11 +34,15 @@ export const getShowById = async (id: string) : Promise<Show> => {
 export const getSeasonsByShowId = async (id: string) : Promise<Season[]> => {
     const seasons = await request.get<Season[]>(`shows/${id}/seasons`);
 
+    seasons.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
+
     return seasons;
 }
 
 export const getEpisodesBySeasonId = async (id: string) : Promise<Episode[]> => {
     const episodes = await request.get<Episode[]>(`seasons/${id}/episodes`);
+
+    episodes.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
 
     return episodes;
 }
