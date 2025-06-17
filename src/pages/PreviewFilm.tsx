@@ -64,7 +64,7 @@ const PreviewFilm = () => {
 
   return (
     <div className="min-h-screen bg-[#23263a] text-white">
-      <HeroBanner items={[showResult.data!]}>
+      <HeroBanner item={showResult.data!}>
         <SeasonEpisodeList
           seasons={
             seasonResult.data!
