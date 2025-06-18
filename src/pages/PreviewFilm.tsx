@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import HeroBanner from "../components/HeroBanner";
 import SeasonEpisodeList from "../components/PreviewFilm/SeasonEpisodeList";
 import CommentSection from "../components/CommentSection";
@@ -18,6 +18,7 @@ import type { Episode } from "@/lib/types/Episode";
 const PreviewFilm = () => {
   const isMobile = useIsMobile();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const result = useQueries({
     queries: [
@@ -52,13 +53,6 @@ const PreviewFilm = () => {
     if (!seasonResult.data) return undefined;
     if (seasonResult.data.length === 0) return undefined;
     return seasonResult.data![0].id;
-  });
-  const [currentEpisode, setCurrentEpisode] = useState<string | undefined>(() => {
-    if (isEpisodeError || isEpisodeLoading) return undefined;
-    if (episodeResult.length === 0) return undefined;
-    if (!episodeResult[0].data) return undefined;
-    if (episodeResult[0].data.length === 0) return undefined;
-    return episodeResult[0].data![0].id;
   });
 
   if (showResult.isLoading || seasonResult.isLoading || isEpisodeLoading) return <p>Loading data</p>;
@@ -105,9 +99,11 @@ const PreviewFilm = () => {
                 seasons={seasonResult.data!}
                 episodes={episodesBySeason}
                 currentSeason={currentSeason}
-                currentEpisode={currentEpisode}
+                currentEpisode={undefined}
                 onSeasonChange={setCurrentSeason}
-                onEpisodeSelect={setCurrentEpisode}
+                onEpisodeSelect={(id) => {
+                  navigate(`/watch/${id}`)
+                }}
               />
             ),
           },
