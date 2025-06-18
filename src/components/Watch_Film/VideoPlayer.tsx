@@ -222,7 +222,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
 
 
   return (
-    <div className="bg-[#23263a] text-white w-full min-h-0 pt-0 sm:min-h-full relative ">
+    <div className="bg-[#23263a] text-white w-full pt-0 sm:min-h-full relative ">
       {/* Overlay Cinema Mode */}
       {cinemaMode && (
         <div

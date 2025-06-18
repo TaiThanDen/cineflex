@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import HeroBanner from "../components/HeroBanner";
 import SeasonEpisodeList from "../components/PreviewFilm/SeasonEpisodeList";
 import CommentSection from "../components/CommentSection";
@@ -8,10 +8,10 @@ import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
 import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import { useIsMobile } from "../lib/hooks/use-mobile";
-import MobilePreviewFilm from "../components/PreviewFilm/MobilePreviewFilm";
 import { useQueries } from "@tanstack/react-query";
 import { getEpisodesBySeasonId, getSeasonsByShowId, getShowById } from "@/lib/api";
 import type { Episode } from "@/lib/types/Episode";
+import { FaPlay } from "react-icons/fa";
 
 
 
@@ -59,8 +59,6 @@ const PreviewFilm = () => {
 
   if (showResult.isError || seasonResult.isError || isEpisodeError) return <p>Error</p>;
 
-  if (isMobile) return <MobilePreviewFilm />;
-
   seasonResult.data?.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate))
 
   // Build an object: { [seasonId]: data }
@@ -68,6 +66,68 @@ const PreviewFilm = () => {
     acc[season.id] = episodeResult[index].data!;
     return acc;
   }, {} as Record<string, Episode[]>);
+
+  if (isMobile) {
+    return  (
+      <div className="min-h-screen bg-[#23263a] text-white ">
+        {/* Banner + Back button */}
+        <div className="relative w-full h-64 mb-6">
+          <img
+            src={showResult.data!.thumbnail}
+            alt={showResult.data!.title}
+            className="w-full h-full object-cover"
+          />
+          {/* <button
+            className="absolute top-4 left-4 bg-black/60 rounded-full p-2"
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className="text-xl" />
+          </button> */}
+          <Link to={`/watch/${episodeResult[0].data![0].id}`}>
+            <button className="absolute left-1/2 -translate-x-1/2 bottom-[-28px] bg-white/20 p-4 rounded-full border-4 border-[#23263a]">
+              <FaPlay className="text-3xl text-white" />
+            </button>
+          </Link>
+        </div>
+
+        <Tabs
+          tabs={[
+            {
+              label: "Thông tin phim",
+              key: "info",
+              content: <MovieInfoCard show={showResult.data!} seasonCount={seasonResult.data!.length}/>,
+            },
+            {
+              label: "Tập phim",
+              key: "episodes",
+              content: (
+              <SeasonEpisodeMiniList
+                seasons={seasonResult.data!}
+                episodes={episodesBySeason}
+                currentSeason={currentSeason}
+                currentEpisode={undefined}
+                onSeasonChange={setCurrentSeason}
+                onEpisodeSelect={(id) => {
+                  navigate(`/watch/${id}`)
+                }}
+              />
+              ),
+            },
+            {
+              label: "Bình luận",
+              key: "comments",
+              content: <CommentSection />,
+            },
+            {
+              label: "Đề xuất",
+              key: "recommend",
+              content: <RecommendedList />,
+            },
+          ]}
+        />
+      </div>
+    )
+  };
 
   return (
     <div className="min-h-screen bg-[#23263a] text-white">
