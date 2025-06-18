@@ -2,20 +2,20 @@ import { useState } from "react";
 import HeroBanner from "../HeroBanner";
 import { unifiedData } from "../data/mockdata";
 import PopularSection from "./PopularFilmSection";
-import type { MovieItem } from "../data/Movie";
+import type { Show } from "@/lib/types/Show";
 
 const FilmsHeroBanner = () => {
-  const filmData = unifiedData.filter((item) => item.type === "film");
+  const filmData = unifiedData;
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selected = filmData[selectedIndex];
 
-  const handleSelect = (_: MovieItem, index: number) => {
+  const handleSelect = (_: Show, index: number) => {
     setSelectedIndex(index);
   };
 
   return (
-    <HeroBanner items={[selected]}>
+    <HeroBanner item={selected}>
       <PopularSection
         items={filmData}
         selectedTitle={selected.title}

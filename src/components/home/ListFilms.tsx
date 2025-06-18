@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MovieSection from "./MovieSection";
-import { get } from "@/lib/api";
+import { get } from "@/lib/request";
 import { type Show } from "@/lib/types/Show";
 
 

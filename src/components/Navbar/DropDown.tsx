@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 interface item {
     label: ReactNode,

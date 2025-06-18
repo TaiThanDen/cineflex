@@ -1,20 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { post } from "@/lib/api";
-import { type LoginCredentials } from "@/lib/types/LoginCredentials";
 import Auth from "@/context/Auth";
 import { useContext } from "react";
+import ApiException from "@/lib/exceptions/ApiException";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/lib/api";
+import { useNavigate } from "react-router";
+import { toast } from 'react-toastify';
 
 const schema = z.object({
-  email: z.string().email("Email không hợp lệ"),
-  password: z.string().min(8)
+  email: z.string().email('Email không hợp lệ'),
+  password: z.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
 })
 
 type FormFields = z.infer<typeof schema>;
 
 const Login = () => {
+  const navigate = useNavigate();
   const { setAuth } = useContext(Auth);
 
   const {
@@ -25,24 +29,34 @@ const Login = () => {
   } = useForm<FormFields>({
     resolver: zodResolver(schema)
   });
+
+
+  const { mutateAsync: logTheUserIn } = useMutation({
+    mutationFn: login
+  });
   
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      const token = await post<LoginCredentials, string>("authentication/login", data);
+      const token = await logTheUserIn(data);
       
       setAuth(token);
+      toast(`Chào mừng quay trở lại!`);
+      navigate('/');
     }
     catch (e) {
-      if (!(e instanceof Error)){
-        setError('root', {message: 'caught an unknown error'})
+      if ((e instanceof ApiException)){
+        if (e.status === 401) {
+          setError('root', {message: 'Email hoặc mật khẩu không hợp lệ'});
+          return;
+        }
+        if (e.status === 403) {
+          setError('email', {message: 'Vui lòng xác minh tài khoản'});
+          return;
+        }
+        setError('root', {message:'Vui lòng thử lại sau'});
+        return;
       }
-      try {
-        const err = e as Error;
-        const errorObject = JSON.parse(err.message);
-        setError('root', { message: `${errorObject.detail}` });
-      } catch {
-        setError('root', { message: 'unknown error format' });
-      }
+      setError('root', {message: 'unknow error'})
     }
   }
 

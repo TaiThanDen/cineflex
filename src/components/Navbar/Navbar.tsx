@@ -1,5 +1,5 @@
-  import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router";
 import { FaSearch, FaBars } from "react-icons/fa";
 import NavLink from "./NavLink";
 import DropDown from "./DropDown";
@@ -66,7 +66,7 @@ const Navbar = ({ scrolled }: props) => {
                   className="flex items-center gap-3 px-3 py-2 hover:bg-[#2f3147] transition"
                 >
                   <img
-                    src={film.image}
+                    src={film.thumbnail}
                     alt={film.title}
                     className="w-12 h-16 object-cover rounded"
                   />
@@ -74,7 +74,7 @@ const Navbar = ({ scrolled }: props) => {
                     <div className="font-bold text-white">{film.title}</div>
                     <div className="text-xs text-gray-400">{film.title}</div>
                     <div className="text-xs text-gray-400">
-                      {film.year} • {film.rating}
+                      {film.releaseDate} • {film.ageRating}
                     </div>
                   </div>
                 </Link>

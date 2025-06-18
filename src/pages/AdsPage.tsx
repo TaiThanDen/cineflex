@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 const sideBanner =
   "https://m.media-amazon.com/images/M/MV5BMTM0ZGIzZmQtYTgyZC00MmJiLTkxZjItOWQyYzViMmI3ZDQzXkEyXkFqcGc@._V1_.jpg";

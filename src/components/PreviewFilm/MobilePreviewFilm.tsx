@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useState } from "react";
 import { unifiedData } from "../data/mockdata";
 import MovieInfoCard from "../MovieInfoCard";
@@ -6,7 +6,7 @@ import CommentSection from "../CommentSection";
 import RecommendedList from "../RecommendedList";
 import SeasonEpisodeMiniList from "../SeasonEpisodeMiniList";
 import Tabs from "../Tabs";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { FaPlay } from "react-icons/fa";
 
 const data = [

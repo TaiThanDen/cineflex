@@ -1,7 +1,7 @@
 import {
+  UserIcon,
   HomeIcon,
   ChartBarIcon,
-  UserIcon,
   CalendarIcon,
   BoltIcon,
   BellIcon,
@@ -9,9 +9,14 @@ import {
   ClockIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/assets/img/logo.jpg";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
+import { useContext } from "react";
+import Auth from "@/context/Auth";
+
 
 const VerticalSidebar = () => {
+  const { auth } = useContext(Auth);
+
   return (
     <div className="w-16 flex flex-col bg-[#2f3147] items-center justify-between py-3">
       <div className="flex flex-col items-center gap-6 mt-2 z-10 text-white">
@@ -26,9 +31,7 @@ const VerticalSidebar = () => {
           <HomeIcon className="h-6 w-6" />
         </Link>
         <ChartBarIcon className="h-6 w-6" />
-        <Link to="/profile" className="text-white hover:text-purple-500">
-          <UserIcon className="h-6 w-6" />
-        </Link>
+
         <CalendarIcon className="h-6 w-6" />
         <Link to="/continue" className="text-white hover:text-purple-500">
           <ClockIcon className="h-6 w-6" />
@@ -40,11 +43,17 @@ const VerticalSidebar = () => {
       </div>
       <div className="flex flex-col items-center gap-4 z-10 text-white">
         <Cog6ToothIcon className="h-6 w-6" />
-        <img
-          src="https://i.pravatar.cc/100"
-          alt="Avatar"
-          className="w-8 h-8 rounded-full "
-        />
+        <Link to="/profile" className="text-white hover:text-purple-500">
+          {auth === '' ?         
+        <Link to="/login" className="text-white hover:text-purple-500">
+          <UserIcon className="h-6 w-6" />
+        </Link>:<img
+            src="https://i.pravatar.cc/100"
+            alt="Avatar"
+            className="w-8 h-8 rounded-full "
+          />}
+        </Link>
+
       </div>
     </div>
   );

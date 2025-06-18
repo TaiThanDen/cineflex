@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import continueWatchingList from "../components/data/continueWatching.json"; // adjust path if needed
 
 const ContinueWatching: React.FC = () => {

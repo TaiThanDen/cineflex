@@ -1,5 +1,5 @@
 import { FaHome, FaHeart, FaUser, FaPlay, FaRedo } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const MobileBottomSidebar = () => {
   return (
