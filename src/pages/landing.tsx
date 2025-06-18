@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router';
+import Banner from '@/assets/img/cineflexLaptopIllustration.jpg'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -106,7 +107,7 @@ const Landing: React.FC = () => {
           muted
           playsInline
         >
-          <source src="/src/assets/video/landingBackgroundVideo.mp4" type="video/mp4" />
+          <source src="https://stream.mux.com/fF01gyvBNecwccLiMithDMIhUylC8EIvp2yq5JL301TrM.m3u8?redundant_streams=true" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
@@ -129,7 +130,7 @@ const Landing: React.FC = () => {
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M3 22v-20l18 10-18 10z" />
                 </svg>
-                Explore Cineflex
+                Khám phá Cineflex
               </motion.span>
             </Link>
           </motion.div>
@@ -161,7 +162,7 @@ const Landing: React.FC = () => {
           </div>
           <div className="lg:w-1/2">
             <motion.img
-              src="/src/assets/img/cineflexLaptopIllustration.jpg"
+              src={Banner}
               alt="Cineflex"
               className="rounded-lg shadow-lg w-full"
               whileHover={{ scale: 1.02 }}
