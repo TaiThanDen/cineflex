@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
+import { Link } from 'react-router';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -119,17 +120,18 @@ const Landing: React.FC = () => {
               <br /> Cineflex mang đến trải nghiệm xem phim linh hoạt, mọi lúc mọi nơi.
               <br /> Dù bạn đang ở nhà hay đang di chuyển tất cả chỉ với một cú chạm.
             </p>
-            <motion.a
-              href="/home"
-              className="inline-flex items-center gap-2 bg-purple-400 text-white px-6 py-3 rounded-md font-semibold hover:bg-purple-500 transition"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3 22v-20l18 10-18 10z" />
-              </svg>
-              Explore Cineflex
-            </motion.a>
+            <Link to="/home">
+              <motion.span
+                className="inline-flex items-center gap-2 bg-purple-400 text-white px-6 py-3 rounded-md font-semibold hover:bg-purple-500 transition"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M3 22v-20l18 10-18 10z" />
+                </svg>
+                Explore Cineflex
+              </motion.span>
+            </Link>
           </motion.div>
         </div>
       </div>
@@ -200,9 +202,9 @@ const Landing: React.FC = () => {
       <p className="text-sm text-gray-300 mb-4">
         Chúng tôi cam kết bảo vệ thông tin cá nhân và dữ liệu xem của bạn bằng các tiêu chuẩn bảo mật cao cấp.
       </p>
-      <a href="#" className="text-purple-500 text-sm inline-flex items-center gap-1 hover:underline">
+      <Link to="#" className="text-purple-500 text-sm inline-flex items-center gap-1 hover:underline">
         Tìm hiểu thêm <span>→</span>
-      </a>
+      </Link>
     </motion.div>
 
     <motion.div
@@ -219,9 +221,9 @@ const Landing: React.FC = () => {
           <p className="text-sm text-gray-300 mb-4">
             Chỉ cần thanh toán để gỡ bỏ quảng cáo. Tận hưởng trải nghiệm xem trọn vẹn mà không cần gói phức tạp.
           </p>
-          <a href="/plans" className="text-purple-500 text-sm inline-flex items-center gap-1 hover:underline">
+          <Link to="/plans" className="text-purple-500 text-sm inline-flex items-center gap-1 hover:underline">
             Tìm hiểu thêm <span>→</span>
-          </a>
+          </Link>
         </motion.div>
 
         <motion.div
@@ -238,9 +240,9 @@ const Landing: React.FC = () => {
           <p className="text-sm text-gray-300 mb-4">
             Từ phim bom tấn Hollywood đến điện ảnh Châu Á, bạn có thể khám phá thế giới phim ảnh mà không bị giới hạn.
           </p>
-          <a href="/home" className="text-purple-500 text-sm inline-flex items-center gap-1 hover:underline">
+          <Link to="/home" className="text-purple-500 text-sm inline-flex items-center gap-1 hover:underline">
             Tìm hiểu thêm <span>→</span>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </motion.div>

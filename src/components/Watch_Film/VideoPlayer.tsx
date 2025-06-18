@@ -7,10 +7,10 @@ import { FaCheck } from "react-icons/fa6";
 const AD_URL = "https://example.com";
 
 type VideoPlayerProps = {
-  movieName: string;
+  url: string;
 };
 
-const VideoPlayer: React.FC<VideoPlayerProps> = () => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -219,6 +219,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isPlaying, volume, cinemaMode, isFullscreen, playbackRate]);
 
+
+
   return (
     <div className="bg-[#23263a] text-white w-full min-h-0 pt-0 sm:min-h-full relative ">
       {/* Overlay Cinema Mode */}
@@ -260,7 +262,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = () => {
             aspectRatio: "16/9",
             background: "black",
           }}
-          playbackId="eRD022N7dgl5J02T3e9LZuuRJxVEUzQNjp2MZH1qTs102Q"
+          playbackId={url}
           autoPlay
           metadata={{
             video_title: "Solo Leveling-S1E1-1080P",

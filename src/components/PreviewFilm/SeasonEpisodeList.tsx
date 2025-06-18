@@ -1,7 +1,5 @@
 import type { Season } from "@/lib/types/Season";
 import { useState } from "react";
-import { useQueries } from "@tanstack/react-query";
-import { getEpisodesBySeasonId } from "@/lib/api";
 import type { Episode } from "@/lib/types/Episode";
 import { Link } from "react-router";
 
@@ -16,39 +14,13 @@ import { Link } from "react-router";
 // }
 
 interface props {
-  seasons: Season[]
+  seasons: Season[],
+  episodesBySeason: Record<string, Episode[]>
 }
 
-const SeasonEpisodeList = ({ seasons }: props) => {
-  const [activeSeason, setActiveSeason] = useState<string>();
+const SeasonEpisodeList = ({ seasons, episodesBySeason }: props) => {
+  const [activeSeason, setActiveSeason] = useState<string | undefined>(seasons[0]?.id || undefined);
 
-  // const currentSeason = seasonsData.find((s) => s.season === activeSeason);
-
-  const result = useQueries({
-    queries: [
-      ...seasons.map((s) => {
-        return {
-          queryFn: () => getEpisodesBySeasonId(s.id),
-          queryKey: ['episodes_by_season', s.id]
-        }
-      })
-    ]
-  });
-
-  const startId = seasons[0].id;
-
-  const isLoading = result.some((r) => r.isLoading);
-  const isError = result.some((r) => r.isError);
-
-  if (isLoading) return <></>;
-
-  if (isError) return <></>
-
-  // Build an object: { [seasonId]: data }
-  const episodesBySeason = seasons.reduce((acc, season, index) => {
-    acc[season.id] = result[index].data!;
-    return acc;
-  }, {} as Record<string, Episode[]>);
 
   
   
@@ -75,7 +47,7 @@ const SeasonEpisodeList = ({ seasons }: props) => {
 
       {/* Episodes */}
       <div className="flex gap-4 overflow-x-auto scrollbar-hide">
-        {episodesBySeason[activeSeason || startId].map((ep) => (
+        {activeSeason && episodesBySeason[activeSeason].map((ep) => (
           <Link key={ep.id} to={`/watch/${ep.id}`}>
             <div className="w-[200px] flex-shrink-0">
               <img

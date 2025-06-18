@@ -69,7 +69,7 @@ const AppRoutes = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/continue" element={<Continue />} />
-              <Route path="/watch" element={<WatchFilm />} />
+              <Route path="/watch/:id" element={<WatchFilm />} />
               <Route path="/plans" element={<SubscriptionPlan />} />
               <Route path="/verify" element={<MailVerify />} />
               <Route path="/payment" element={<PlanPaymentConfirm />} />

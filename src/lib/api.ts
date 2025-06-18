@@ -46,3 +46,15 @@ export const getEpisodesBySeasonId = async (id: string) : Promise<Episode[]> => 
 
     return episodes;
 }
+
+export const getSeasonById = async (id: string) : Promise<Season> => {
+    const season = await request.get<Season>(`seasons/${id}`);
+
+    return season;
+}
+
+export const getEpisodeById = async (id: string) : Promise<Episode> => {
+    const episode = await request.get<Episode>(`episodes/${id}`);
+
+    return episode;
+}
