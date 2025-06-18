@@ -83,11 +83,15 @@ const PreviewFilm = () => {
           >
             <FaArrowLeft className="text-xl" />
           </button> */}
+          {episodeResult.length > 0 &&
           <Link to={`/watch/${episodeResult[0].data![0].id}`}>
             <button className="absolute left-1/2 -translate-x-1/2 bottom-[-28px] bg-white/20 p-4 rounded-full border-4 border-[#23263a]">
               <FaPlay className="text-3xl text-white" />
             </button>
           </Link>
+          
+          
+          }
         </div>
 
         <Tabs

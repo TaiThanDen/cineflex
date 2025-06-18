@@ -39,7 +39,7 @@ const MovieSection = ({
                 <div
                   key={index}
                   onClick={() => onSelect?.(item)}
-                  className={`min-w-[48%] md:min-w-0 bg-[#2f3147] rounded-xl overflow-hidden cursor-pointer border-2 transition-transform duration-300 group ${selectedTitle === item.title
+                  className={`h-70 md:w-full w-70 bg-[#2f3147] rounded-xl overflow-hidden cursor-pointer border-2 transition-transform duration-300 group ${selectedTitle === item.title
                       ? "border-violet-500"
                       : "border-transparent"
                     } hover:scale-110 hover:shadow-2xl`}

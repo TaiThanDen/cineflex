@@ -11,11 +11,11 @@ const MovieInfoCard = ({ show, seasonCount }: props) => {
   return (
     <div className="bg-[#23263a] text-white p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-8 items-start w-full">
       {/* Poster */}
-      <img
+      {/* <img
         src={show.thumbnail}
         alt="Lãnh Địa Tử Chiến"
         className="w-[100px] h-[140px] sm:w-[120px] sm:h-[170px] object-cover rounded-lg shadow-md mx-auto sm:mx-0"
-      />
+      /> */}
 
       {/* Main Info + Description */}
       <div className="flex-1 flex flex-col gap-2 min-w-[180px] sm:min-w-[250px]">
