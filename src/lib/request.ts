@@ -1,7 +1,8 @@
 import ApiException from "./exceptions/ApiException";
 
 // const BASE_API_URL: string = (process.env.BASE_API_URL ?? "https://cineflex-api.onrender.com/api");
-const BASE_API_URL: string = 'https://cineflex-api.onrender.com/api';
+// const BASE_API_URL: string = 'https://cineflex-api.onrender.com/api';
+const BASE_API_URL: string = 'http://localhost:8080/api';
 
 export const get = async <T>(
     url: string,

@@ -1,28 +1,29 @@
-import { useEffect, useState } from "react";
 import MovieSection from "./MovieSection";
-import { get } from "@/lib/request";
-import { type Show } from "@/lib/types/Show";
+import { getShowsByGenres } from "@/lib/api";
+import { useQueries } from "@tanstack/react-query";
 
 
 
 const ListFilms = () => {
-  const [koreanShow, setKoreanShow] = useState<Show[]>();
-  const [chineseShow, setChineseShow] = useState<Show[]>();
-  const [uShow, setUShow] = useState<Show[]>();
 
-  useEffect(() => {
-    const handleShow = async () => {
-      const k = await get<Show[]>("shows?genres=Phim Hàn Quốc");
-      const c = await get<Show[]>("shows?genres=Phim Trung Quốc");
-      const u = await get<Show[]>("shows?genres=Phim US-UK");
 
-      setKoreanShow(k);
-      setChineseShow(c);
-      setUShow(u);
-    }
-
-    handleShow();
-  }, [])
+   const result = useQueries({
+    queries: [
+      {
+        queryKey: ['shows_of_genres', 'Phim Hàn Quốc'],
+        queryFn: () => getShowsByGenres('Phim Hàn Quốc'),
+        
+      },
+      {
+        queryKey: ['shows_of_genres', 'Phim Trung Quốc'],
+        queryFn: () => getShowsByGenres('Phim Trung Quốc')
+      },
+      {
+        queryKey: ['shows_of_genres', 'Phim US-UK'],
+        queryFn: () => getShowsByGenres('Phim US-UK')
+      }
+    ]
+   })
 
   return (
     <div className="bg-[#23263a] min-h-screen px-4 py-8 space-y-10">
@@ -35,7 +36,7 @@ const ListFilms = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={koreanShow} showViewAll={false} />
+        <MovieSection title="" data={result[0].data} showViewAll={false} />
       </div>
 
       <div className="space-y-4">
@@ -47,7 +48,7 @@ const ListFilms = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={uShow} showViewAll={false} />
+        <MovieSection title="" data={result[1].data} showViewAll={false} />
       </div>
 
 
@@ -60,7 +61,7 @@ const ListFilms = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={chineseShow} showViewAll={false} />
+        <MovieSection title="" data={result[2].data} showViewAll={false} />
       </div>
     </div>
   );

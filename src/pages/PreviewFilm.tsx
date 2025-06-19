@@ -9,7 +9,7 @@ import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import { useIsMobile } from "../lib/hooks/use-mobile";
 import { useQueries } from "@tanstack/react-query";
-import { getEpisodesBySeasonId, getSeasonsByShowId, getShowById } from "@/lib/api";
+import { getEpisodesBySeasonId, getGenresByShow, getSeasonsByShowId, getShowById } from "@/lib/api";
 import type { Episode } from "@/lib/types/Episode";
 import { FaPlay } from "react-icons/fa";
 
@@ -31,6 +31,11 @@ const PreviewFilm = () => {
         queryKey: ['seasons_of_show', id],
         queryFn: () => getSeasonsByShowId(id!),
         enabled: !!id
+      },
+      {
+        queryKey: ['genres_of_show', id],
+        queryFn: () => getGenresByShow(id!),
+        enabled: !!id
       }
     ]
   })
@@ -43,7 +48,7 @@ const PreviewFilm = () => {
     })),
   });
 
-  const [showResult, seasonResult] = result;
+  const [showResult, seasonResult, genreResult] = result;
   const isEpisodeLoading = episodeResult.some((r) => r.isLoading);
   const isEpisodeError = episodeResult.some((r) => r.isError);
 
@@ -99,7 +104,11 @@ const PreviewFilm = () => {
             {
               label: "Thông tin phim",
               key: "info",
-              content: <MovieInfoCard show={showResult.data!} seasonCount={seasonResult.data!.length}/>,
+              content: <MovieInfoCard 
+                genres={genreResult.data}
+                show={showResult.data!} 
+                seasonCount={seasonResult.data!.length}
+              />,
             },
             {
               label: "Tập phim",
@@ -153,7 +162,11 @@ const PreviewFilm = () => {
           {
             label: "Thông tin phim",
             key: "info",
-            content: <MovieInfoCard show={showResult.data!} seasonCount={seasonResult.data!.length}/>,
+            content: <MovieInfoCard 
+              genres={genreResult.data}
+              show={showResult.data!} 
+              seasonCount={seasonResult.data!.length}
+            />,
           },
           {
             label: "Tập phim",
