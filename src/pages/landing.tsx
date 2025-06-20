@@ -1,4 +1,5 @@
-import React from 'react';
+import React,  { useRef, useEffect } from 'react';
+import Hls from 'hls.js';
 import { motion } from 'framer-motion';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
@@ -95,21 +96,41 @@ const FAQSection = () => (
   </section>
 );
 {/* static FAQ part above*/}
+
 const Landing: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource("https://stream.mux.com/fF01gyvBNecwccLiMithDMIhUylC8EIvp2yq5JL301TrM.m3u8?redundant_streams=true");
+        hls.attachMedia(video);
+
+        return () => {
+          hls.destroy();
+        };
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = "https://stream.mux.com/fF01gyvBNecwccLiMithDMIhUylC8EIvp2yq5JL301TrM.m3u8?redundant_streams=true";
+      } else {
+        console.error("HLS not supported in this browser");
+      }
+    }, []);
+
   return (
     <div className="bg-[#23263A]">
       {/* Hero Section */}
       <div className="relative w-full h-screen overflow-hidden text-white">
         <video
+          ref={videoRef}
           className="absolute top-0 left-0 w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
-        >
-          <source src="https://stream.mux.com/fF01gyvBNecwccLiMithDMIhUylC8EIvp2yq5JL301TrM.m3u8?redundant_streams=true" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        />
 
         <div className="absolute top-0 left-0 w-full h-full bg-black/30 z-10" />
 
