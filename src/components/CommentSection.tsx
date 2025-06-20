@@ -1,10 +1,11 @@
 import { getCommentByEpisodes, getUserById, postComment } from "@/lib/api";
+import ApiException from "@/lib/exceptions/ApiException";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { PiPaperPlaneRightFill } from "react-icons/pi";
 import { string, z } from "zod";
-
+import { toast } from 'react-toastify';
 
 interface props {
   id?: string,
@@ -24,11 +25,23 @@ type FormFields = z.infer<typeof schema>;
 // type FormFields = z.infer<typeof schema>;
 
 const CommentSection = ({ id } : props) => {
-
   const commentResult = useQuery({
     queryKey: ['comments_of_episode', id],
     queryFn: () => getCommentByEpisodes(id!),
     enabled: !!id
+  })
+
+  const {mutateAsync: postCommentMutate} = useMutation({
+    mutationFn: (data: {content: string, episode: string}) => postComment(data.content, data.episode),
+    onSuccess: (data) => {
+      if (!commentResult.data) return;
+
+
+      commentResult.data.unshift(data);
+      // queryClient.invalidateQueries({
+      //   predicate: (query) => query.queryKey[0] === "comments_of_episode" && query.queryKey[1] === id
+      // })
+    }
   })
 
   const accountResult = useQueries({
@@ -42,25 +55,37 @@ const CommentSection = ({ id } : props) => {
   const accountLoading = accountResult.some((a) => a.isLoading);
   const accountError = accountResult.some((a) => a.isError);
 
-  const {register, watch, formState: {isSubmitting},} = useForm<FormFields>({
+  const {register, watch, formState: {isSubmitting}, handleSubmit, setValue} = useForm<FormFields>({
     resolver: zodResolver(schema),
     defaultValues: {
       content: ''
     }
   });
 
-  const { mutateAsync: postAComment } = useMutation({
-    mutationFn: postComment
-  })
+
+
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       if (id === undefined) {return};
-      console.log(comment);
+      const body = {
+        content: data.content,
+        episode: id
+      }
+      const comment = await postCommentMutate(body);
+
+      return comment;
     }
     catch (e) {
-      console.log(e);
+      if (!(e instanceof ApiException)) {
+        return;
+      }
+
+      if (e.status === 401) {
+        toast('Vui lòng đăng nhập để comment');
+      }
     }
+    setValue("content", "");
   }
 
   if (commentResult.isLoading || accountLoading) {
@@ -77,21 +102,26 @@ const CommentSection = ({ id } : props) => {
 
   return (
     <div className="w-full pl-0 bg-[#23263a] p-6 rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
-      <textarea
-        className="w-full p-3 rounded bg-[#2f3147] text-white border-none focus:outline-none"
-        placeholder="Viết bình luận..."
-        rows={4}
-        maxLength={1000}
-        {...register('content')}
-      />
-      <div className="flex justify-between mt-2 items-center">
-        <span className="text-gray-400 text-sm">{watch('content').length} / 1000</span>
-        <div className="flex items-center gap-1 text-[#EAC76F] cursor-pointer hover:opacity-80">
-          <span className="font-semibold">Gửi</span>
-          <PiPaperPlaneRightFill className="text-[#EAC76F] size-6" />
-        </div>
-      </div>
+      {isSubmitting ? <>Submitting</>:
+        <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+          <h2 className="text-2xl font-bold mb-4">Bình luận</h2>
+          <textarea
+            className="w-full p-3 rounded bg-[#2f3147] text-white border-none focus:outline-none"
+            placeholder="Viết bình luận..."
+            rows={4}
+            maxLength={1000}
+            {...register('content')}
+          />
+          <button type="submit" className="flex justify-between mt-2 items-center">
+            <span className="text-gray-400 text-sm">{watch('content').length} / 1000</span>
+            <div className="flex items-center gap-1 text-[#EAC76F] cursor-pointer hover:opacity-80">
+              <span className="font-semibold">Gửi</span>
+              <PiPaperPlaneRightFill className="text-[#EAC76F] size-6" />
+            </div>
+          </button>      
+        </form>
+      }
+
 
       <div className="mt-6 space-y-4">
         {(id?commentResult.data!:[]).map((c, i) => (

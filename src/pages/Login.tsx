@@ -30,7 +30,7 @@ const Login = () => {
     resolver: zodResolver(schema) 
   });
 
-  const comment = await postAComment(data.content, id);
+  // const comment = await postAComment(data.content, id);
 
 
   const { mutateAsync: logTheUserIn } = useMutation({

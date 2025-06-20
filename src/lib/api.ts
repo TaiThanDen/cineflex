@@ -84,6 +84,8 @@ export const getCommentByEpisodes = async (episode: string) : Promise<Comment[]>
 
     const comments = await request.get<Comment[]>(uri);
 
+    comments.reverse();
+
     return comments;
 }
 
