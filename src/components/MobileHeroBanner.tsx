@@ -2,26 +2,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay } from "swiper/modules";
 import { FaPlayCircle } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import type { Show } from "@/lib/types/Show";
 
-interface MovieItem {
-  title: string;
-  image: string;
-  category: string;
-  categorymain: string;
-  rating: string;
-}
 
 interface MobileHeroBannerProps {
-  data: MovieItem[];
+  data: Show[];
   title?: string;
 }
 
 const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
   const navigate = useNavigate();
 
-  const handleMoreInfo = (movie: MovieItem) => {
+  const handleMoreInfo = (movie: string) => {
     // chuyển đến trang preview phim
-    navigate(`/preview/${movie.title.replace(/\s+/g, "-").toLowerCase()}`);
+    navigate(`/preview/${movie}`);
   };
 
   return (
@@ -56,7 +50,7 @@ const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
           >
             <div className="relative w-full h-[420px]">
               <img
-                src={movie.image}
+                src={movie.thumbnail}
                 alt={movie.title}
                 className="w-full h-full object-cover rounded-xl"
               />
@@ -64,7 +58,7 @@ const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
                 <div className="flex flex-col items-center mb-4 mt-40">
                   <button
                     className="hover:bg-white/50 transition rounded-full p-3"
-                    onClick={() => handleMoreInfo(movie)}
+                    onClick={() => handleMoreInfo(movie.id)}
                   >
                     <FaPlayCircle className="text-3xl text-white" />
                   </button>
@@ -81,10 +75,10 @@ const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
                   <h2 className="text-2xl font-bold text-white mb-2">
                     {movie.title}
                   </h2>
-                  <p className="text-sm text-gray-200 mb-2">{movie.category}</p>
+                  <p className="text-sm text-gray-200 mb-2">bbbbb</p>
                   <div className="flex items-center justify-center gap-4">
                     <span className="bg-white/20 text-xs px-2 py-1 rounded text-white">
-                      {movie.categorymain}
+                      aaaa
                     </span>
                     <span className="flex items-center text-white text-sm">
                       <svg
@@ -94,7 +88,7 @@ const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
                       >
                         <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
                       </svg>
-                      {movie.rating}
+                      {movie.ageRating}
                     </span>
                   </div>
                 </div>

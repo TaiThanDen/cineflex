@@ -10,7 +10,6 @@ const ListAnime = () => {
       {
         queryKey: ['shows_of_genres', 'Anime', 'Mới'],
         queryFn: () => getShowsByGenres('Anime', 'Mới'),
-        
       },
       {
         queryKey: ['shows_of_genres', 'Anime', 'Trinh thám'],
