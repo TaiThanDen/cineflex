@@ -112,7 +112,7 @@ const Landing: React.FC = () => {
         return () => {
           hls.destroy();
         };
-      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) { // For checking if can play .m3u8 by default: Apple’s HLS (HTTP Live Streaming) playlist format.
         video.src = "https://stream.mux.com/fF01gyvBNecwccLiMithDMIhUylC8EIvp2yq5JL301TrM.m3u8?redundant_streams=true";
       } else {
         console.error("HLS not supported in this browser");
