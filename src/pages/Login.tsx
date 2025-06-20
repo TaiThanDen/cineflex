@@ -27,8 +27,10 @@ const Login = () => {
     setError,
     formState: {errors, isSubmitting},
   } = useForm<FormFields>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema) 
   });
+
+  // const comment = await postAComment(data.content, id);
 
 
   const { mutateAsync: logTheUserIn } = useMutation({

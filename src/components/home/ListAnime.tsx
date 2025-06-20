@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react";
 import MovieSection from "./MovieSection";
-import type { Show } from "@/lib/types/Show";
-import { get } from "@/lib/request";
+import { useQueries } from "@tanstack/react-query";
+import { getShowsByGenres } from "@/lib/api";
 
 
 const ListAnime = () => {
-  const [newAnime, setNewAnime] = useState<Show[]>();
-  const [mysteryAnime, setMysteryAnime] = useState<Show[]>();
-  const [decadalAnime, setDecadalAnime] = useState<Show[]>();
 
-  useEffect(() => {
-    const handleAnime = async () => {
-      const n = await get<Show[]>('shows?genres=Anime&genres=Mới');
-      const m = await get<Show[]>('shows?genres=Anime&genres=Trinh thám');
-      const d = await get<Show[]>('shows?genres=Anime&genres=Thập kỷ');
-
-      setNewAnime(n);
-      setMysteryAnime(m);
-      setDecadalAnime(d);
-    }
-
-    handleAnime();
+   const result = useQueries({
+    queries: [
+      {
+        queryKey: ['shows_of_genres', 'Anime', 'Mới'],
+        queryFn: () => getShowsByGenres('Anime', 'Mới'),
+        
+      },
+      {
+        queryKey: ['shows_of_genres', 'Anime', 'Trinh thám'],
+        queryFn: () => getShowsByGenres('Anime', 'Trinh thám')
+      },
+      {
+        queryKey: ['shows_of_genres', 'Anime', 'Thập kỷ'],
+        queryFn: () => getShowsByGenres('Anime', 'Thập kỷ')
+      }
+    ]
    })
 
   return (
@@ -34,7 +34,7 @@ const ListAnime = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={newAnime} showViewAll={false} />
+        <MovieSection title="" data={result[0].data} showViewAll={false} />
       </div>
 
       <div className="space-y-4">
@@ -46,7 +46,7 @@ const ListAnime = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={mysteryAnime} showViewAll={false} />
+        <MovieSection title="" data={result[1].data} showViewAll={false} />
       </div>
 
 
@@ -59,7 +59,7 @@ const ListAnime = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={decadalAnime} showViewAll={false} />
+        <MovieSection title="" data={result[2].data} showViewAll={false} />
       </div>
     </div>
   );

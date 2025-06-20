@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { me } from "@/lib/api";
+import Auth from "@/context/Auth";
 
 const Profile = () => {
+  const { setAuth } = useContext(Auth); 
+
 
   const { data: account, isLoading, isError } = useQuery({
     queryFn: me,
@@ -57,7 +60,13 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex justify-end mt-6">
+        <div className="flex justify-end mt-6 gap-2">
+            <button
+              onClick={() => {setAuth("")}} 
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Đăng xuất
+            </button>
           {editing ? (
             <button
               onClick={() => setEditing(false)}

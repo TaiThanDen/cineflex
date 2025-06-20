@@ -5,6 +5,8 @@ import type { Account } from './types/Account';
 import type { Show } from './types/Show';
 import type { Season } from './types/Season';
 import type { Episode } from './types/Episode';
+import type { Genre } from './types/Genre';
+import type { Comment } from './types/Comment';
 
 
 export const login = async (credentials: LoginCredentials) : Promise<string> => {
@@ -57,4 +59,54 @@ export const getEpisodeById = async (id: string) : Promise<Episode> => {
     const episode = await request.get<Episode>(`episodes/${id}`);
 
     return episode;
+}
+
+export const getGenresByShow = async (id: string) : Promise<Genre[]> => {
+    const genres = await request.get<Genre[]>(`shows/${id}/genres`);
+
+    return genres;
+}
+
+export const getShowsByGenres = async (...genres: string[]) : Promise<Show[]> => {
+    const uri = `shows?${
+        genres.map((g) => {
+            return `genres=${g}`
+        }).join('&')
+    }`;
+
+    const shows = await request.get<Show[]>(uri);
+
+    return shows;
+}
+
+export const getCommentByEpisodes = async (episode: string) : Promise<Comment[]> => {
+    const uri = `episodes/${episode}/comments`;
+
+    const comments = await request.get<Comment[]>(uri);
+
+    comments.reverse();
+
+    return comments;
+}
+
+export const getUserById = async (id: string) : Promise<Account> => {
+    const uri = `users/${id}`;
+
+    const user = await request.get<Account>(uri);
+    
+    return user;
+}
+
+export const postComment = async (content: string, episode: string) : Promise<Comment> => {
+    const uri = `comments/${episode}`;
+
+    interface CommentRequest {
+        content: string
+    }
+
+    const comment = await request.post<CommentRequest, Comment>(uri, {
+        content: content
+    });
+
+    return comment
 }

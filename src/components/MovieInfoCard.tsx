@@ -1,12 +1,14 @@
+import type { Genre } from "@/lib/types/Genre";
 import type { Show } from "@/lib/types/Show";
 import { PiInfoBold } from "react-icons/pi";
 
 interface props {
   show: Show,
-  seasonCount: number
+  seasonCount: number,
+  genres: Genre[] | undefined
 }
 
-const MovieInfoCard = ({ show, seasonCount }: props) => {
+const MovieInfoCard = ({ show, seasonCount, genres }: props) => {
 
   return (
     <div className="bg-[#23263a] text-white p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-8 items-start w-full">
@@ -47,10 +49,9 @@ const MovieInfoCard = ({ show, seasonCount }: props) => {
 
           {/* Genres */}
           <div className="flex flex-wrap gap-2 mt-2 text-xs">
-            <span className="bg-[#2f3147] px-2 py-0.5 rounded">Chính Kịch</span>
-            <span className="bg-[#2f3147] px-2 py-0.5 rounded">Hành Động</span>
-            <span className="bg-[#2f3147] px-2 py-0.5 rounded">Gay Cấn</span>
-            <span className="bg-[#2f3147] px-2 py-0.5 rounded">Hình Sự</span>
+            {(genres ? genres : []).map((g) => (
+              <span className="bg-[#2f3147] px-2 py-0.5 rounded">{g.name}</span>
+            ))}
           </div>
 
           {/* Status */}

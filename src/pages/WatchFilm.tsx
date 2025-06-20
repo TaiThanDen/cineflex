@@ -7,7 +7,7 @@ import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
 import Tabs from "@/components/Tabs";
 import { useNavigate, useParams } from "react-router";
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { getEpisodeById, getEpisodesBySeasonId, getSeasonById, getSeasonsByShowId, getShowById } from "@/lib/api";
+import { getEpisodeById, getEpisodesBySeasonId, getGenresByShow, getSeasonById, getSeasonsByShowId, getShowById } from "@/lib/api";
 import { useState } from "react";
 import type { Episode } from "@/lib/types/Episode";
 
@@ -51,6 +51,12 @@ function WatchFilm() {
       enabled: !!s.id,
     })),
   });
+  
+  const genresResult = useQuery(      {
+    queryKey: ['genres_of_show', showId],
+    queryFn: () => getGenresByShow(showId!),
+    enabled: !!showId
+  })
 
   const allEpisodeLoading = allEpisodeResult.some((r) => r.isLoading);
   const allEpisodeError = allEpisodeResult.some((r) => r.isError);
@@ -91,7 +97,11 @@ function WatchFilm() {
           {
             label: "Thông tin phim",
             key: "info",
-            content: <MovieInfoCard show={showResult.data!} seasonCount={allSeason.data!.length}/>,
+            content: <MovieInfoCard
+              genres={genresResult.data}
+              show={showResult.data!} 
+              seasonCount={allSeason.data!.length}
+            />,
           },
           {
             label: "Tập phim",
@@ -110,7 +120,7 @@ function WatchFilm() {
           {
             label: "Bình luận",
             key: "comments",
-            content: <CommentSection />,
+            content: <CommentSection id={id!} />,
           },
           {
             label: "Đề xuất",

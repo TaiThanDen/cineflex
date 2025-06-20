@@ -43,16 +43,17 @@ const VerticalSidebar = () => {
       </div>
       <div className="flex flex-col items-center gap-4 z-10 text-white">
         <Cog6ToothIcon className="h-6 w-6" />
-        <Link to="/profile" className="text-white hover:text-purple-500">
-          {auth === '' ?         
-        <Link to="/login" className="text-white hover:text-purple-500">
-          <UserIcon className="h-6 w-6" />
-        </Link>:<img
-            src="https://i.pravatar.cc/100"
-            alt="Avatar"
-            className="w-8 h-8 rounded-full "
-          />}
-        </Link>
+
+        {auth === '' ?
+          <Link to="/login" className="text-white hover:text-purple-500">
+            <UserIcon className="h-6 w-6" />
+          </Link> : <Link to="/profile" className="text-white hover:text-purple-500">
+            <img
+              src="https://i.pravatar.cc/100"
+              alt="Avatar"
+              className="w-8 h-8 rounded-full "
+            />
+          </Link>}
 
       </div>
     </div>
