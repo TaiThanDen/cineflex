@@ -110,3 +110,9 @@ export const postComment = async (content: string, episode: string) : Promise<Co
 
     return comment
 }
+
+export const getAllShows = async (): Promise<Show[]> => {
+    const shows = await request.get<Show[]>('shows');
+
+    return shows;
+}
