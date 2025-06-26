@@ -4,6 +4,7 @@ import AddEpisodeModal from "./AddEpisodeModal";
 import ConfirmDeleteModal from "@/components/admin/MovieManagerComponent/ConfirmDeleteModal.tsx";
 import EditMovieModal from "@/components/admin/MovieManagerComponent/EditMovieModal";
 import GenreDisplay from "../../../examples/GenreDisplay";
+import SeasonTabs from "./SeasonTabs";
 
 interface Props {
   movie: any;
@@ -14,9 +15,17 @@ interface Props {
     episodeIdx: number
   ) => void;
   onDeleteMovie: (movieId: string) => void;
+  onAddSeason?: () => void;
+  onAddEpisode?: () => void;
 }
 
-const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
+const MovieDetail: React.FC<Props> = ({
+  movie,
+  onBack,
+  onEditEpisode,
+  onAddSeason,
+  onAddEpisode,
+}) => {
   const [seasonIdx, setSeasonIdx] = useState(0);
   const [showAddSeason, setShowAddSeason] = useState(false);
   const [showAddEpisode, setShowAddEpisode] = useState(false);
@@ -154,13 +163,13 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
             <div className="flex justify-end gap-2 mb-4">
               <button
                 className="bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 text-sm font-semibold flex items-center gap-1"
-                onClick={() => setShowAddSeason(true)}
+                onClick={onAddSeason || (() => setShowAddSeason(true))}
               >
                 + Thêm mùa phim
               </button>
               <button
                 className="bg-green-600 text-white rounded-lg px-4 py-2 hover:bg-green-700 text-sm font-semibold flex items-center gap-1"
-                onClick={() => setShowAddEpisode(true)}
+                onClick={onAddEpisode || (() => setShowAddEpisode(true))}
               >
                 + Thêm tập phim
               </button>
@@ -172,25 +181,14 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
               </button>
             </div>
 
-            {/* Tabs season */}
-            <div className="mb-2">
-              <ul className="flex border-b border-gray-400 text-sm gap-1">
-                {movie.seasons.map((s: any, idx: number) => (
-                  <li key={s.seasonNumber}>
-                    <button
-                      className={`px-4 py-2 border-b-2 font-semibold ${
-                        seasonIdx === idx
-                          ? "border-indigo-600 text-indigo-700"
-                          : "border-transparent text-gray-600 hover:text-indigo-600"
-                      }`}
-                      onClick={() => setSeasonIdx(idx)}
-                    >
-                      Mùa {s.seasonNumber}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Season Tabs */}
+            <SeasonTabs
+              seasons={movie.seasons || []}
+              activeSeason={seasonIdx}
+              onSeasonChange={setSeasonIdx}
+              episodes={movie.seasons?.[seasonIdx]?.episodes || []}
+              className="mb-4"
+            />
 
             {/* Table episode */}
             <div className="overflow-x-auto">
@@ -203,47 +201,65 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
                     <th className="py-2 px-3 font-bold">Thời lượng</th>
                     <th className="py-2 px-3 font-bold">Hành động</th>
                   </tr>
-                </thead>
+                </thead>{" "}
                 <tbody>
-                  {movie.seasons[seasonIdx].episodes.map(
-                    (ep: any, epIdx: number) => (
-                      <tr className="border-b border-gray-400" key={ep.id}>
-                        <td className="py-2 px-3">{epIdx + 1}</td>
-                        <td className="py-2 px-3">{ep.name}</td>
-                        <td className="py-2 px-3">{ep.url}</td>
-                        <td className="py-2 px-3">{ep.duration}</td>
-                        <td className="py-2 px-3 flex gap-2">
-                          <button
-                            className="bg-yellow-400 hover:bg-yellow-500 text-white rounded px-2 py-1 text-xs font-semibold"
-                            onClick={() =>
-                              onEditEpisode(movie.id, seasonIdx, epIdx)
-                            }
-                          >
-                            ✏ Edit
-                          </button>
-                          <button
-                            className="bg-red-500 hover:bg-red-600 text-white rounded px-2 py-1 text-xs font-semibold"
-                            onClick={() => {
-                              setSelectedEpisodeToDelete(ep);
-                              setShowDeleteEpisodeModal(true);
-                            }}
-                          >
-                            🗑 Xóa
-                          </button>
-                          <button
-                            className="bg-blue-500 hover:bg-blue-600 text-white rounded px-2 py-1 text-xs font-semibold"
-                            onClick={() =>
-                              setViewingComment({
-                                seasonIdx,
-                                episodeIdx: epIdx,
-                              })
-                            }
-                          >
-                            💬 Bình luận
-                          </button>
-                        </td>
-                      </tr>
+                  {movie.seasons &&
+                  movie.seasons[seasonIdx] &&
+                  movie.seasons[seasonIdx].episodes &&
+                  movie.seasons[seasonIdx].episodes.length > 0 ? (
+                    movie.seasons[seasonIdx].episodes.map(
+                      (ep: any, epIdx: number) => (
+                        <tr className="border-b border-gray-400" key={ep.id}>
+                          <td className="py-2 px-3">{epIdx + 1}</td>
+                          <td className="py-2 px-3">{ep.name || ep.title}</td>
+                          <td className="py-2 px-3">{ep.url}</td>
+                          <td className="py-2 px-3">
+                            {typeof ep.duration === "number"
+                              ? `${ep.duration} phút`
+                              : ep.duration}
+                          </td>
+                          <td className="py-2 px-3 flex gap-2">
+                            <button
+                              className="bg-yellow-400 hover:bg-yellow-500 text-white rounded px-2 py-1 text-xs font-semibold"
+                              onClick={() =>
+                                onEditEpisode(movie.id, seasonIdx, epIdx)
+                              }
+                            >
+                              ✏ Edit
+                            </button>
+                            <button
+                              className="bg-red-500 hover:bg-red-600 text-white rounded px-2 py-1 text-xs font-semibold"
+                              onClick={() => {
+                                setSelectedEpisodeToDelete(ep);
+                                setShowDeleteEpisodeModal(true);
+                              }}
+                            >
+                              🗑 Xóa
+                            </button>
+                            <button
+                              className="bg-blue-500 hover:bg-blue-600 text-white rounded px-2 py-1 text-xs font-semibold"
+                              onClick={() =>
+                                setViewingComment({
+                                  seasonIdx,
+                                  episodeIdx: epIdx,
+                                })
+                              }
+                            >
+                              💬 Bình luận
+                            </button>
+                          </td>
+                        </tr>
+                      )
                     )
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="py-4 px-3 text-center text-gray-500"
+                      >
+                        Không có tập phim nào trong mùa này
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>
@@ -254,14 +270,25 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
         {/* Các modal */}
         {showAddSeason && (
           <AddSeasonModal
+            movieId={movie.id}
+            existingSeasons={movie.seasons || []}
             onClose={() => setShowAddSeason(false)}
-            onAdd={() => setShowAddSeason(false)}
+            onAdd={(seasonData) => {
+              console.log("Thêm mùa mới:", seasonData);
+              // TODO: Implement thêm season vào movie
+              setShowAddSeason(false);
+            }}
           />
         )}
         {showAddEpisode && (
           <AddEpisodeModal
+            seasons={movie.seasons || []}
             onClose={() => setShowAddEpisode(false)}
-            onAdd={() => setShowAddEpisode(false)}
+            onAdd={(episodeData) => {
+              console.log("Thêm tập mới:", episodeData);
+              // TODO: Implement thêm episode vào season
+              setShowAddEpisode(false);
+            }}
           />
         )}
         {showDeleteMovieModal && (

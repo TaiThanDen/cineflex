@@ -20,14 +20,16 @@ interface Props {
 }
 
 const EditMovieModal: React.FC<Props> = ({ movie, onClose, onSave }) => {
-  const [selectedGenres, setSelectedGenres] = useState<Genre[]>(movie.genres || []);
+  const [selectedGenres, setSelectedGenres] = useState<Genre[]>(
+    movie.genres || []
+  );
   const [title, setTitle] = useState(movie.title);
   const [thumbnail, setThumbnail] = useState(movie.thumbnail);
   const [description, setDescription] = useState(movie.description);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const updatedMovie = {
       ...movie,
       title,
@@ -35,9 +37,9 @@ const EditMovieModal: React.FC<Props> = ({ movie, onClose, onSave }) => {
       description,
       genres: selectedGenres,
       // Giữ lại tags cho backward compatibility
-      tags: movie.tags || []
+      tags: movie.tags || [],
     };
-    
+
     onSave(updatedMovie);
   };
 
@@ -60,7 +62,7 @@ const EditMovieModal: React.FC<Props> = ({ movie, onClose, onSave }) => {
               required
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-semibold mb-1">
               URL Poster
@@ -96,7 +98,7 @@ const EditMovieModal: React.FC<Props> = ({ movie, onClose, onSave }) => {
               />
             </div>
           )}
-          
+
           <div>
             <label className="block text-sm font-semibold mb-1">Mô tả</label>
             <textarea
@@ -107,7 +109,7 @@ const EditMovieModal: React.FC<Props> = ({ movie, onClose, onSave }) => {
               required
             />
           </div>
-          
+
           <div className="flex justify-end gap-2 mt-2">
             <button
               type="button"

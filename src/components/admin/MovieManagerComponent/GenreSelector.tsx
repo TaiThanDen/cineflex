@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useShowGenres, useAllGenres } from '@/lib/hooks/useGenres';
+import React, { useState, useEffect } from "react";
+import { useShowGenres, useAllGenres } from "@/lib/hooks/useGenres";
 
 interface Genre {
   id: string;
@@ -19,14 +19,16 @@ const GenreSelector: React.FC<Props> = ({
   selectedGenres = [],
   onGenresChange,
   className = "",
-  disabled = false
+  disabled = false,
 }) => {
-  const [localSelectedGenres, setLocalSelectedGenres] = useState<Genre[]>(selectedGenres);
+  const [localSelectedGenres, setLocalSelectedGenres] =
+    useState<Genre[]>(selectedGenres);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Lấy genres hiện tại của show (nếu có showId)
-  const { data: currentGenres, isLoading: isLoadingCurrent } = useShowGenres(showId);
-  
+  const { data: currentGenres, isLoading: isLoadingCurrent } =
+    useShowGenres(showId);
+
   // Lấy tất cả genres có sẵn
   const { data: allGenres, isLoading: isLoadingAll } = useAllGenres();
 
@@ -44,11 +46,11 @@ const GenreSelector: React.FC<Props> = ({
 
   const toggleGenre = (genre: Genre) => {
     if (disabled) return;
-    
-    setLocalSelectedGenres(prev => {
-      const isSelected = prev.some(g => g.id === genre.id);
+
+    setLocalSelectedGenres((prev) => {
+      const isSelected = prev.some((g) => g.id === genre.id);
       if (isSelected) {
-        return prev.filter(g => g.id !== genre.id);
+        return prev.filter((g) => g.id !== genre.id);
       } else {
         return [...prev, genre];
       }
@@ -57,7 +59,7 @@ const GenreSelector: React.FC<Props> = ({
 
   const removeGenre = (genreId: string) => {
     if (disabled) return;
-    setLocalSelectedGenres(prev => prev.filter(g => g.id !== genreId));
+    setLocalSelectedGenres((prev) => prev.filter((g) => g.id !== genreId));
   };
 
   if (isLoadingCurrent || isLoadingAll) {
@@ -79,12 +81,12 @@ const GenreSelector: React.FC<Props> = ({
           </span>
         )}
       </label>
-      
+
       {/* Hiển thị genres đã chọn */}
       <div className="flex flex-wrap gap-2 mb-3 min-h-[2.5rem] border border-gray-300 rounded-md p-2">
         {localSelectedGenres.length > 0 ? (
-          localSelectedGenres.map(genre => (
-            <span 
+          localSelectedGenres.map((genre) => (
+            <span
               key={genre.id}
               className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm flex items-center gap-2"
             >
@@ -115,19 +117,21 @@ const GenreSelector: React.FC<Props> = ({
           >
             + Thêm thể loại
           </button>
-          
+
           {isDropdownOpen && (
             <>
               {/* Overlay để đóng dropdown */}
-              <div 
+              <div
                 className="fixed inset-0 z-10"
                 onClick={() => setIsDropdownOpen(false)}
               />
-              
+
               {/* Dropdown menu */}
               <div className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                {allGenres?.map(genre => {
-                  const isSelected = localSelectedGenres.some(g => g.id === genre.id);
+                {allGenres?.map((genre) => {
+                  const isSelected = localSelectedGenres.some(
+                    (g) => g.id === genre.id
+                  );
                   return (
                     <button
                       key={genre.id}
@@ -137,12 +141,16 @@ const GenreSelector: React.FC<Props> = ({
                         setIsDropdownOpen(false);
                       }}
                       className={`w-full text-left px-3 py-2 hover:bg-gray-50 ${
-                        isSelected ? 'bg-purple-50 text-purple-700 font-medium' : ''
+                        isSelected
+                          ? "bg-purple-50 text-purple-700 font-medium"
+                          : ""
                       }`}
                     >
                       <span className="flex items-center justify-between">
                         {genre.name}
-                        {isSelected && <span className="text-purple-500">✓</span>}
+                        {isSelected && (
+                          <span className="text-purple-500">✓</span>
+                        )}
                       </span>
                     </button>
                   );

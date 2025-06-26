@@ -126,7 +126,7 @@ export function MovieDetail({ movieId }: { movieId: string }) {
 
 // Ví dụ sử dụng useQuery với mutation (thêm/sửa/xóa)
 export function MovieActions() {
-  const { data: movies, refetch } = useQuery({
+  const { refetch } = useQuery({
     queryKey: ["movies"],
     queryFn: getAllShows,
   });

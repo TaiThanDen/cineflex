@@ -1,5 +1,5 @@
-import React from 'react';
-import { useShowGenres } from '@/lib/hooks/useGenres';
+import React from "react";
+import { useShowGenres } from "@/lib/hooks/useGenres";
 
 // Component đơn giản để hiển thị genres của một show
 const ShowGenresDisplay: React.FC<{ showId: string }> = ({ showId }) => {
@@ -9,7 +9,10 @@ const ShowGenresDisplay: React.FC<{ showId: string }> = ({ showId }) => {
     return (
       <div className="flex gap-2">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="animate-pulse bg-gray-300 h-6 w-16 rounded-full"></div>
+          <div
+            key={i}
+            className="animate-pulse bg-gray-300 h-6 w-16 rounded-full"
+          ></div>
         ))}
       </div>
     );
@@ -24,17 +27,13 @@ const ShowGenresDisplay: React.FC<{ showId: string }> = ({ showId }) => {
   }
 
   if (!genres || genres.length === 0) {
-    return (
-      <div className="text-gray-500 text-sm">
-        Chưa có thể loại nào
-      </div>
-    );
+    return <div className="text-gray-500 text-sm">Chưa có thể loại nào</div>;
   }
 
   return (
     <div className="flex flex-wrap gap-2">
-      {genres.map(genre => (
-        <span 
+      {genres.map((genre) => (
+        <span
           key={genre.id}
           className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium"
         >
@@ -57,7 +56,7 @@ const GenresManager: React.FC<{ showId: string }> = ({ showId }) => {
     <div className="p-4 border rounded-lg">
       <div className="flex justify-between items-center mb-3">
         <h3 className="font-semibold">Thể loại phim</h3>
-        <button 
+        <button
           onClick={handleRefresh}
           className="text-blue-500 hover:text-blue-700 text-sm"
           disabled={isLoading}
@@ -65,9 +64,9 @@ const GenresManager: React.FC<{ showId: string }> = ({ showId }) => {
           {isLoading ? "Đang tải..." : "Làm mới"}
         </button>
       </div>
-      
+
       <ShowGenresDisplay showId={showId} />
-      
+
       {/* Thông tin API call */}
       <div className="mt-3 text-xs text-gray-500">
         API Call: <code>getGenresByShow("{showId}")</code>
