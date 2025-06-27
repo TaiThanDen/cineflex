@@ -21,6 +21,10 @@ interface Props {
   onSeasonChange: (seasonIndex: number) => void;
   episodes: Episode[];
   className?: string;
+  onEditSeason?: (season: Season) => void;
+  onDeleteSeason?: (season: Season) => void;
+  isUpdating?: boolean;
+  isDeleting?: boolean;
 }
 
 const SeasonTabs: React.FC<Props> = ({
@@ -29,6 +33,10 @@ const SeasonTabs: React.FC<Props> = ({
   onSeasonChange,
   episodes,
   className = "",
+  onEditSeason,
+  onDeleteSeason,
+  isUpdating = false,
+  isDeleting = false,
 }) => {
   if (!seasons || seasons.length === 0) {
     return (
@@ -66,23 +74,48 @@ const SeasonTabs: React.FC<Props> = ({
       {seasons[activeSeason] && (
         <div className="bg-gray-50 rounded-lg p-3 mb-4">
           <div className="flex justify-between items-start">
-            {/* <div>
+            <div className="flex-1">
               <h3 className="font-medium text-gray-900">
-                Mùa{" "}
-                {seasons[activeSeason].seasonNumber ||
-                  seasons[activeSeason].title ||
-                  activeSeason + 1}
+                {seasons[activeSeason].title || `Mùa ${activeSeason + 1}`}
               </h3>
               {seasons[activeSeason].description && (
                 <p className="text-sm text-gray-600 mt-1">
                   {seasons[activeSeason].description}
                 </p>
               )}
-            </div> */}
-            <div className="text-xs text-gray-500">
-              Phát hành:{" "}
-              {new Date(seasons[activeSeason].releaseDate).toLocaleDateString()}
+              <div className="text-xs text-gray-500 mt-2">
+                Phát hành:{" "}
+                {new Date(
+                  seasons[activeSeason].releaseDate
+                ).toLocaleDateString()}
+              </div>
             </div>
+
+            {/* Season Action Buttons */}
+            {(onEditSeason || onDeleteSeason) && (
+              <div className="flex gap-2 ml-4">
+                {onEditSeason && (
+                  <button
+                    onClick={() => onEditSeason(seasons[activeSeason])}
+                    className="text-indigo-600 hover:text-indigo-800 text-sm px-2 py-1 rounded border border-indigo-300 hover:bg-indigo-50 transition-colors disabled:opacity-50"
+                    disabled={isUpdating}
+                    title="Chỉnh sửa mùa phim"
+                  >
+                    {isUpdating ? "..." : "✏️"}
+                  </button>
+                )}
+                {onDeleteSeason && seasons.length > 1 && (
+                  <button
+                    onClick={() => onDeleteSeason(seasons[activeSeason])}
+                    className="text-red-600 hover:text-red-800 text-sm px-2 py-1 rounded border border-red-300 hover:bg-red-50 transition-colors disabled:opacity-50"
+                    disabled={isDeleting}
+                    title="Xóa mùa phim"
+                  >
+                    {isDeleting ? "..." : "🗑️"}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

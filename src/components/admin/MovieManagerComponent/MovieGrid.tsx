@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import MovieBox from "./MovieBox";
 import AddMovieModal from "./AddMovieModal";
 import { FaSearch } from "react-icons/fa";
+import type { ShowFormData } from "@/lib/hooks/useShowMutations";
 
 interface Props {
     movies: any[];
@@ -12,9 +13,11 @@ const MovieGrid: React.FC<Props> = ({ movies, onSelectMovie }) => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [search, setSearch] = useState("");
 
-    const handleAddMovie = (newMovie: any) => {
-        console.log("Phim mới:", newMovie);
-        // TODO: cập nhật danh sách phim nếu cần
+    const handleAddMovie = (movieData: ShowFormData) => {
+        console.log("Phim mới được thêm:", movieData);
+        setShowAddModal(false);
+        // UI sẽ tự động cập nhật thông qua React Query cache invalidation
+        // Không cần thêm logic gì ở đây vì hook đã xử lý invalidate cache
     };
 
     const filteredMovies = movies.filter((movie) =>

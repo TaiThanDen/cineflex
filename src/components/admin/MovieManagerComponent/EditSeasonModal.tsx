@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import type { Season } from "@/lib/types/Season";
-import {
-  useSeasonMutations,
-  type SeasonFormData,
-} from "@/lib/hooks/useSeasonMutations";
 
 interface Props {
-  movieId: string;
-  existingSeasons: Season[];
+  season: Season;
   onClose: () => void;
-  onAdd?: (seasonData: SeasonFormData) => void; // Optional callback for custom handling
+  onUpdate: (seasonData: {
+    title: string;
+    description: string;
+    releaseDate: string;
+    seasonNumber?: number;
+    seasonType?: "regular" | "special" | "movie" | "ova" | "extra";
+    isMainSeries?: boolean;
+  }) => void;
+  isLoading?: boolean;
 }
 
 const SEASON_TYPES = [
@@ -32,47 +35,73 @@ const SEASON_TYPES = [
   },
 ];
 
-const AddSeasonModal: React.FC<Props> = ({
-  movieId,
-  existingSeasons,
+const EditSeasonModal: React.FC<Props> = ({
+  season,
   onClose,
-  onAdd,
+  onUpdate,
+  isLoading = false,
 }) => {
-  const { addSeasonAsync, isAddingSeason, addSeasonError } =
-    useSeasonMutations();
-
   const [formData, setFormData] = useState({
-    title: "",
+    title: season.title || "",
+    description: season.description || "",
+    releaseDate: season.releaseDate
+      ? new Date(season.releaseDate).toISOString().split("T")[0]
+      : "",
     seasonNumber: "",
-    description: "",
-    releaseDate: "",
     seasonType: "regular" as const,
     isMainSeries: true,
     customTitle: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  // Tính toán season number tiếp theo
-  const getNextSeasonNumber = () => {
-    const regularSeasons = existingSeasons.filter(
-      (s) => s.title.includes("Season") || s.title.includes("Mùa")
-    );
+  // Initialize form data from season
+  useEffect(() => {
+    // Detect season type from title
+    let detectedType = "regular";
+    let seasonNumber = "";
 
-    if (regularSeasons.length === 0) return 1;
+    if (season.title) {
+      if (
+        season.title.toLowerCase().includes("movie") ||
+        season.title.toLowerCase().includes("phim")
+      ) {
+        detectedType = "movie";
+      } else if (season.title.toLowerCase().includes("ova")) {
+        detectedType = "ova";
+      } else if (
+        season.title.toLowerCase().includes("special") ||
+        season.title.toLowerCase().includes("đặc biệt")
+      ) {
+        detectedType = "special";
+      } else if (
+        season.title.toLowerCase().includes("extra") ||
+        season.title.toLowerCase().includes("ngoại truyện")
+      ) {
+        detectedType = "extra";
+      } else {
+        // Try to extract season number
+        const match = season.title.match(/(\d+)/);
+        if (match) {
+          seasonNumber = match[1];
+        }
+      }
+    }
 
-    const maxSeason = Math.max(
-      ...regularSeasons.map((s) => {
-        const match = s.title.match(/(\d+)/);
-        return match ? parseInt(match[1]) : 0;
-      })
-    );
+    setFormData({
+      title: season.title || "",
+      description: season.description || "",
+      releaseDate: season.releaseDate
+        ? new Date(season.releaseDate).toISOString().split("T")[0]
+        : "",
+      seasonNumber,
+      seasonType: detectedType as any,
+      isMainSeries: detectedType === "regular",
+      customTitle: detectedType !== "regular" ? season.title : "",
+    });
+  }, [season]);
 
-    return maxSeason + 1;
-  };
-
-  // Tự động generate title khi thay đổi type hoặc number
+  // Auto generate title based on type and number
   useEffect(() => {
     if (formData.seasonType === "regular" && formData.seasonNumber) {
       setFormData((prev) => ({
@@ -99,62 +128,21 @@ const AddSeasonModal: React.FC<Props> = ({
       newErrors.title = "Tên mùa phim là bắt buộc";
     }
 
-    // Validate season number cho regular season
+    // Validate season number for regular season
     if (formData.seasonType === "regular") {
       if (!formData.seasonNumber) {
         newErrors.seasonNumber = "Số mùa là bắt buộc cho mùa chính";
       } else {
         const seasonNum = parseInt(formData.seasonNumber);
-
-        // Check if season already exists
-        const existingRegularSeasons = existingSeasons.filter(
-          (s) => s.title.includes("Season") || s.title.includes("Mùa")
-        );
-        const existingNumbers = existingRegularSeasons.map((s) => {
-          const match = s.title.match(/(\d+)/);
-          return match ? parseInt(match[1]) : 0;
-        });
-
-        if (existingNumbers.includes(seasonNum)) {
-          newErrors.seasonNumber = `Mùa ${seasonNum} đã tồn tại`;
-        }
-
-        // Check if season number is logical (không được nhảy quá xa)
-        const maxExisting = Math.max(...existingNumbers, 0);
-        if (seasonNum > maxExisting + 1 && maxExisting > 0) {
-          newErrors.seasonNumber = `Không thể thêm mùa ${seasonNum} khi chỉ có ${maxExisting} mùa. Hãy thêm mùa ${
-            maxExisting + 1
-          } trước.`;
-        }
-
         if (seasonNum < 1) {
           newErrors.seasonNumber = "Số mùa phải lớn hơn 0";
         }
       }
     }
 
-    // Validate duplicate titles
-    if (
-      existingSeasons.some(
-        (s) => s.title.toLowerCase() === formData.title.toLowerCase()
-      )
-    ) {
-      newErrors.title = "Tên mùa phim đã tồn tại";
-    }
-
     // Validate release date
     if (!formData.releaseDate) {
       newErrors.releaseDate = "Ngày phát hành là bắt buộc";
-    } else {
-      const releaseDate = new Date(formData.releaseDate);
-      const today = new Date();
-      if (releaseDate > today) {
-        // Warn but don't error for future dates
-        setSuggestions((prev) => [
-          ...prev,
-          "Ngày phát hành trong tương lai - đảm bảo đây là đúng ý định của bạn",
-        ]);
-      }
     }
 
     // Validate description
@@ -168,42 +156,24 @@ const AddSeasonModal: React.FC<Props> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    const seasonData: SeasonFormData = {
+    const seasonData = {
       title: formData.title,
-      description: formData.description,
-      releaseDate: formData.releaseDate,
       seasonNumber:
         formData.seasonType === "regular"
           ? parseInt(formData.seasonNumber)
           : undefined,
+      description: formData.description,
+      releaseDate: formData.releaseDate,
       seasonType: formData.seasonType,
       isMainSeries: formData.isMainSeries,
     };
 
-    try {
-      // Sử dụng API để thêm season
-      await addSeasonAsync({
-        showId: movieId,
-        data: seasonData,
-      });
-
-      alert("Thêm mùa phim thành công!");
-
-      // Call custom callback if provided
-      if (onAdd) {
-        onAdd(seasonData);
-      }
-
-      onClose();
-    } catch (error) {
-      console.error("Lỗi khi thêm season:", error);
-      alert("Có lỗi xảy ra khi thêm mùa phim. Vui lòng thử lại!");
-    }
+    onUpdate(seasonData);
   };
 
   const handleSeasonTypeChange = (type: string) => {
@@ -211,11 +181,10 @@ const AddSeasonModal: React.FC<Props> = ({
       ...prev,
       seasonType: type as any,
       isMainSeries: type === "regular",
-      seasonNumber: type === "regular" ? getNextSeasonNumber().toString() : "",
-      customTitle: "",
+      seasonNumber: type === "regular" ? prev.seasonNumber || "1" : "",
+      customTitle: type !== "regular" ? prev.title : "",
     }));
     setErrors({});
-    setSuggestions([]);
   };
 
   return (
@@ -226,16 +195,8 @@ const AddSeasonModal: React.FC<Props> = ({
       ></div>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl relative z-10 max-h-[90vh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">
-          Thêm mùa phim mới
+          Chỉnh sửa mùa phim
         </h2>
-
-        {/* Error Display */}
-        {addSeasonError && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            <strong className="font-bold">Lỗi!</strong>
-            <span className="block sm:inline"> {addSeasonError.message}</span>
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Season Type Selection */}
@@ -247,11 +208,10 @@ const AddSeasonModal: React.FC<Props> = ({
               {SEASON_TYPES.map((type) => (
                 <div
                   key={type.value}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
-                    formData.seasonType === type.value
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${formData.seasonType === type.value
                       ? "border-indigo-500 bg-indigo-50"
                       : "border-gray-200 hover:border-gray-300"
-                  }`}
+                    }`}
                   onClick={() => handleSeasonTypeChange(type.value)}
                 >
                   <div className="flex items-center space-x-3">
@@ -286,9 +246,8 @@ const AddSeasonModal: React.FC<Props> = ({
               <input
                 type="number"
                 min={1}
-                className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                  errors.seasonNumber ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.seasonNumber ? "border-red-500" : "border-gray-300"
+                  }`}
                 value={formData.seasonNumber}
                 onChange={(e) =>
                   setFormData((prev) => ({
@@ -296,16 +255,13 @@ const AddSeasonModal: React.FC<Props> = ({
                     seasonNumber: e.target.value,
                   }))
                 }
-                placeholder={`Đề xuất: ${getNextSeasonNumber()}`}
+                placeholder="Nhập số mùa"
               />
               {errors.seasonNumber && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.seasonNumber}
                 </p>
               )}
-              <p className="text-gray-500 text-sm mt-1">
-                Mùa tiếp theo được đề xuất: {getNextSeasonNumber()}
-              </p>
             </div>
           )}
 
@@ -344,9 +300,8 @@ const AddSeasonModal: React.FC<Props> = ({
               Tên mùa phim (preview)
             </label>
             <div
-              className={`w-full border rounded-lg px-4 py-3 bg-gray-50 ${
-                errors.title ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full border rounded-lg px-4 py-3 bg-gray-50 ${errors.title ? "border-red-500" : "border-gray-300"
+                }`}
             >
               {formData.title || "Chưa có tên..."}
             </div>
@@ -361,9 +316,8 @@ const AddSeasonModal: React.FC<Props> = ({
               Mô tả mùa phim
             </label>
             <textarea
-              className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.description ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.description ? "border-red-500" : "border-gray-300"
+                }`}
               rows={4}
               value={formData.description}
               onChange={(e) =>
@@ -389,9 +343,8 @@ const AddSeasonModal: React.FC<Props> = ({
             </label>
             <input
               type="date"
-              className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.releaseDate ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.releaseDate ? "border-red-500" : "border-gray-300"
+                }`}
               value={formData.releaseDate}
               onChange={(e) =>
                 setFormData((prev) => ({
@@ -405,53 +358,22 @@ const AddSeasonModal: React.FC<Props> = ({
             )}
           </div>
 
-          {/* Suggestions */}
-          {suggestions.length > 0 && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h4 className="font-medium text-yellow-800 mb-2">Ghi chú:</h4>
-              <ul className="text-sm text-yellow-700 space-y-1">
-                {suggestions.map((suggestion, idx) => (
-                  <li key={idx}>• {suggestion}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Existing Seasons Info */}
-          {existingSeasons.length > 0 && (
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <h4 className="font-medium text-gray-800 mb-2">
-                Mùa phim hiện có:
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-                {existingSeasons.map((season, idx) => (
-                  <div key={idx} className="flex justify-between">
-                    <span>{season.title}</span>
-                    <span className="text-gray-400">
-                      {new Date(season.releaseDate).getFullYear()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Action Buttons */}
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"
-              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
               onClick={onClose}
-              disabled={isAddingSeason}
+              disabled={isLoading}
             >
               Hủy bỏ
             </button>
             <button
               type="submit"
               className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold disabled:opacity-50"
-              disabled={isAddingSeason}
+              disabled={isLoading}
             >
-              {isAddingSeason ? "Đang thêm..." : "Thêm mùa phim"}
+              {isLoading ? "Đang cập nhật..." : "Cập nhật mùa phim"}
             </button>
           </div>
         </form>
@@ -460,6 +382,7 @@ const AddSeasonModal: React.FC<Props> = ({
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold"
+          disabled={isLoading}
         >
           &times;
         </button>
@@ -468,4 +391,4 @@ const AddSeasonModal: React.FC<Props> = ({
   );
 };
 
-export default AddSeasonModal;
+export default EditSeasonModal;

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Trash2, X } from "lucide-react";
 
 interface Props {
   title?: string;
   message?: string;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
 }
 
 const ConfirmDeleteModal: React.FC<Props> = ({
@@ -14,6 +14,19 @@ const ConfirmDeleteModal: React.FC<Props> = ({
   onClose,
   onConfirm,
 }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleConfirm = async () => {
+    setIsDeleting(true);
+    try {
+      await onConfirm();
+    } catch (error) {
+      console.error("Error during deletion:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
@@ -26,6 +39,7 @@ const ConfirmDeleteModal: React.FC<Props> = ({
           <button
             onClick={onClose}
             className="text-white hover:text-gray-200 text-xl"
+            disabled={isDeleting}
           >
             <X size={20} />
           </button>
@@ -37,17 +51,19 @@ const ConfirmDeleteModal: React.FC<Props> = ({
           <p className="mb-2 font-semibold">{message}</p>
           <div className="flex justify-center gap-4 mt-6">
             <button
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-4 py-2 rounded"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-4 py-2 rounded disabled:opacity-50"
               onClick={onClose}
+              disabled={isDeleting}
             >
               Cancel
             </button>
             <button
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded flex items-center gap-1"
-              onClick={onConfirm}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded flex items-center gap-1 disabled:opacity-50"
+              onClick={handleConfirm}
+              disabled={isDeleting}
             >
               <Trash2 size={16} />
-              Delete
+              {isDeleting ? "Deleting..." : "Delete"}
             </button>
           </div>
         </div>

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import type { Season } from "@/lib/types/Season";
+import {
+  useEpisodeMutations,
+  type EpisodeFormData,
+} from "@/lib/hooks/useEpisodeMutations";
 
 interface Props {
   seasons: Season[];
   onClose: () => void;
-  onAdd: (episodeData: {
-    name: string;
-    url: string;
-    duration: string;
-    seasonId: string;
-    description: string;
-    episodeNumber: number;
-  }) => void;
+  onAdd?: (episodeData: EpisodeFormData) => void; // Optional callback for custom handling
 }
 
 const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
+  const { addEpisodeAsync, isAddingEpisode, addEpisodeError } =
+    useEpisodeMutations();
+
   const [formData, setFormData] = useState({
     seasonId: seasons[0]?.id || "",
     name: "",
@@ -38,14 +38,7 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
     }
 
     if (!formData.url.trim()) {
-      newErrors.url = "URL video là bắt buộc";
-    } else {
-      // Basic URL validation
-      try {
-        new URL(formData.url);
-      } catch {
-        newErrors.url = "URL không hợp lệ";
-      }
+      newErrors.url = "ID video là bắt buộc";
     }
 
     if (!formData.duration.trim()) {
@@ -72,19 +65,38 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    onAdd({
+    const episodeData: EpisodeFormData = {
       seasonId: formData.seasonId,
       name: formData.name,
       url: formData.url,
       duration: formData.duration,
       description: formData.description,
       episodeNumber: formData.episodeNumber,
-    });
+    };
+
+    try {
+      // Sử dụng API để thêm episode
+      await addEpisodeAsync(episodeData);
+
+      // Thông báo thành công
+      alert("Thêm tập phim thành công!");
+
+      // Call custom callback if provided
+      if (onAdd) {
+        onAdd(episodeData);
+      }
+
+      // Đóng modal
+      onClose();
+    } catch (error) {
+      console.error("Lỗi khi thêm episode:", error);
+      alert("Có lỗi xảy ra khi thêm tập phim. Vui lòng thử lại!");
+    }
   };
 
   const selectedSeason = seasons.find((s) => s.id === formData.seasonId);
@@ -101,6 +113,17 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Error Display */}
+          {addEpisodeError && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <strong className="font-bold">Lỗi!</strong>
+              <span className="block sm:inline">
+                {" "}
+                {addEpisodeError.message}
+              </span>
+            </div>
+          )}
+
           {/* Season Selection */}
           <div>
             <label className="block text-sm font-semibold mb-2 text-gray-700">
@@ -211,10 +234,10 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
             )}
           </div>
 
-          {/* Video URL */}
+          {/* Video ID */}
           <div>
             <label className="block text-sm font-semibold mb-2 text-gray-700">
-              URL Video
+              ID Video
             </label>
             <input
               type="text"
@@ -225,13 +248,13 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, url: e.target.value }))
               }
-              placeholder="https://example.com/video.mp4"
+              placeholder="VD: abc123, video-id-456, episode-001"
             />
             {errors.url && (
               <p className="text-red-500 text-sm mt-1">{errors.url}</p>
             )}
             <p className="text-gray-500 text-sm mt-1">
-              Hỗ trợ: MP4, M3U8, YouTube, Vimeo, hoặc streaming URL khác
+              Nhập ID hoặc mã định danh của video
             </p>
           </div>
 
@@ -314,14 +337,16 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
               type="button"
               className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
               onClick={onClose}
+              disabled={isAddingEpisode}
             >
               Hủy bỏ
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
+              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isAddingEpisode}
             >
-              Thêm tập phim
+              {isAddingEpisode ? "Đang thêm..." : "Thêm tập phim"}
             </button>
           </div>
         </form>

@@ -8,12 +8,12 @@ import ApiException from "@/lib/exceptions/ApiException";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/lib/api";
 import { useNavigate } from "react-router";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const schema = z.object({
-  email: z.string().email('Email không hợp lệ'),
-  password: z.string().min(8, 'Mật khẩu phải có tối thiểu 8 ký tự')
-})
+  email: z.string().email("Email không hợp lệ"),
+  password: z.string().min(8, "Mật khẩu phải có tối thiểu 8 ký tự"),
+});
 
 type FormFields = z.infer<typeof schema>;
 
@@ -25,42 +25,40 @@ const Login = () => {
     register,
     handleSubmit,
     setError,
-    formState: {errors, isSubmitting},
+    formState: { errors, isSubmitting },
   } = useForm<FormFields>({
-    resolver: zodResolver(schema) 
+    resolver: zodResolver(schema),
   });
 
   // const comment = await postAComment(data.content, id);
 
-
   const { mutateAsync: logTheUserIn } = useMutation({
-    mutationFn: login
+    mutationFn: login,
   });
-  
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       const token = await logTheUserIn(data);
-      
+
       setAuth(token);
       toast(`Chào mừng quay trở lại!`);
-      navigate('/');
-    }
-    catch (e) {
-      if ((e instanceof ApiException)){
+      navigate("/");
+    } catch (e) {
+      if (e instanceof ApiException) {
         if (e.status === 401) {
-          setError('root', {message: 'Email hoặc mật khẩu không hợp lệ'});
+          setError("root", { message: "Email hoặc mật khẩu không hợp lệ" });
           return;
         }
         if (e.status === 403) {
-          setError('email', {message: 'Vui lòng xác minh tài khoản'});
+          setError("email", { message: "Vui lòng xác minh tài khoản" });
           return;
         }
-        setError('root', {message:'Vui lòng thử lại sau'});
+        setError("root", { message: "Vui lòng thử lại sau" });
         return;
       }
-      setError('root', {message: 'unknow error'})
+      setError("root", { message: "unknow error" });
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#23263a]">
@@ -88,7 +86,7 @@ const Login = () => {
             <div>
               <label className="block text-white mb-1">Email</label>
               <input
-                {...register('email')}
+                {...register("email")}
                 type="email"
                 placeholder="Enter your email here"
                 className="w-full px-4 py-3 rounded-lg bg-[#3a3d4d] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400"
@@ -100,11 +98,12 @@ const Login = () => {
             <div>
               <label className="block text-white mb-1">Password</label>
               <input
-                {...register('password')}
+                {...register("password")}
                 type="password"
                 placeholder="Enter your password here"
                 className="w-full px-4 py-3 rounded-lg bg-[#3a3d4d] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
+
               {errors.password && (
                 <div className="text-red-500">{errors.password.message}</div>
               )}
@@ -114,7 +113,7 @@ const Login = () => {
               type="submit"
               className="w-full mt-4 bg-purple-400 hover:bg-purple-500 text-[#23263a] font-semibold py-3 rounded-lg transition"
             >
-              {!isSubmitting?'Đăng nhập':'Đang đăng nhập'}
+              {!isSubmitting ? "Đăng nhập" : "Đang đăng nhập"}
             </button>
             {errors.root && (
               <div className="text-red-500">{errors.root.message}</div>
@@ -124,6 +123,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

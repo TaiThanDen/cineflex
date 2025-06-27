@@ -15,12 +15,14 @@ export default function MovieAdminPage() {
     isLoading: isLoadingMovies,
     error: moviesError,
     isError: isMoviesError,
+    refetch: refetchMovies,
   } = useAllMoviesData();
   // Sử dụng hook riêng để lấy chi tiết phim khi đang xem detail
   const {
     isLoading: isLoadingDetail,
     error: detailError,
     isError: isDetailError,
+    refetch: refetchDetail,
   } = useMovieDetails(id);
 
   // State quản lý popup edit episode
@@ -59,7 +61,13 @@ export default function MovieAdminPage() {
               "Không thể tải dữ liệu phim. Vui lòng thử lại."}
           </p>
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => {
+              if (id && refetchDetail) {
+                refetchDetail();
+              } else {
+                refetchMovies();
+              }
+            }}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Thử lại
@@ -77,13 +85,19 @@ export default function MovieAdminPage() {
       thumbnail: "https://via.placeholder.com/300x400",
       seasons: [
         {
+          id: "season-1", // Thêm id cho season
           seasonNumber: 1,
+          title: "Season 1", // Thêm title cho season
           episodes: [
             {
-              id: "1",
+              id: "episode-1", // ID thực cho episode
               name: "Pilot",
-              url: "https://cineflex.com/pilot",
+              title: "Pilot", // API dùng title
+              url: "pilot-episode",
               duration: "58 phút",
+              description:
+                "Walter White discovers he has cancer and decides to cook meth.",
+              number: "1", // API dùng number as string
             },
           ],
         },
@@ -104,13 +118,19 @@ export default function MovieAdminPage() {
       thumbnail: "https://via.placeholder.com/300x400",
       seasons: [
         {
+          id: "season-2", // Thêm id cho season
           seasonNumber: 1,
+          title: "Season 1", // Thêm title cho season
           episodes: [
             {
-              id: "1",
+              id: "episode-2", // ID thực cho episode
               name: "The Vanishing of Will Byers",
-              url: "https://cineflex.com/st1",
+              title: "The Vanishing of Will Byers", // API dùng title
+              url: "st-episode-1",
               duration: "47 phút",
+              description:
+                "A young boy vanishes and a small town uncovers a mystery.",
+              number: "1", // API dùng number as string
             },
           ],
         },
@@ -193,7 +213,18 @@ export default function MovieAdminPage() {
       )}
       {/* Popup chỉnh sửa tập phim */}
       {editEpisode && episodeEditData && (
-        <EditEpisodeModal episode={episodeEditData} onClose={handleCloseEdit} />
+        <EditEpisodeModal
+          episode={episodeEditData}
+          seasons={
+            movieData.find((m: any) => m.id === editEpisode.movieId)?.seasons ||
+            []
+          }
+          onClose={handleCloseEdit}
+          onUpdate={(episodeData) => {
+            console.log("Episode updated:", episodeData);
+            // Có thể refresh data hoặc update local state ở đây
+          }}
+        />
       )}
     </div>
   );
