@@ -7,6 +7,7 @@ import type { Season } from './types/Season';
 import type { Episode } from './types/Episode';
 import type { Genre } from './types/Genre';
 import type { Comment } from './types/Comment';
+import type { BillingDetail } from './types/BillingDetail';
 
 
 export const login = async (credentials: LoginCredentials) : Promise<string> => {
@@ -16,9 +17,9 @@ export const login = async (credentials: LoginCredentials) : Promise<string> => 
 }
 
 export const register = async (credentials: RegisterCredential) : Promise<string> => {
-    const account = await request.post<RegisterCredential, Account>('authentication/register', credentials);
+    const email = await request.post<RegisterCredential, string>('authentication/register', credentials);
 
-    return account.email;
+    return email;
 }
 
 export const me = async () : Promise<Account> => {
@@ -249,4 +250,16 @@ export const addGenresToShow = async (showId: string, genreIds: string[]): Promi
     );
 
     return genres;
+}
+
+export const createOrder = async () : Promise<BillingDetail> => {
+    const uri = `orders`;
+
+    return await request.post<void, BillingDetail>(uri);
+}
+
+export const getBillingDetail = async (id: string) : Promise<BillingDetail> => {
+    const uri = `orders/${id}`;
+
+    return await request.get<BillingDetail>(uri);
 }

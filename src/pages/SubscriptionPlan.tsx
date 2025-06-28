@@ -1,51 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { FaCheckCircle } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
+import { createOrder } from "@/lib/api";
 
-interface Plan {
-  name: string;
-  price: string;
-  features: string[];
-  cta: string;
-  isCurrent?: boolean;
-}
-
-const plans: Plan[] = [
-  {
-    name: "Freemium",
-    price: "$0",
-    features: [
-      "Access to almost all shows and movies",
-      "A generous amount of ads",
-      "Like a whole lot of ads",
-    ],
-    cta: "Current Plan",
-    isCurrent: true,
-  },
-  {
-    name: "Premium",
-    price: "$4.99",
-    features: [
-      "All Free plan features",
-      "Access to exclusive content",
-      "No ads at all (except for some shows)",
-    ],
-    cta: "Upgrade Now",
-  },
-];
 
 const SubscriptionPlans: React.FC = () => {
   const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: createOrder,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onSuccess(data, _variables, _context) {
+      navigate(`/checkout/${data.id}`);
+    },
+  });
 
-  const handleUpgradeClick = (plan: Plan) => {
-    navigate("/payment", {
-      state: {
-        planName: plan.name,
-        price: plan.price,
-        billingCycle: "Monthly",
-        userEmail: "user@example.com",
-      },
-    });
+  const handleUpgradeClick = async () => {
+    await mutation.mutateAsync();
   };
 
   return (
@@ -59,37 +30,65 @@ const SubscriptionPlans: React.FC = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {plans.map((plan) => (
-          <div
-            key={plan.name}
-            className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-8 border hover:text-purple-400 border-gray-700"
+        <div
+          className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-8 border hover:text-purple-400 border-gray-700"
+        >
+          <h2 className="text-2xl font-semibold mb-2">Freemium</h2>
+          <p className="text-4xl font-bold text-purple-500 mb-4">
+            0 VND
+            <span className="text-base font-normal text-gray-400"> /mo</span>
+          </p>
+          <ul className="space-y-3 mb-6">
+            <li className="flex items-center text-gray-300">
+              <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
+              Access to almost all shows and movies
+            </li>
+            <li className="flex items-center text-gray-300">
+              <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
+              A generous amount of ads
+            </li>
+            <li className="flex items-center text-gray-300">
+              <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
+              Like a whole lot of ads
+            </li>
+          </ul>
+          <button
+            disabled
+            className={`w-full py-2 rounded-lg font-medium transition bg-gray-700 text-gray-400 cursor-not-allowed`}
           >
-            <h2 className="text-2xl font-semibold mb-2">{plan.name}</h2>
-            <p className="text-4xl font-bold text-purple-500 mb-4">
-              {plan.price}
-              <span className="text-base font-normal text-gray-400"> /mo</span>
-            </p>
-            <ul className="space-y-3 mb-6">
-              {plan.features.map((feature, idx) => (
-                <li key={idx} className="flex items-center text-gray-300">
-                  <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <button
-              disabled={plan.isCurrent}
-              onClick={() => !plan.isCurrent && handleUpgradeClick(plan)}
-              className={`w-full py-2 rounded-lg font-medium transition ${
-                plan.isCurrent
-                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-purple-500 to-indigo-500 hover:opacity-90 text-white"
-              }`}
-            >
-              {plan.cta}
-            </button>
-          </div>
-        ))}
+            Current plan
+          </button>
+        </div>
+
+        <div
+          className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-8 border hover:text-purple-400 border-gray-700"
+        >
+          <h2 className="text-2xl font-semibold mb-2">Freemium</h2>
+          <p className="text-4xl font-bold text-purple-500 mb-4">
+            100,000 VND
+            <span className="text-base font-normal text-gray-400"> /mo</span>
+          </p>
+          <ul className="space-y-3 mb-6">
+            <li className="flex items-center text-gray-300">
+              <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
+              All Free plan features
+            </li>
+            <li className="flex items-center text-gray-300">
+              <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
+              Access to exclusive content
+            </li>
+            <li className="flex items-center text-gray-300">
+              <FaCheckCircle className="text-green-400 w-5 h-5 mr-2" />
+              No ads at all (except for some shows)
+            </li>
+          </ul>
+          <button
+            onClick={() => {handleUpgradeClick()}}
+            className={`w-full py-2 rounded-lg font-medium transition bg-purple-500 text-white cursor-pointer`}
+          >
+            Upgrade plan
+          </button>
+        </div>
       </div>
 
       <p className="text-center text-gray-400 mt-10">
