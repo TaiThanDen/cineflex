@@ -1,5 +1,6 @@
 import { getBillingDetail } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 
 const Checkout = () => {
@@ -11,6 +12,19 @@ const Checkout = () => {
         enabled: !!id,
         queryFn: () => getBillingDetail(id!)
     });
+
+    useEffect(()=> {
+        console.log(id);
+        // if (!id) return;
+
+        // connectWebSocket((message) => {
+        //     console.log(message);
+        // }, id);
+
+        // return () => {
+        //     disconnectWebSocket();
+        // }
+    }, [id])
 
     if (result.isLoading) return <>Loading</>
     

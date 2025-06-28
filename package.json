@@ -46,6 +46,7 @@
     "@types/aos": "^3.0.7",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
+    "@types/sockjs-client": "^1.5.4",
     "@types/swiper": "^5.4.3",
     "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.25.0",
