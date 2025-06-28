@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router";
 import MovieGrid from "../../components/admin/MovieManagerComponent/MovieGrid";
 import MovieDetail from "../../components/admin/MovieManagerComponent/MovieDetail";
 import EditEpisodeModal from "../../components/admin/MovieManagerComponent/EditEpisodeModal";
-import { useAllMoviesData, useMovieDetails } from "@/lib/hooks/useMovieData";
+import { useAllMoviesData, useMovieDetails, type MovieWithDetails } from "@/lib/hooks/useMovieData";
+import type { Episode } from "@/lib/types/Episode";
 
 export default function MovieAdminPage() {
   const navigate = useNavigate();
@@ -77,74 +78,7 @@ export default function MovieAdminPage() {
     );
   }
   // Mock data để fallback khi API không có dữ liệu
-  const initialMovieData = [
-    {
-      id: "1",
-      title: "Breaking Bad",
-      poster: "https://via.placeholder.com/300x400",
-      thumbnail: "https://via.placeholder.com/300x400",
-      seasons: [
-        {
-          id: "season-1", // Thêm id cho season
-          seasonNumber: 1,
-          title: "Season 1", // Thêm title cho season
-          episodes: [
-            {
-              id: "episode-1", // ID thực cho episode
-              name: "Pilot",
-              title: "Pilot", // API dùng title
-              url: "pilot-episode",
-              duration: "58 phút",
-              description:
-                "Walter White discovers he has cancer and decides to cook meth.",
-              number: "1", // API dùng number as string
-            },
-          ],
-        },
-      ],
-      tags: ["Drama", "Crime"],
-      genres: [
-        { id: "1", name: "Drama" },
-        { id: "2", name: "Crime" },
-        { id: "3", name: "Thriller" },
-      ],
-      description:
-        "Walter White, a chemistry teacher, discovers he has cancer and resorts to making meth.",
-    },
-    {
-      id: "2",
-      title: "Stranger Things",
-      poster: "https://via.placeholder.com/300x400",
-      thumbnail: "https://via.placeholder.com/300x400",
-      seasons: [
-        {
-          id: "season-2", // Thêm id cho season
-          seasonNumber: 1,
-          title: "Season 1", // Thêm title cho season
-          episodes: [
-            {
-              id: "episode-2", // ID thực cho episode
-              name: "The Vanishing of Will Byers",
-              title: "The Vanishing of Will Byers", // API dùng title
-              url: "st-episode-1",
-              duration: "47 phút",
-              description:
-                "A young boy vanishes and a small town uncovers a mystery.",
-              number: "1", // API dùng number as string
-            },
-          ],
-        },
-      ],
-      tags: ["Sci-Fi", "Horror"],
-      genres: [
-        { id: "4", name: "Sci-Fi" },
-        { id: "5", name: "Horror" },
-        { id: "6", name: "Mystery" },
-        { id: "7", name: "Adventure" },
-      ],
-      description:
-        "When a young boy vanishes, a small town uncovers a mystery involving secret experiments.",
-    },
+  const initialMovieData : MovieWithDetails[] = [
   ];
 
   // Sử dụng dữ liệu từ API hoặc fallback về mock data
@@ -171,11 +105,11 @@ export default function MovieAdminPage() {
     setEditEpisode(null);
   };
   // Lấy movie đang xem (nếu ở trang detail)
-  const selectedMovie = movieData.find((m: any) => m.id === id);
+  const selectedMovie = movieData.find((m: MovieWithDetails) => m.id === id);
   // Lấy tập đang edit (nếu có)
   let episodeEditData = null;
   if (editEpisode) {
-    const m = movieData.find((m: any) => m.id === editEpisode.movieId);
+    const m = movieData.find((m: MovieWithDetails) => m.id === editEpisode.movieId);
     if (m && m.seasons && m.seasons.length > editEpisode.seasonIdx) {
       const s = m.seasons[editEpisode.seasonIdx];
       if (s && s.episodes && s.episodes.length > editEpisode.episodeIdx) {
@@ -183,8 +117,7 @@ export default function MovieAdminPage() {
         // Transform dữ liệu để match với interface của EditEpisodeModal
         episodeEditData = {
           name:
-            (e as any).name ||
-            (e as any).title ||
+            (e as Episode).title ||
             `Episode ${editEpisode.episodeIdx + 1}`,
           url: e.url || "",
           duration:
@@ -216,7 +149,7 @@ export default function MovieAdminPage() {
         <EditEpisodeModal
           episode={episodeEditData}
           seasons={
-            movieData.find((m: any) => m.id === editEpisode.movieId)?.seasons ||
+            movieData.find((m: MovieWithDetails) => m.id === editEpisode.movieId)?.seasons ||
             []
           }
           onClose={handleCloseEdit}

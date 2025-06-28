@@ -44,12 +44,9 @@ const AddEpisodeModal: React.FC<Props> = ({ seasons, onClose, onAdd }) => {
     if (!formData.duration.trim()) {
       newErrors.duration = "Thời lượng là bắt buộc";
     } else {
-      // Validate duration format (e.g., "45 phút" or "1h 30m")
-      const durationPattern =
-        /^(\d+)\s*(phút|p|m|min|h|giờ)$|^(\d+h\s*\d+m?)$/i;
-      if (!durationPattern.test(formData.duration)) {
+      if (!isNaN(Number(formData.duration))) {
         newErrors.duration =
-          'Định dạng thời lượng không hợp lệ (VD: "45 phút", "1h 30m")';
+          'Định dạng thời lượng không hợp lệ';
       }
     }
 

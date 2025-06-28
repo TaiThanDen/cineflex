@@ -21,7 +21,8 @@ export const useAllMoviesData = () => {
       const shows = await getAllShows();
       
       // Với mỗi show, lấy thêm seasons và episodes
-      const moviesWithDetails = await Promise.all(        shows.map(async (show) => {
+      const moviesWithDetails = await Promise.all(
+        shows.map(async (show) => {
           try {
             // Lấy seasons cho show này
             const seasons = await getSeasonsByShowId(show.id);
