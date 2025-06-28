@@ -110,3 +110,143 @@ export const postComment = async (content: string, episode: string) : Promise<Co
 
     return comment
 }
+
+export const getAllShows = async (): Promise<Show[]> => {
+    const shows = await request.get<Show[]>('shows');
+
+    return shows;
+}
+
+// ================ EPISODE MANAGEMENT APIs ================
+
+// Thêm episode mới vào season
+export const addEpisodeToSeason = async (seasonId: string, episodeData: {
+    title: string;
+    number: string;
+    description: string;
+    url: string;
+    releaseDate: string;
+    duration: number;
+    openingStart?: number;
+    openingEnd?: number;
+}): Promise<Episode> => {
+    const episode = await request.post<typeof episodeData, Episode>(
+        `seasons/${seasonId}/episodes`, 
+        episodeData
+    );
+
+    return episode;
+}
+
+// Cập nhật episode
+export const updateEpisode = async (episodeId: string, episodeData: {
+    title: string;
+    number: string;
+    description: string;
+    url: string;
+    releaseDate: string;
+    duration: number;
+    openingStart?: number;
+    openingEnd?: number;
+}): Promise<Episode> => {
+    const episode = await request.put<typeof episodeData, Episode>(
+        `episodes/${episodeId}`, 
+        episodeData
+    );
+
+    return episode;
+}
+
+// Xóa episode
+export const deleteEpisode = async (episodeId: string): Promise<void> => {
+    await request.del<void>(`episodes/${episodeId}`);
+}
+
+// ================ SEASON MANAGEMENT APIs ================
+
+// Thêm season mới vào show
+export const addSeasonToShow = async (showId: string, seasonData: {
+    title: string;
+    releaseDate: string;
+    description: string;
+}): Promise<Season> => {
+    const season = await request.post<typeof seasonData, Season>(
+        `shows/${showId}/seasons`, 
+        seasonData
+    );
+
+    return season;
+}
+
+// Cập nhật season
+export const updateSeason = async (seasonId: string, seasonData: {
+    title: string;
+    releaseDate: string;
+    description: string;
+    show?: string;
+}): Promise<Season> => {
+    const season = await request.put<typeof seasonData, Season>(
+        `seasons/${seasonId}`, 
+        seasonData
+    );
+
+    return season;
+}
+
+// Xóa season
+export const deleteSeason = async (seasonId: string): Promise<void> => {
+    await request.del<void>(`seasons/${seasonId}`);
+}
+
+// ================ SHOW MANAGEMENT APIs ================
+
+// Thêm show mới
+export const addShow = async (showData: {
+    title: string;
+    description: string;
+    releaseDate: string;
+    thumbnail: string;
+    onGoing: boolean;
+    isSeries: boolean;
+    ageRating: string;
+}): Promise<Show> => {
+    const show = await request.post<typeof showData, Show>(
+        'shows', 
+        showData
+    );
+
+    return show;
+}
+
+// Cập nhật show
+export const updateShow = async (showId: string, showData: {
+    title: string;
+    description: string;
+    releaseDate: string;
+    thumbnail: string;
+    onGoing: boolean;
+    isSeries: boolean;
+    ageRating: string;
+}): Promise<Show> => {
+    const show = await request.put<typeof showData, Show>(
+        `shows/${showId}`, 
+        showData
+    );
+
+    return show;
+}
+
+// Xóa show
+export const deleteShow = async (showId: string): Promise<void> => {
+    await request.del<void>(`shows/${showId}`);
+}
+
+// Thêm genres cho show
+export const addGenresToShow = async (showId: string, genreIds: string[]): Promise<Genre[]> => {
+    const genres = await request.post<{ genres: string[] }, Genre[]>(
+        `shows/${showId}/genres`, 
+        { genres: genreIds }
+    );
+
+    return genres;
+}
