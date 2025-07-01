@@ -5,11 +5,14 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
-    "types": ["node"],
+    "esModuleInterop": true,
+    "types": ["node", "cypress"],
     "paths": {
       "@/*": ["./*"]
     }
-  },
-  
+  }
 }
