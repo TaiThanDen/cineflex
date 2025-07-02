@@ -17,13 +17,18 @@ const PopularHeroBanner = ({ shows }: props) => {
     };
 
     return (
-        <HeroBanner item={selected}>
-            <PopularSection
-                items={shows}
-                selectedTitle={selected.title}
-                onSelect={handleSelect}
-            />
-        </HeroBanner>
+        <>
+            {selected && 
+            <HeroBanner item={selected}>
+                <PopularSection
+                    items={shows}
+                    selectedTitle={selected.title}
+                    onSelect={handleSelect}
+                />
+
+            </HeroBanner>
+            }
+        </>
     );
 }
 

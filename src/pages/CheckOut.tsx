@@ -1,11 +1,17 @@
 import { getBillingDetail } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
+import { toast } from "react-toastify";
+
 
 const Checkout = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const stompClientRef = useRef<Client | null>(null);
+    
 
     const result = useQuery({
         queryKey: ["order", id!],
@@ -14,7 +20,30 @@ const Checkout = () => {
     });
 
     useEffect(()=> {
-        console.log(id);
+        if (!id) return;
+        const socket = new SockJS(`${(import.meta.env.VITE_WEBSOCKET_APU_URL ?? "http://localhost:8080/ws")}`);
+        const stompClient = new Client({
+            webSocketFactory: () => socket,
+            reconnectDelay: 5000,
+            debug: (str) => {
+                console.log(str);
+            },
+            onConnect: () => {
+                console.log('Connected to WebSocket');
+                stompClient.subscribe(`/bill.${id}`, (response) => {
+                    if (response.body === 'PAID') {
+                        toast("Thanh toán thành công, cảm ơn bạn đã ủng hộ!;");
+                        navigate("/home");
+                    }
+                });
+            },
+            onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+            },
+        });
+        stompClient.activate();
+        stompClientRef.current = stompClient;
         // if (!id) return;
 
         // connectWebSocket((message) => {
@@ -24,6 +53,10 @@ const Checkout = () => {
         // return () => {
         //     disconnectWebSocket();
         // }
+
+        return () => {
+            stompClient.deactivate();
+        };
     }, [id])
 
     if (result.isLoading) return <>Loading</>

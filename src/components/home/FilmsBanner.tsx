@@ -9,7 +9,10 @@ const FilmsBanner = () => {
     });
 
     if (result.isLoading) return <>Loading</>
-    if (result.isError) return <>Error</>
+    if (result.isError) {
+        console.log(result.error);
+        return <>Error</>
+    }
 
     return <Banner shows={result.data!} />
 }
