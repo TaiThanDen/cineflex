@@ -81,7 +81,7 @@ const CommentSection = ({ id } : props) => {
         return;
       }
 
-      if (e.status === 401) {
+      if (e.status === 403) {
         toast('Vui lòng đăng nhập để comment');
       }
     }
