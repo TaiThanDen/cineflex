@@ -12,10 +12,8 @@ describe('Responsive Test - CineFlex', () => {
       cy.viewport(width, height)
       cy.visit('/')
 
-      // ✅ Kiểm tra thanh tìm kiếm
       cy.get('input[placeholder="Search for what you want to watch"]').should('be.visible')
 
-      // ✅ Kiểm tra tiêu đề phim nổi bật (ẩn trên mobile thì chỉ kiểm tra tồn tại)
       if (label === 'Mobile') {
         cy.contains('Desperate Mrs. Seonju').should('exist')
       } else {
@@ -24,15 +22,12 @@ describe('Responsive Test - CineFlex', () => {
             .should('be.visible')
       }
 
-      // ✅ Kiểm tra logo hoặc tiêu đề
       cy.contains('CINEFLEX').should('exist')
 
-      // ✅ Kiểm tra có nút toggle/menu trên Mobile
       if (label === 'Mobile') {
         cy.get('button, svg').should('exist')
       }
 
-      // ✅ Kiểm tra có menu/side/footer trên các thiết bị
       cy.get('nav, footer, aside').should('exist')
     })
   })

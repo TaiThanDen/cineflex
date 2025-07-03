@@ -10,11 +10,9 @@ describe('Tìm kiếm phim - CineFlex', () => {
   })
 
   it('Tìm kiếm phim có kết quả', () => {
-    // Gõ "Inception" vào ô tìm kiếm
     cy.get('input[placeholder="Search for what you want to watch"]')
         .type('Inception')
 
-    // Kiểm tra kết quả chứa "Inception"
     cy.contains('Inception', { timeout: 5000 }).should('exist')
   })
 
@@ -23,7 +21,6 @@ describe('Tìm kiếm phim - CineFlex', () => {
         .clear()
         .type('KhôngCóPhimNày123')
 
-    // Kiểm tra có thông báo không tìm thấy hoặc không có kết quả
     cy.contains(/không tìm thấy|no results|not found/i).should('exist')
   })
 })
