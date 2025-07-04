@@ -8,6 +8,7 @@ import type { Episode } from './types/Episode';
 import type { Genre } from './types/Genre';
 import type { Comment } from './types/Comment';
 import type { BillingDetail } from './types/BillingDetail';
+import type { Subscription } from './types/Subscription';
 
 
 export const login = async (credentials: LoginCredentials) : Promise<string> => {
@@ -262,4 +263,26 @@ export const getBillingDetail = async (id: string) : Promise<BillingDetail> => {
     const uri = `orders/${id}`;
 
     return await request.get<BillingDetail>(uri);
+}
+
+export const getUserRole = async () : Promise<number> => {
+    const uri = `authentication/role`;
+
+    return await request.get<number>(uri);
+}
+
+export const getCurrentUserSubscription = async () : Promise<Subscription> => {
+    const uri = `users/subscription`;
+
+    return await request.get<Subscription>(uri);
+}
+
+export const isCurrentUserHasSubscription = async () : Promise<boolean> => {
+    const subscription: Subscription = await getCurrentUserSubscription();
+
+    return isObjectEmpty(subscription);
+}
+
+const isObjectEmpty = <T>(object: T) : boolean => {
+    return JSON.stringify(object) !== '{}';
 }

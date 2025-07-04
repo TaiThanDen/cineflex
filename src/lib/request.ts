@@ -19,13 +19,26 @@ export const get = async <T>(
         headers: headers,
         method: "GET",
     });
+    // If there's no content, return an empty object
+    if (response.status === 204) return {} as T;
+
+    const contentType = response.headers.get("Content-Type");
 
     if (!response.ok) {
         const error = await response.text();
         throw new ApiException(response.status, error);
     }
 
-    return (response.json() ?? {}) as Promise<T>;
+    if (contentType?.includes("application/json")) {
+        return (await response.json()) as T;
+    } else if (contentType?.includes("text/")) {
+        return (await response.text()) as T;
+    } else if (contentType?.includes("application/octet-stream") || contentType?.includes("blob")) {
+        return (await response.blob()) as T;
+    } else {
+        // fallback for unknown types
+        return (await response.text()) as T;
+    }
 };
 
 export const post = async <TRequest, TResponse>(
