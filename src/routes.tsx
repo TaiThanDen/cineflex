@@ -14,7 +14,7 @@ import Profile from "./pages/profile";
 import Continue from "./pages/continue";
 import WatchFilm from "./pages/WatchFilm";
 import SubscriptionPlan from "./pages/SubscriptionPlan";
-import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
+// import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 import AdminPage from "./pages/admin/admin";
 import MovieAdminPage from "./pages/admin/MovieAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
@@ -22,11 +22,15 @@ import LayoutAdmin from "./layout/LayoutAdmin";
 import Landing from "./pages/landing.tsx";
 import MailVerify from "./pages/mail-verify.tsx";
 import Checkout from "./pages/CheckOut.tsx";
+import AuthGuard from "./lib/route-guard/AuthGuard.tsx";
+import AdminGuard from "./lib/route-guard/AdminGuard.tsx";
+
+
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation(); // Thêm dòng này
+  const location = useLocation();
 
   const isWatchPage =
     matchPath("/watch/:id", location.pathname) ||
@@ -66,23 +70,47 @@ const AppRoutes = () => {
                 path="/preview/:id"
                 element={<PreviewFilm />}
               />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/continue" element={<Continue />} />
+              <Route path="/login" element={
+                <AuthGuard type="no">
+                  <Login />
+                </AuthGuard>
+              } />
+              <Route path="/register" element={
+                <AuthGuard type="no">
+                  <Register />
+                </AuthGuard>
+              } />
+              <Route path="/profile" element={
+                <AuthGuard>
+                  <Profile />
+                </AuthGuard>
+              } />
+              <Route path="/continue" element={
+              <AuthGuard>
+                <Continue />
+              </AuthGuard>} />
               <Route path="/watch/:id" element={<WatchFilm />} />
-              <Route path="/plans" element={<SubscriptionPlan />} />
+              <Route path="/plans" element={
+                <AuthGuard>
+                  <SubscriptionPlan />
+                </AuthGuard>
+              } />
               <Route path="/verify" element={<MailVerify />} />
-              <Route path="/payment" element={<PlanPaymentConfirm />} />
-              <Route path="/checkout/:id" element={<Checkout />} />
+              {/* <Route path="/payment" element={<PlanPaymentConfirm />} /> */}
+              <Route path="/checkout/:id" element={
+                <AuthGuard>
+                  <Checkout />
+                </AuthGuard>
+              } />
               {/* Route admin bọc bằng LayoutAdmin */}
               <Route
                 path="/admin"
                 element={
-                  <LayoutAdmin>
-                    {" "}
-                    <Outlet />{" "}
-                  </LayoutAdmin>
+                  <AdminGuard allowed={[1,2]}>
+                    <LayoutAdmin>
+                      <Outlet />
+                    </LayoutAdmin>
+                  </AdminGuard>
                 }
               >
 
@@ -91,8 +119,9 @@ const AppRoutes = () => {
                   <Route path=":id" element={<MovieAdminPage />} />
                 </Route>
                 {/* Thêm các route admin khác ở đây */}
-                <Route path="users" element={<UserAdminPage />} />
-                <Route path="users/:id" element={<UserAdminPage />} />
+                <Route path="users" element={<UserAdminPage />} >
+                  <Route path=":id" element={<UserAdminPage />} />
+                </Route>
               </Route>
             </Routes>
             <Footer />

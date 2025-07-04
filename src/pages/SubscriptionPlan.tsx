@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import { FaCheckCircle } from "react-icons/fa";
-import { useMutation } from "@tanstack/react-query";
-import { createOrder } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createOrder, isCurrentUserHasSubscription } from "@/lib/api";
 
 
 const SubscriptionPlans: React.FC = () => {
@@ -14,6 +14,18 @@ const SubscriptionPlans: React.FC = () => {
       navigate(`/checkout/${data.id}`);
     },
   });
+
+  const subscriptionResult = useQuery({
+    queryKey: ["user-subscription"],
+    queryFn: () => isCurrentUserHasSubscription()
+  });
+
+  if (subscriptionResult.isLoading) return <>Loading</>
+
+  if (subscriptionResult.isError) {
+    navigate('/home');
+  }
+
 
   const handleUpgradeClick = async () => {
     await mutation.mutateAsync();
@@ -52,18 +64,19 @@ const SubscriptionPlans: React.FC = () => {
               Like a whole lot of ads
             </li>
           </ul>
+          {!(subscriptionResult.data!) &&
           <button
             disabled
             className={`w-full py-2 rounded-lg font-medium transition bg-gray-700 text-gray-400 cursor-not-allowed`}
           >
             Current plan
-          </button>
+          </button>}
         </div>
 
         <div
           className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-8 border hover:text-purple-400 border-gray-700"
         >
-          <h2 className="text-2xl font-semibold mb-2">Freemium</h2>
+          <h2 className="text-2xl font-semibold mb-2">Premium</h2>
           <p className="text-4xl font-bold text-purple-500 mb-4">
             100,000 VND
             <span className="text-base font-normal text-gray-400"> /mo</span>
@@ -83,10 +96,11 @@ const SubscriptionPlans: React.FC = () => {
             </li>
           </ul>
           <button
+            disabled={subscriptionResult.data!}
             onClick={() => {handleUpgradeClick()}}
-            className={`w-full py-2 rounded-lg font-medium transition bg-purple-500 text-white cursor-pointer`}
+            className={`w-full py-2 rounded-lg disabled:cursor-not-allowed font-medium transition disabled:bg-gray-700 bg-purple-500 text-white cursor-pointer`}
           >
-            Upgrade plan
+            {subscriptionResult.data! ? 'Current plan': 'Upgrade plan'}
           </button>
         </div>
       </div>
@@ -95,12 +109,6 @@ const SubscriptionPlans: React.FC = () => {
         100% secure payment method with{" "}
         <strong className="text-purple-500">NO</strong> money back guarantee.
       </p>
-
-      <div className="flex justify-center mt-6">
-        <button className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:opacity-90 text-white font-semibold px-8 py-3 rounded-xl">
-          Upgrade Now
-        </button>
-      </div>
     </div>
   );
 };
