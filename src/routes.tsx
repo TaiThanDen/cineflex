@@ -24,6 +24,7 @@ import MailVerify from "./pages/mail-verify.tsx";
 import Checkout from "./pages/CheckOut.tsx";
 import AuthGuard from "./lib/route-guard/AuthGuard.tsx";
 import AdminGuard from "./lib/route-guard/AdminGuard.tsx";
+import SearchResults from "./pages/SearchResults";
 
 
 const AppRoutes = () => {
@@ -66,6 +67,7 @@ const AppRoutes = () => {
               <Route path="/" element={<Landing />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
+              <Route path="/search" element={<SearchResults />} />
               <Route
                 path="/preview/:id"
                 element={<PreviewFilm />}
