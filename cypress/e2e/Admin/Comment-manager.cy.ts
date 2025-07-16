@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('MovieDetail - Giao diện quản lý bình luận', () => {
+describe('CommentMovieDetail - Giao diện quản lý bình luận', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5173/admin/movies/1');
   });

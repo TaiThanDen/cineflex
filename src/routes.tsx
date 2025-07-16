@@ -18,84 +18,87 @@ import SubscriptionPlan from "./pages/SubscriptionPlan";
 import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 import AdminPage from "./pages/admin/admin";
 import MovieAdminPage from "./pages/admin/MovieAdminPage";
-import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
+import UserAdminPage from "./pages/admin/UserAdminPage.tsx";
 import LayoutAdmin from "./layout/LayoutAdmin";
+import LayoutModerator from "./layout/LayoutModerator";
+import CommentModeratorPage from "@/pages/moderator/CommentModeratorPage.tsx"; // <- bạn cần tạo file này nếu chưa có
+import AllCommentsPage from "./components/moderator/AllCommentManagement/AllCommentPage.tsx";
+import ReportsPage from "./components/moderator/ReportComment/ReportsPage.tsx";
+
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation(); // Thêm dòng này
+  const location = useLocation();
 
   const isWatchPage =
-    matchPath("/watch/:id", location.pathname) ||
-    location.pathname === "/watch";
+      matchPath("/watch/:id", location.pathname) ||
+      location.pathname === "/watch";
+
   const isAdminPage = location.pathname.startsWith("/admin");
+  const isModeratorPage = location.pathname.startsWith("/moderator");
 
   return (
-    <div className="w-full h-screen">
-      <div className="flex h-full w-screen">
-        {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
-        {!isMobile && !isAdminPage && (!isWatchPage || scrolled) && (
-          <VerticalSidebar />
-        )}
-        <div
-          ref={containerRef}
-          className="w-full scrollbar-hide h-full overflow-y-auto relative"
-          onScroll={() => {
-            const container = containerRef.current;
-            if (!container) return;
+      <div className="w-full h-screen">
+        <div className="flex h-full w-screen">
+          {!isMobile && !isAdminPage && !isModeratorPage && (!isWatchPage || scrolled) && (
+              <VerticalSidebar />
+          )}
 
-            setScrolled(container.scrollTop > 100);
-          }}
-        >
-          {/* Chỉ render Navbar khi KHÔNG phải trang /watch, hoặc đã scroll ở /watch */}
-          {!isAdminPage && (location.pathname !== "/watch" || scrolled) ? (
-            <Navbar scrolled={scrolled} />
-          ) : null}
-          {/* Hide VerticalSidebar on mobile */}
-          <div className="absolute top-0 left-0 w-full h-max">
-            <Routes>
-              {/* Các route public */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/ads" element={<AdsPage />} />
-              <Route
-                path="/preview/:id"
-                element={isMobile ? <MobilePreviewFilm /> : <PreviewFilm />}
-              />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/continue" element={<Continue />} />
-              <Route path="/watch" element={<WatchFilm />} />
-              <Route path="/plans" element={<SubscriptionPlan />} />
-              <Route path="/payment" element={<PlanPaymentConfirm />} />
-              {/* Route admin bọc bằng LayoutAdmin */}
-              <Route
-                path="/admin"
-                element={
-                  <LayoutAdmin>
-                    {" "}
-                    <Outlet />{" "}
-                  </LayoutAdmin>
-                }
-              >
+          <div
+              ref={containerRef}
+              className="w-full scrollbar-hide h-full overflow-y-auto relative"
+              onScroll={() => {
+                const container = containerRef.current;
+                if (!container) return;
+                setScrolled(container.scrollTop > 100);
+              }}
+          >
+            {!isAdminPage && !isModeratorPage && (location.pathname !== "/watch" || scrolled) && (
+                <Navbar scrolled={scrolled} />
+            )}
 
-                <Route path="dashboard" element={<AdminPage />} />
-                <Route path="movies" element={<MovieAdminPage />}>
-                  <Route path=":id" element={<MovieAdminPage />} />
+            <div className="absolute top-0 left-0 w-full h-max">
+              <Routes>
+                {/* Public routes */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/ads" element={<AdsPage />} />
+                <Route
+                    path="/preview/:id"
+                    element={isMobile ? <MobilePreviewFilm /> : <PreviewFilm />}
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/continue" element={<Continue />} />
+                <Route path="/watch" element={<WatchFilm />} />
+                <Route path="/plans" element={<SubscriptionPlan />} />
+                <Route path="/payment" element={<PlanPaymentConfirm />} />
+
+                {/* Admin routes */}
+                <Route path="/admin" element={<LayoutAdmin><Outlet /></LayoutAdmin>}>
+                  <Route path="dashboard" element={<AdminPage />} />
+                  <Route path="movies" element={<MovieAdminPage />} />
+                  <Route path="movies/:id" element={<MovieAdminPage />} />
+                  <Route path="users" element={<UserAdminPage />} />
+                  <Route path="users/:id" element={<UserAdminPage />} />
                 </Route>
-                {/* Thêm các route admin khác ở đây */}
-                <Route path="users" element={<UserAdminPage />} />
-                <Route path="users/:id" element={<UserAdminPage />} />
-              </Route>
-            </Routes>
-            <Footer />
+
+                {/* ✅ Moderator routes */}
+                <Route path="/moderator" element={<LayoutModerator><Outlet /></LayoutModerator>}>
+                  <Route path="/moderator/comment/:id" element={<CommentModeratorPage />} />
+                  <Route path="/moderator/comment" element={<CommentModeratorPage />} />
+                  <Route path="/moderator/all-comments" element={<AllCommentsPage />} />
+                  <Route path="/moderator/reports" element={<ReportsPage />} />
+                </Route>
+              </Routes>
+              <Footer />
+            </div>
+
+            {isMobile && !isAdminPage && !isModeratorPage && <MobileBottomSidebar />}
           </div>
-          {/* Chỉ render MobileBottomSidebar khi KHÔNG phải trang admin */}
-          {isMobile && !isAdminPage && <MobileBottomSidebar />}
         </div>
       </div>
-    </div>
   );
 };
 

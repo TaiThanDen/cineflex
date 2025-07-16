@@ -118,7 +118,6 @@ const MovieDetail: React.FC<Props> = ({ movie, onBack, onEditEpisode }) => {
               {cmt.status === "hiện" ? "Hiện" : "Ẩn"}
             </span>
                           </td>
-
                           {/* Hành động */}
                           <td className="py-2 px-3 flex gap-2">
                             {cmt.status === "hiện" ? (

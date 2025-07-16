@@ -1,30 +1,28 @@
 import React from "react";
 import {
-  LuLayoutDashboard,
-  LuUsers,
   LuLifeBuoy,
   LuLogOut,
 } from "react-icons/lu";
-import { MdMovie } from "react-icons/md";
+import {MdComment, MdReport } from "react-icons/md";
 import Logo from "../../../assets/img/logo.png";
 import { Link, useLocation } from "react-router-dom";
 
 const navItems = [
-  {
-    label: "Thống kê",
-    icon: <LuLayoutDashboard size={18} />,
-    to: "/admin/dashboard",
-  },
-  {
-    label: "Quản lý phim",
-    icon: <MdMovie size={18} />,
-    to: "/admin/movies",
-  },
-  {
-    label: "Quản lý người dùng",
-    icon: <LuUsers size={18} />,
-    to: "/admin/users",
-  },
+    {
+        label: "Tất cả bình luận",
+        icon: <MdComment size={18} />,
+        to: "/moderator/all-comments",
+    },
+    {
+        label: "Tố cáo",
+        icon: <MdReport size={18} />,
+        to: "/moderator/reports",
+    },
+    {
+        label: "Quản lý bình luận",
+        icon: <MdComment size={18} />,
+        to: "/moderator/comment",
+    },
 ];
 
 const VerticalSidebar: React.FC = () => {
