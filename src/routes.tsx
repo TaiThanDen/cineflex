@@ -24,6 +24,11 @@ import MailVerify from "./pages/mail-verify.tsx";
 import Checkout from "./pages/CheckOut.tsx";
 import AuthGuard from "./lib/route-guard/AuthGuard.tsx";
 import AdminGuard from "./lib/route-guard/AdminGuard.tsx";
+import CommentModeratorPage from "@/pages/moderator/CommentModeratorPage.tsx";
+import AllCommentsPage from "@/components/moderator/AllCommentManagement/AllCommentPage.tsx";
+import ReportsPage from "@/components/moderator/ReportComment/ReportsPage.tsx";
+import LayoutModerator from "@/layout/LayoutModerator.tsx";
+
 
 
 const AppRoutes = () => {
@@ -36,13 +41,14 @@ const AppRoutes = () => {
     matchPath("/watch/:id", location.pathname) ||
     location.pathname === "/watch";
   const isAdminPage = location.pathname.startsWith("/admin");
+  const isModeratorPage = location.pathname.startsWith("/moderator");
   const isLandingPage = location.pathname === "/";
 
   return (
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
         {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
-        {!isMobile && !isAdminPage && !isLandingPage && (!isWatchPage || scrolled) && (
+        {!isMobile && !isAdminPage && !isModeratorPage && !isLandingPage && (!isWatchPage || scrolled) && (
           <VerticalSidebar />
         )}
         <div
@@ -56,7 +62,7 @@ const AppRoutes = () => {
           }}
         >
           {/* Chỉ render Navbar khi KHÔNG phải trang /watch, hoặc đã scroll ở /watch */}
-          {!isAdminPage && (location.pathname !== "/watch" || scrolled) ? (
+          {!isAdminPage && !isModeratorPage && (location.pathname !== "/watch" || scrolled) ? (
             <Navbar scrolled={scrolled} />
           ) : null}
           {/* Hide VerticalSidebar on mobile */}
@@ -141,7 +147,7 @@ const AppRoutes = () => {
             <Footer />
           </div>
           {/* Chỉ render MobileBottomSidebar khi KHÔNG phải trang admin */}
-          {isMobile && !isAdminPage && <MobileBottomSidebar />}
+          {isMobile &&  !isModeratorPage && !isAdminPage && <MobileBottomSidebar />}
         </div>
       </div>
     </div>
