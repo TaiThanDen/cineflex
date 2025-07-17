@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FaSearch, FaBars } from "react-icons/fa";
 import NavLink from "./NavLink";
-import DropDown from "./DropDown";
-import { unifiedData } from "../data/mockdata"; // adjust path as needed
+import DropDown from "./DropDown"; // adjust path as needed
 
 interface props {
   scrolled: boolean;
@@ -11,14 +10,20 @@ interface props {
 
 const Navbar = ({ scrolled }: props) => {
   const [search, setSearch] = useState("");
-  const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
 
-  // Use unifiedData for searching
-  const filteredFilms = unifiedData.filter(
-    (film) =>
-      film.title.toLowerCase().includes(search.toLowerCase()) ||
-      (film.title && film.title.toLowerCase().includes(search.toLowerCase()))
-  );
+  const handleSubmit = () => {
+    const trimmed = search.trim();
+    if (trimmed) {
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
 
   return (
     <nav
@@ -34,54 +39,22 @@ const Navbar = ({ scrolled }: props) => {
       >
         CINEFLEX
       </Link>
-      <div className="w-full h-full m-2 relative">
+      <div className="w-[50%] relative m-2">
         <div className="relative flex gap-4">
           <input
-            className="w-full bg-transparent placeholder:text-slate-400 text-white text-sm border border-slate-200 rounded-md pl-3 pr-28 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+            className="w-full bg-transparent placeholder:text-slate-400 text-white text-sm border border-slate-200 rounded-md pl-3 pr-10 py-2 focus:outline-none"
             placeholder="Search for what you want to watch"
             value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setShowResults(e.target.value.length > 0);
-            }}
-            onFocus={() => setShowResults(search.length > 0)}
-            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
-          <button className="text-white">
+          <button
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-white"
+            onClick={handleSubmit}
+          >
             <FaSearch />
           </button>
         </div>
-        {showResults && (
-          <div className="absolute left-0 top-12 w-full bg-[#23263a] rounded shadow-lg z-50 max-h-96 overflow-y-auto">
-            <div className="p-3 border-b border-gray-700 text-sm text-gray-300 font-semibold">
-              Danh sách phim
-            </div>
-            {filteredFilms.length === 0 ? (
-              <div className="p-3 text-gray-400">Không tìm thấy phim</div>
-            ) : (
-              filteredFilms.map((film) => (
-                <Link
-                  to={`/preview/${film.id}`}
-                  key={film.id}
-                  className="flex items-center gap-3 px-3 py-2 hover:bg-[#2f3147] transition"
-                >
-                  <img
-                    src={film.thumbnail}
-                    alt={film.title}
-                    className="w-12 h-16 object-cover rounded"
-                  />
-                  <div>
-                    <div className="font-bold text-white">{film.title}</div>
-                    <div className="text-xs text-gray-400">{film.title}</div>
-                    <div className="text-xs text-gray-400">
-                      {film.releaseDate} • {film.ageRating}
-                    </div>
-                  </div>
-                </Link>
-              ))
-            )}
-          </div>
-        )}
       </div>
       <ul className="items-cente justify-center pl-5 space-x-8 hidden lg:flex flex-auto flex-row w-full">
         <NavLink path="/">Phim lẻ</NavLink>
