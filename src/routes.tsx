@@ -123,6 +123,20 @@ const AppRoutes = () => {
                   <Route path=":id" element={<UserAdminPage />} />
                 </Route>
               </Route>
+              {/* Moderator routes */}
+              <Route
+                  path="/moderator"
+                  element={
+                    <LayoutModerator>
+                      <Outlet />
+                    </LayoutModerator>
+                  }
+              >
+                <Route path="comment/:id" element={<CommentModeratorPage />} />
+                <Route path="comment" element={<CommentModeratorPage />} />
+                <Route path="all-comments" element={<AllCommentsPage />} />
+                <Route path="reports" element={<ReportsPage />} />
+              </Route>
             </Routes>
             <Footer />
           </div>
