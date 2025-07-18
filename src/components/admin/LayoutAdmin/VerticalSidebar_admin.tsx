@@ -10,6 +10,7 @@ import {
   LuLogOut,
 } from "react-icons/lu";
 import { MdMovie } from "react-icons/md";
+import { FaBullhorn } from "react-icons/fa";
 import Logo from "../../../assets/img/logo.png";
 import { Link, useLocation } from "react-router";
 
@@ -25,9 +26,9 @@ const navItems = [
     to: "/admin/movies",
   },
   {
-    label: "Manage Quiz",
-    icon: <LuListChecks size={18} />,
-    // to: "/admin/quiz", // Thêm đường dẫn nếu có
+    label: "Manage Ads",
+    icon: <FaBullhorn size={18} />,
+    to: "/admin/ads",
   },
   {
     label: "Manage Users",
@@ -38,11 +39,6 @@ const navItems = [
     label: "Subscription",
     icon: <LuCreditCard size={18} />,
     // to: "/admin/subscription",
-  },
-  {
-    label: "Content Moderation",
-    icon: <LuShieldCheck size={18} />,
-    // to: "/admin/moderation",
   },
   {
     label: "Settings",

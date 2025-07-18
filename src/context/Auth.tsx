@@ -4,7 +4,7 @@ import { createContext } from "react";
 
 const Auth = createContext({
     auth: '',
-    setAuth: (_: string) => {}
+    setAuth: (_: string) => { }
 });
 
 export default Auth;

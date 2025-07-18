@@ -33,7 +33,7 @@ const SubscriptionPlans: React.FC = () => {
         <div
           className="bg-[#1e1e2f] text-white rounded-2xl shadow-lg p-8 border hover:text-purple-400 border-gray-700"
         >
-          <h2 className="text-2xl font-semibold mb-2">Freemium</h2>
+          <h2 className="text-2xl font-semibold mb-2">Basic</h2>
           <p className="text-4xl font-bold text-purple-500 mb-4">
             0 VND
             <span className="text-base font-normal text-gray-400"> /mo</span>
@@ -83,7 +83,7 @@ const SubscriptionPlans: React.FC = () => {
             </li>
           </ul>
           <button
-            onClick={() => {handleUpgradeClick()}}
+            onClick={() => { handleUpgradeClick() }}
             className={`w-full py-2 rounded-lg font-medium transition bg-purple-500 text-white cursor-pointer`}
           >
             Upgrade plan

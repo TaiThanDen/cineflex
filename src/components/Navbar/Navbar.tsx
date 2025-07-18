@@ -22,11 +22,10 @@ const Navbar = ({ scrolled }: props) => {
 
   return (
     <nav
-      className={`flex flex-row w-full transition-all duration-300 ease-in-out sticky left-0 top-0 text-white z-20 h-15 ${
-        scrolled
-          ? "bg-[#2f3147]"
-          : "bg-gradient-to-b from-[#23263a] to-transparent"
-      }`}
+      className={`flex flex-row w-full transition-all duration-300 ease-in-out sticky left-0 top-0 text-white z-20 h-15 ${scrolled
+        ? "bg-[#2f3147]"
+        : "bg-gradient-to-b from-[#23263a] to-transparent"
+        }`}
     >
       <Link
         to="/"

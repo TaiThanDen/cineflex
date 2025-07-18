@@ -18,10 +18,10 @@ import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 import AdminPage from "./pages/admin/admin";
 import MovieAdminPage from "./pages/admin/MovieAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
+import AdAdminPage from "./pages/admin/AdAdminPage";
 import LayoutAdmin from "./layout/LayoutAdmin";
 import Landing from "./pages/landing.tsx";
 import MailVerify from "./pages/mail-verify.tsx";
-import Checkout from "./pages/CheckOut.tsx";
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +74,6 @@ const AppRoutes = () => {
               <Route path="/plans" element={<SubscriptionPlan />} />
               <Route path="/verify" element={<MailVerify />} />
               <Route path="/payment" element={<PlanPaymentConfirm />} />
-              <Route path="/checkout/:id" element={<Checkout />} />
               {/* Route admin bọc bằng LayoutAdmin */}
               <Route
                 path="/admin"
@@ -90,6 +89,7 @@ const AppRoutes = () => {
                 <Route path="movies" element={<MovieAdminPage />}>
                   <Route path=":id" element={<MovieAdminPage />} />
                 </Route>
+                <Route path="ads" element={<AdAdminPage />} />
                 {/* Thêm các route admin khác ở đây */}
                 <Route path="users" element={<UserAdminPage />} />
                 <Route path="users/:id" element={<UserAdminPage />} />

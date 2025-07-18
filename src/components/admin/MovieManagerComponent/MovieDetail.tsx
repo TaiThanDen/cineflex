@@ -145,48 +145,12 @@ const MovieDetail: React.FC<Props> = ({
     }
 
     try {
-      // Chiến lược 1: Thử xóa trực tiếp phim (backend sẽ xử lý cascade)
       await deleteShowAsync(movie.id);
       alert("Xóa phim thành công!");
       onBack(); // Quay lại danh sách
-      
     } catch (error) {
       console.error("Lỗi khi xóa phim:", error);
-      
-      // Parse error message từ API response
-      let errorMessage = "Có lỗi xảy ra khi xóa phim!";
-      let shouldRetryWithCascade = false;
-      
-      if (error instanceof Error) {
-        try {
-          // Thử parse JSON error message từ backend
-          const errorData = JSON.parse(error.message);
-          if (errorData.detail) {
-            errorMessage = errorData.detail;
-            // Kiểm tra nếu lỗi do foreign key constraints
-            if (errorData.detail.includes("Cannot delete") || errorData.detail.includes("foreign key")) {
-              shouldRetryWithCascade = true;
-            }
-          } else if (errorData.title) {
-            errorMessage = errorData.title;
-          }
-        } catch (parseError) {
-          // Nếu không parse được JSON, sử dụng message gốc
-          errorMessage = error.message;
-          // Kiểm tra một số lỗi phổ biến
-          if (error.message.includes("500") || error.message.includes("Cannot delete")) {
-            shouldRetryWithCascade = true;
-          }
-        }
-      }
-
-      // Hiển thị lỗi chi tiết với gợi ý giải pháp
-      if (shouldRetryWithCascade) {
-        const retryMessage = `Lỗi: ${errorMessage}\n\nLỗi này thường xảy ra khi phim có dữ liệu liên quan (seasons/episodes).\n\nGợi ý giải pháp:\n1. Xóa tất cả tập phim trong phim trước\n2. Xóa tất cả mùa phim trước\n3. Sau đó mới xóa phim\n\nHoặc liên hệ admin để xử lý cascade delete trên backend.`;
-        alert(retryMessage);
-      } else {
-        alert(`Lỗi: ${errorMessage}\n\nVui lòng thử lại hoặc liên hệ admin.`);
-      }
+      alert("Có lỗi xảy ra khi xóa phim!");
     }
   };
 
@@ -354,8 +318,8 @@ const MovieDetail: React.FC<Props> = ({
                         <td className="py-2 px-3">
                           <span
                             className={`px-2 py-1 rounded text-xs font-semibold ${cmt.status === "hiện"
-                                ? "bg-green-100 text-green-600"
-                                : "bg-gray-200 text-gray-600"
+                              ? "bg-green-100 text-green-600"
+                              : "bg-gray-200 text-gray-600"
                               }`}
                           >
                             {cmt.status === "hiện" ? "Hiện" : "Ẩn"}
@@ -531,22 +495,7 @@ const MovieDetail: React.FC<Props> = ({
         {showDeleteMovieModal && (
           <ConfirmDeleteModal
             title="Xóa phim"
-            message={(() => {
-              const hasSeasons = movie.seasons && movie.seasons.length > 0;
-              const totalEpisodes = movie.seasons?.reduce((total: number, season: any) => 
-                total + (season.episodes?.length || 0), 0) || 0;
-              
-              let message = `Bạn có chắc chắn muốn xóa phim "${movie.title}" không?`;
-              
-              if (hasSeasons) {
-                message += `\n\nPhim này có:\n• ${movie.seasons.length} mùa phim\n• ${totalEpisodes} tập phim`;
-                message += `\n\nTất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn.`;
-              }
-              
-              message += `\n\nThao tác này không thể hoàn tác.`;
-              
-              return message;
-            })()}
+            message={`Bạn có chắc chắn muốn xóa phim "${movie.title}" không? Thao tác này không thể hoàn tác.`}
             onClose={() => setShowDeleteMovieModal(false)}
             onConfirm={async () => {
               await handleDeleteMovie();
