@@ -12,10 +12,18 @@ import Logo from "@/assets/img/logo.jpg";
 import { Link } from "react-router";
 import { useContext } from "react";
 import Auth from "@/context/Auth";
+import { useQuery } from "@tanstack/react-query";
+import { me } from "@/lib/api";
 
 
 const VerticalSidebar = () => {
   const { auth } = useContext(Auth);
+
+  const userResult = useQuery({
+    queryFn: me,
+    queryKey: ["me"],
+    staleTime: Infinity
+  })
 
   return (
     <div className="w-16 flex flex-col bg-[#2f3147] items-center justify-between py-3">
@@ -33,10 +41,10 @@ const VerticalSidebar = () => {
         {/* <ChartBarIcon className="h-6 w-6" />
 
         <CalendarIcon className="h-6 w-6" /> */}
-        {auth !== '' && 
+        {auth !== '' &&
           <Link to="/continue" className="text-white hover:text-purple-500">
             <ClockIcon className="h-6 w-6" />
-          </Link>       
+          </Link>
         }
 
         <Link to="/plans" className="text-white hover:text-purple-500">
@@ -52,7 +60,7 @@ const VerticalSidebar = () => {
             <UserIcon className="h-6 w-6" />
           </Link> : <Link to="/profile" className="text-white hover:text-purple-500">
             <img
-              src="https://i.pravatar.cc/100"
+              src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${userResult?.data?.id}`}
               alt="Avatar"
               className="w-8 h-8 rounded-full "
             />

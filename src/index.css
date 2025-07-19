@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -101,4 +102,24 @@ button:focus-visible {
 .thin-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #4b5563 transparent; /* Thumb xám, track trong suốt */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

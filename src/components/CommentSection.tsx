@@ -127,7 +127,7 @@ const CommentSection = ({ id } : props) => {
         {(id?commentResult.data!:[]).map((c, i) => (
           <div key={c.id} className="flex items-start gap-3">
             <img
-              src={`https://i.pravatar.cc/100`}
+              src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${accountResult[i].data!.id}`}
               alt={accountResult[i].data!.username}
               className="w-9 h-9 rounded-full mt-1"
             />

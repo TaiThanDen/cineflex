@@ -9,7 +9,8 @@ const Profile = () => {
 
   const { data: account, isLoading, isError } = useQuery({
     queryFn: me,
-    queryKey: ["me"]
+    queryKey: ["me"],
+    staleTime: Infinity
   });
 
   const [editing, setEditing] = useState(false);
@@ -27,7 +28,7 @@ const Profile = () => {
       <div className="w-screen rounded-xl  p-8">
         <div className="flex items-center gap-6 mb-8">
           <img
-            src="https://i.pravatar.cc/100"
+            src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${account?.id}`}
             alt="Avatar"
             className="w-24 h-24 rounded-full object-cover "
           />

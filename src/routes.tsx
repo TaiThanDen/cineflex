@@ -16,7 +16,6 @@ import WatchFilm from "./pages/WatchFilm";
 import SubscriptionPlan from "./pages/SubscriptionPlan";
 // import PlanPaymentConfirm from "./pages/PlanPaymentConfirm";
 import AdminPage from "./pages/admin/admin";
-import MovieAdminPage from "./pages/admin/MovieAdminPage";
 import UserAdminPage from "./pages/admin/UserAdminPage.tsx"
 import LayoutAdmin from "./layout/LayoutAdmin";
 import Landing from "./pages/landing.tsx";
@@ -29,6 +28,8 @@ import CommentModeratorPage from "@/pages/moderator/CommentModeratorPage.tsx";
 import AllCommentsPage from "@/components/moderator/AllCommentManagement/AllCommentPage.tsx";
 import ReportsPage from "@/components/moderator/ReportComment/ReportsPage.tsx";
 import LayoutModerator from "@/layout/LayoutModerator.tsx";
+import ShowAdminPage from "./pages/admin/ShowAdminPage.tsx";
+import ShowDetailAdminPage from "./pages/admin/ShowDetailAdminPage.tsx";
 
 
 
@@ -114,7 +115,7 @@ const AppRoutes = () => {
               <Route
                 path="/admin"
                 element={
-                  <AdminGuard allowed={[1,2]}>
+                  <AdminGuard allowed={[2]}>
                     <LayoutAdmin>
                       <Outlet />
                     </LayoutAdmin>
@@ -123,9 +124,8 @@ const AppRoutes = () => {
               >
 
                 <Route path="dashboard" element={<AdminPage />} />
-                <Route path="movies" element={<MovieAdminPage />}>
-                  <Route path=":id" element={<MovieAdminPage />} />
-                </Route>
+                <Route path="movies" element={<ShowAdminPage />} />
+                <Route path="movies/:id" element={<ShowDetailAdminPage />} />
                 {/* Thêm các route admin khác ở đây */}
                 <Route path="users" element={<UserAdminPage />} >
                   <Route path=":id" element={<UserAdminPage />} />

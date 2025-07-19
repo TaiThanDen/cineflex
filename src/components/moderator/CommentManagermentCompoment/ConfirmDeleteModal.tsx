@@ -9,11 +9,11 @@ interface Props {
 }
 
 const ConfirmDeleteModal: React.FC<Props> = ({
-                                                 title = "Confirm Deletion",
-                                                 message = "Are you sure you want to delete this item? This action cannot be undone.",
-                                                 onClose,
-                                                 onConfirm,
-                                             }) => {
+    title = "Confirm Deletion",
+    message = "Are you sure you want to delete this item? This action cannot be undone.",
+    onClose,
+    onConfirm,
+}) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>

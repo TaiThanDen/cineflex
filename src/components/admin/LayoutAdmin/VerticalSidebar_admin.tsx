@@ -1,12 +1,9 @@
 import React from "react";
 import {
-  LuLayoutDashboard,
-  LuListChecks,
+  // LuLayoutDashboard,
   LuUsers,
   LuCreditCard,
-  LuShieldCheck,
-  LuSettings,
-  LuLifeBuoy,
+  // LuLifeBuoy,
   LuLogOut,
 } from "react-icons/lu";
 import { MdMovie } from "react-icons/md";
@@ -14,20 +11,15 @@ import Logo from "../../../assets/img/logo.png";
 import { Link, useLocation } from "react-router";
 
 const navItems = [
-  {
-    label: "Dashboard",
-    icon: <LuLayoutDashboard size={18} />,
-    to: "/admin/dashboard",
-  },
+  // {
+  //   label: "Dashboard",
+  //   icon: <LuLayoutDashboard size={18} />,
+  //   to: "/admin/dashboard",
+  // },
   {
     label: "Manage Movie",
     icon: <MdMovie size={18} />,
     to: "/admin/movies",
-  },
-  {
-    label: "Manage Quiz",
-    icon: <LuListChecks size={18} />,
-    // to: "/admin/quiz", // Thêm đường dẫn nếu có
   },
   {
     label: "Manage Users",
@@ -37,18 +29,18 @@ const navItems = [
   {
     label: "Subscription",
     icon: <LuCreditCard size={18} />,
-    // to: "/admin/subscription",
+    to: "/admin/subscription",
   },
-  {
-    label: "Content Moderation",
-    icon: <LuShieldCheck size={18} />,
-    // to: "/admin/moderation",
-  },
-  {
-    label: "Settings",
-    icon: <LuSettings size={18} />,
-    // to: "/admin/settings",
-  },
+  // {
+  //   label: "Content Moderation",
+  //   icon: <LuShieldCheck size={18} />,
+  //   to: "/admin/moderation",
+  // },
+  // {
+  //   label: "Settings",
+  //   icon: <LuSettings size={18} />,
+  //   to: "/admin/settings",
+  // },
 ];
 
 const VerticalSidebar: React.FC = () => {
@@ -135,7 +127,7 @@ const VerticalSidebar: React.FC = () => {
           ))}
         </ul>
       </nav>
-      <button
+      {/* <button
         className="support-btn"
         style={{
           background: "#6f63f6",
@@ -155,7 +147,7 @@ const VerticalSidebar: React.FC = () => {
       >
         <LuLifeBuoy size={18} />
         Support
-      </button>
+      </button> */}
       <div
         className="logout"
         style={{
