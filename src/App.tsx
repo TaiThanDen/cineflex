@@ -9,8 +9,14 @@ import Auth from "./context/Auth";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [auth, setAuth] = useState(localStorage.getItem('auth') || '');
+  const [auth, setAuth] = useState(() => {
+    return localStorage.getItem('auth') || ''
+  });
+
+  
   const authContextValue = {auth, setAuth}
+
+
 
 
   useEffect(() => {
@@ -18,6 +24,10 @@ const App = () => {
       localStorage.removeItem('auth');
     }
     localStorage.setItem('auth', auth);
+
+    queryClient.invalidateQueries({
+      queryKey: ["user-subscription"]
+    })
   }, [auth]);
 
   return (
@@ -26,7 +36,7 @@ const App = () => {
         <Auth.Provider value={authContextValue}>
           <ToastContainer />
           <AppRoutes />
-        </Auth.Provider>        
+        </Auth.Provider>             
       </QueryClientProvider>
 
     </Router>

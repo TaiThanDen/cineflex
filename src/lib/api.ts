@@ -411,7 +411,7 @@ export const getUserRole = async () : Promise<number> => {
 }
 
 export const getCurrentUserSubscription = async () : Promise<Subscription> => {
-    const uri = `users/subscription`;
+    const uri = `/users/subscription`;
 
     try {
         const rsp = await http.get<Subscription, AxiosResponse<Subscription>>(uri);
@@ -427,9 +427,9 @@ export const getCurrentUserSubscription = async () : Promise<Subscription> => {
 export const isCurrentUserHasSubscription = async () : Promise<boolean> => {
     const subscription: Subscription = await getCurrentUserSubscription();
 
-    return !isObjectEmpty(subscription);
+    return isObjectEmpty(subscription);
 }
 
 const isObjectEmpty = <T>(object: T) : boolean => {
-    return JSON.stringify(object) !== '{}';
+    return JSON.stringify(object) !== '""';
 }

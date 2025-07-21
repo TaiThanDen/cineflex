@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router";
 import { FaCheckCircle } from "react-icons/fa";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { createOrder, isCurrentUserHasSubscription } from "@/lib/api";
+import { useMutation } from "@tanstack/react-query";
+import { createOrder } from "@/lib/api";
+import Subscription from "@/context/Subscription";
 
 
 const SubscriptionPlans: React.FC = () => {
@@ -15,21 +16,14 @@ const SubscriptionPlans: React.FC = () => {
     },
   });
 
-  const subscriptionResult = useQuery({
-    queryKey: ["user-subscription"],
-    queryFn: () => isCurrentUserHasSubscription()
-  });
 
-  if (subscriptionResult.isLoading) return <>Loading</>
-
-  if (subscriptionResult.isError) {
-    navigate('/home');
-  }
+  const subscription = useContext(Subscription);
 
 
   const handleUpgradeClick = async () => {
     await mutation.mutateAsync();
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] py-20 px-4">
@@ -64,7 +58,7 @@ const SubscriptionPlans: React.FC = () => {
               Like a whole lot of ads
             </li>
           </ul>
-          {!(subscriptionResult.data!) &&
+          {!(subscription) &&
           <button
             disabled
             className={`w-full py-2 rounded-lg font-medium transition bg-gray-700 text-gray-400 cursor-not-allowed`}
@@ -96,11 +90,11 @@ const SubscriptionPlans: React.FC = () => {
             </li>
           </ul>
           <button
-            disabled={subscriptionResult.data!}
+            disabled={subscription}
             onClick={() => {handleUpgradeClick()}}
             className={`w-full py-2 rounded-lg disabled:cursor-not-allowed font-medium transition disabled:bg-gray-700 bg-purple-500 text-white cursor-pointer`}
           >
-            {subscriptionResult.data! ? 'Current plan': 'Upgrade plan'}
+            {subscription ? 'Current plan': 'Upgrade plan'}
           </button>
         </div>
       </div>

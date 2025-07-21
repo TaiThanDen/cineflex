@@ -5,7 +5,7 @@ import HomePage from "./pages/Home";
 import { useIsMobile } from "./lib/hooks/use-mobile";
 import VerticalSidebar from "./layout/VerticalSidebar";
 import MobileBottomSidebar from "./layout/MobileBottomSidebar";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PreviewFilm from "./pages/PreviewFilm";
 import AdsPage from "./pages/AdsPage";
 import Login from "./pages/Login";
@@ -30,10 +30,25 @@ import ReportsPage from "@/components/moderator/ReportComment/ReportsPage.tsx";
 import LayoutModerator from "@/layout/LayoutModerator.tsx";
 import ShowAdminPage from "./pages/admin/ShowAdminPage.tsx";
 import ShowDetailAdminPage from "./pages/admin/ShowDetailAdminPage.tsx";
+import { useQuery } from "@tanstack/react-query";
+import { isCurrentUserHasSubscription } from "./lib/api.ts";
+import Subscription from "./context/Subscription.tsx";
 
 
 
 const AppRoutes = () => {
+  const subscriptionResult = useQuery({
+    queryKey: ["user-subscription"],
+    queryFn: () => isCurrentUserHasSubscription(),
+  });
+  
+  const [subscription, setSubscription] = useState(false)
+  useEffect(() => {
+    if (subscriptionResult.isSuccess) {
+      setSubscription(subscriptionResult.data);
+    }
+  }, [subscriptionResult.data, subscriptionResult.isSuccess])
+
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -46,7 +61,10 @@ const AppRoutes = () => {
   const isModeratorPage = location.pathname.startsWith("/moderator");
   const isLandingPage = location.pathname === "/";
 
+
+
   return (
+    <Subscription.Provider value={subscription}>
     <div className="w-full h-screen">
       <div className="flex h-full w-screen">
         {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
@@ -153,6 +171,7 @@ const AppRoutes = () => {
         </div>
       </div>
     </div>
+    </Subscription.Provider>
   );
 };
 

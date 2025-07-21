@@ -1,5 +1,5 @@
 import { getBillingDetail } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import SockJS from 'sockjs-client';
@@ -11,6 +11,7 @@ const Checkout = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const stompClientRef = useRef<Client | null>(null);
+    const queryClient = useQueryClient();
     
 
     const result = useQuery({
@@ -32,6 +33,9 @@ const Checkout = () => {
                 console.log('Connected to WebSocket');
                 stompClient.subscribe(`/bill.${id}`, (response) => {
                     if (response.body === 'PAID') {
+                        queryClient.invalidateQueries({
+                            queryKey: ["user-subscription"]
+                        })
                         toast("Thanh toán thành công, cảm ơn bạn đã ủng hộ!;");
                         navigate("/home");
                     }
