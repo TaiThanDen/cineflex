@@ -427,7 +427,7 @@ export const getCurrentUserSubscription = async () : Promise<Subscription> => {
 export const isCurrentUserHasSubscription = async () : Promise<boolean> => {
     const subscription: Subscription = await getCurrentUserSubscription();
 
-    return isObjectEmpty(subscription);
+    return !isObjectEmpty(subscription);
 }
 
 const isObjectEmpty = <T>(object: T) : boolean => {
