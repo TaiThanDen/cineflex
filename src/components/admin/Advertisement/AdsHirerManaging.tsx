@@ -1,3 +1,4 @@
+import Pagination from "@mui/material/Pagination"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
@@ -20,37 +21,20 @@ const AdsHirerManaging = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        {/* <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell align="left">0</TableCell>
                             <TableCell align="left">1</TableCell>
                             <TableCell align="left">2</TableCell>
                             <TableCell align="left">3</TableCell>
                             <TableCell align="left">4</TableCell>
-                        </TableRow>
-                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell align="left">0</TableCell>
-                            <TableCell align="left">1</TableCell>
-                            <TableCell align="left">2</TableCell>
-                            <TableCell align="left">3</TableCell>
-                            <TableCell align="left">4</TableCell>
-                        </TableRow>
-                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell align="left">0</TableCell>
-                            <TableCell align="left">1</TableCell>
-                            <TableCell align="left">2</TableCell>
-                            <TableCell align="left">3</TableCell>
-                            <TableCell align="left">4</TableCell>
-                        </TableRow>
-                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                            <TableCell align="left">0</TableCell>
-                            <TableCell align="left">1</TableCell>
-                            <TableCell align="left">2</TableCell>
-                            <TableCell align="left">3</TableCell>
-                            <TableCell align="left">4</TableCell>
-                        </TableRow>
+                        </TableRow> */}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Pagination 
+                className="flex items-center justify-center" 
+                count={10}
+            />
         </>
     )
 }
