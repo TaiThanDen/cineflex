@@ -3,6 +3,7 @@ import {
   // LuLayoutDashboard,
   LuUsers,
   LuCreditCard,
+  LuBadgeInfo,
   // LuLifeBuoy,
   LuLogOut,
 } from "react-icons/lu";
@@ -30,6 +31,11 @@ const navItems = [
     label: "Subscription",
     icon: <LuCreditCard size={18} />,
     to: "/admin/subscription",
+  },
+  {
+    label: "Advertisment",
+    icon: <LuBadgeInfo size={18} />,
+    to: "/admin/ads",
   },
   // {
   //   label: "Content Moderation",

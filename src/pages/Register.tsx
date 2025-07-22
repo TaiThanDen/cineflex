@@ -43,8 +43,8 @@ const Register = () => {
         password: data.password
       });
 
-      navigate('/login');
-      toast(`Đã tạo tài khoản cho email: ${email}, vui lòng kiểm tra hộp thư để xác nhận emai.`);
+      navigate(`/verify?email=${email}`);
+      toast(`Đã tạo tài khoản cho email: ${email}`);
     }
     catch (e) {
       if (!(e instanceof ApiException)){

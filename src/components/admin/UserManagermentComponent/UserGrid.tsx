@@ -1,57 +1,18 @@
-import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import UserBox from "./UserBox";
-import UserDetailModal from "./UserDetail";
-import type { User } from "src/components/data/User";
+import type { Account } from "@/lib/types/Account";
 
 interface Props {
-    users: User[];
-    onSelectUser: (userId: string) => void;
-    onAdd?: (newUser: Omit<User, "id">) => void;
-    onEdit?: (user: User) => void;
-    onDelete?: (userId: string) => void;
+    users: Account[];
 }
 
-const UserGrid: React.FC<Props> = ({ users, onAdd, onEdit, onDelete }) => {
-    const [search, setSearch] = useState("");
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(search.toLowerCase())
-    );
-
-    const handleAddUser = () => {
-        if (!onAdd) return;
-
-        const newUser: Omit<User, "id"> = {
-            name: "Người dùng mới",
-            role: "User",
-            status: "Active",
-            profile: "https://i.pravatar.cc/150?u=new",
-            email: "newuser@example.com",
-            phone: "0123456789",
-        };
-
-        onAdd(newUser);
-    };
-
-    const handleUserClick = (user: User) => {
-        setSelectedUser(user);
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedUser(null);
-    };
+const UserGrid = ({ users } : Props) => {
 
     return (
         <div className="container mx-auto p-8">
             {/* Header và thanh tìm kiếm */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                 <h1 className="text-3xl font-bold">Quản lý người dùng</h1>
-
+{/* 
                 <div className="flex items-center gap-4 w-full md:w-auto">
                     <div className="relative w-full max-w-md flex-1">
                         <input
@@ -69,36 +30,19 @@ const UserGrid: React.FC<Props> = ({ users, onAdd, onEdit, onDelete }) => {
                         </button>
                     </div>
 
-                    {onAdd && (
-                        <button
-                            className="bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 font-semibold whitespace-nowrap"
-                            onClick={handleAddUser}
-                        >
-                            + Thêm người dùng
-                        </button>
-                    )}
-                </div>
+                </div> */}
             </div>
 
             {/* Grid danh sách người dùng */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-                {filteredUsers.map((user) => (
+                    {users.map((user) => (
                     <UserBox
                         key={user.id}
                         user={user}
-                        onClick={() => handleUserClick(user)}
                     />
                 ))}
             </div>
 
-            {/* Modal thông tin user */}
-            <UserDetailModal
-                isOpen={isModalOpen}
-                user={selectedUser}
-                onClose={handleCloseModal}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
         </div>
     );
 };
