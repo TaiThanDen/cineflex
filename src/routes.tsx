@@ -33,6 +33,8 @@ import ShowDetailAdminPage from "./pages/admin/ShowDetailAdminPage.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { isCurrentUserHasSubscription } from "./lib/api.ts";
 import Subscription from "./context/Subscription.tsx";
+import AdsManagingPage from "./pages/admin/AdsManagingPage.tsx";
+import SubscriptionManagingPage from "./pages/admin/SubscriptionManagingPage.tsx";
 
 
 
@@ -145,17 +147,19 @@ const AppRoutes = () => {
                 <Route path="movies" element={<ShowAdminPage />} />
                 <Route path="movies/:id" element={<ShowDetailAdminPage />} />
                 {/* Thêm các route admin khác ở đây */}
-                <Route path="users" element={<UserAdminPage />} >
-                  <Route path=":id" element={<UserAdminPage />} />
-                </Route>
+                <Route path="users" element={<UserAdminPage />} />
+                <Route path="subscription" element={<SubscriptionManagingPage />} />
+                <Route path="ads" element={<AdsManagingPage></AdsManagingPage>} />
               </Route>
               {/* Moderator routes */}
               <Route
                   path="/moderator"
                   element={
-                    <LayoutModerator>
-                      <Outlet />
-                    </LayoutModerator>
+                    <AdminGuard allowed={[1]}>
+                      <LayoutModerator>
+                        <Outlet />
+                      </LayoutModerator>
+                    </AdminGuard>
                   }
               >
                 <Route path="comment/:id" element={<CommentModeratorPage />} />

@@ -15,6 +15,7 @@ import ApiException from './exceptions/ApiException';
 import type { EpisodeCredentials } from './types/EpisodeCredentials';
 import type { SeasonCredentials } from './types/SeasonCredentials';
 import type { ShowCredentials } from './types/ShowCredentials';
+import type { UpdateAccountCredentials } from './types/UpdateAccountCredentials';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -424,6 +425,23 @@ export const getCurrentUserSubscription = async () : Promise<Subscription> => {
     }
 }
 
+export const sendVerificationEmail=  async (email: string) : Promise<void> => {
+    interface SendEmailCredentials {
+        email: string
+    }
+
+    const uri = "/authentication/verify"
+    
+    try {
+        await http.post<void, AxiosResponse<void, SendEmailCredentials>, SendEmailCredentials>(uri, {
+            email: email
+        })
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
 export const isCurrentUserHasSubscription = async () : Promise<boolean> => {
     const subscription: Subscription = await getCurrentUserSubscription();
 
@@ -432,4 +450,56 @@ export const isCurrentUserHasSubscription = async () : Promise<boolean> => {
 
 const isObjectEmpty = <T>(object: T) : boolean => {
     return JSON.stringify(object) !== '""';
+}
+
+export const getAccountPaginated = async (page: number = 0, size: number = 6) : Promise<{
+    totalPage: number,
+    data: Account[]
+}> => {
+    try {
+        const rsp = await http.get<Account[]>(`/users?page=${page}&size=${size}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        console.log(data);
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const updateAccount = async (accountCreentials: UpdateAccountCredentials, id: string) : Promise<Account> => {
+    try {
+        const rsp = await http.put<Account, AxiosResponse<Account, UpdateAccountCredentials>>(`/users/${id}`, accountCreentials);
+        const data = rsp.data
+
+        return data
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const banAccount = async (id: string) : Promise<void> => {
+    try {
+        await http.put(`/users/${id}/ban`)
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const unbanAccount = async (id: string) : Promise<void> => {
+    try {
+        await http.put(`/users/${id}/unban`)
+    }
+    catch (e) {
+        throw handle(e)
+    }
 }
