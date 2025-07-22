@@ -2,7 +2,7 @@
 
 describe('Trang chủ CineFlex', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visit('/home')
   })
 
   it('Hiển thị thanh tìm kiếm', () => {

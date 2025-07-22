@@ -17,6 +17,7 @@ import { useState } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-toastify"
 import z from "zod"
+import {deleteEpisode} from "@/lib/api";
 
 interface props {
     episode: Episode
@@ -36,7 +37,8 @@ type EditEpisodeField = z.infer<typeof editEpisodeFormSchema>;
 
 const EpisodeRow = ({ episode, index }: props) => {
     const [editEpisodeModalVisible, setEditEpisodeModalVisible] = useState(false);
-
+    const [showModal, setShowModal] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
 
 
     const editEpisodeForm = useForm<EditEpisodeField>({
@@ -47,7 +49,7 @@ const EpisodeRow = ({ episode, index }: props) => {
     const editEpisodeMutate = useMutation({
         mutationFn: (data: EpisodeCredentials) => updateEpisode(episode.id, data),
         onSuccess: () => {
-            
+
         }
     })
     //onEditEpisodeSubmit
@@ -81,6 +83,19 @@ const EpisodeRow = ({ episode, index }: props) => {
         }
     }
 
+    const handleDelete = async () => {
+        try {
+            await deleteEpisode(episode.id);
+            toast("Đã xóa tập phim thành công");
+            setIsDelete(true);
+        } catch (e) {
+            toast("Lỗi khi xóa tập phim");
+        } finally {
+            setShowModal(false);
+        }
+    };
+
+    if(isDelete) return null;
 
     return (
         <>
@@ -91,17 +106,18 @@ const EpisodeRow = ({ episode, index }: props) => {
                 <TableCell align="left">{episode.duration}</TableCell>
                 <TableCell align="left">
                     <ButtonGroup color="warning" variant="contained" aria-label="Basic button group">
-                        <Button 
+                        <Button
                             onClick={() => {setEditEpisodeModalVisible(true)}}
                             color="warning">Sửa
                         </Button>
-                        <Button color="error">Xóa</Button>
+                        <Button onClick={() => setShowModal(true)} color="error">Xóa</Button>
                     </ButtonGroup>
                 </TableCell>
             </TableRow>
 
             <Dialog
-                open={false}
+                open={showModal}
+                onClose={()=> setShowModal(false)}
                 fullWidth
                 maxWidth='lg'
             >
@@ -116,11 +132,13 @@ const EpisodeRow = ({ episode, index }: props) => {
                 <DialogActions>
                     <button
                         type="button"
+                        onClick={()=> setShowModal(false)}
                         className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                     >
                         Hủy bỏ
                     </button>
                     <button
+                        onClick={handleDelete}
                         className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold disabled:opacity-50"
                     >
                         Xác nhận
