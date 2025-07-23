@@ -16,6 +16,10 @@ import type { EpisodeCredentials } from './types/EpisodeCredentials';
 import type { SeasonCredentials } from './types/SeasonCredentials';
 import type { ShowCredentials } from './types/ShowCredentials';
 import type { UpdateAccountCredentials } from './types/UpdateAccountCredentials';
+import type { Hirer } from './types/Hirer';
+import type { HirerCredentials } from './types/HirerCredentials';
+import type { Advertisement } from './types/Advertisement';
+import type { AdvertisementCredentials } from './types/AdvertisementCredentials';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -209,7 +213,6 @@ export const getAllShows = async (page: number = 0, size: number = 12): Promise<
 
         const totalPage = +rsp.headers["x-total-page"];
 
-        console.log(totalPage);
 
         return {
             totalPage: totalPage,
@@ -501,5 +504,93 @@ export const unbanAccount = async (id: string) : Promise<void> => {
     }
     catch (e) {
         throw handle(e)
+    }
+}
+
+export const createHirer = async (body: HirerCredentials) : Promise<Hirer> => {
+    try {
+        const rsp = await http.post<Hirer, AxiosResponse<Hirer, HirerCredentials>, HirerCredentials>('/hirers', body);
+        const data = rsp.data;
+
+        return data
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const getAllHirers = async (page: number = 0, size: number = 5) : Promise<{
+    totalPage: number,
+    data: Hirer[]
+}> => {
+    try {
+        const rsp = await http.get<Hirer[], AxiosResponse<Hirer[], void>>(`/hirers?page=${page}&size=${size}`);
+        const data = rsp.data;
+        
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getHirerById = async (id: string) : Promise<Hirer> => {
+    try {
+        const rsp = await http.get<Hirer, AxiosResponse<Hirer, void>>(`/hirers/${id}`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getAllAds = async (page: number = 0, size: number = 5) : Promise<{
+    data: Advertisement[],
+    totalPage: number
+}> => {
+    try {
+        const rsp = await http.get<Advertisement[], AxiosResponse<Advertisement[], null>>(`/advertisements?page=${page}&size=${size}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+        
+        return {
+            data: data,
+            totalPage: totalPage
+        }
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const createAd = async (body: AdvertisementCredentials) : Promise<Advertisement> => {
+    try {
+        const rsp = await http.post<Advertisement, AxiosResponse<Advertisement, AdvertisementCredentials>, AdvertisementCredentials>('/advertisements', body);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+} 
+
+export const getAdsRandom = async (type: number) : Promise<Advertisement> => {
+    try {
+        const rsp = await http.get<Advertisement>(`/advertisements/${type}/random`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
     }
 }

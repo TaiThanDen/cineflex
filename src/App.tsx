@@ -3,7 +3,6 @@ import AppRoutes from "./routes";
 import { useEffect, useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 import Auth from "./context/Auth";
 
 const queryClient = new QueryClient();
@@ -13,7 +12,6 @@ const App = () => {
     return localStorage.getItem('auth') || ''
   });
 
-  
   const authContextValue = {auth, setAuth}
 
 
@@ -35,6 +33,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <Auth.Provider value={authContextValue}>
           <ToastContainer />
+
           <AppRoutes />
         </Auth.Provider>             
       </QueryClientProvider>
