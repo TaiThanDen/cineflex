@@ -35,6 +35,8 @@ import { isCurrentUserHasSubscription } from "./lib/api.ts";
 import Subscription from "./context/Subscription.tsx";
 import AdsManagingPage from "./pages/admin/AdsManagingPage.tsx";
 import SubscriptionManagingPage from "./pages/admin/SubscriptionManagingPage.tsx";
+import BlogPage from "./components/BlogPage.tsx";
+import BlogDetail from "./pages/BlogDetails.tsx";
 
 
 
@@ -95,6 +97,8 @@ const AppRoutes = () => {
               <Route path="/home" element={<HomePage />} />
               <Route path="/ads" element={<AdsPage />} />
               <Route path="/search" element={<SearchResults />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogDetail />} />
               <Route
                 path="/preview/:id"
                 element={<PreviewFilm />}
