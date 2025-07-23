@@ -19,7 +19,7 @@ const BlogPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] px-4 pt-24 pb-20">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl sm:text-5xl font-bold text-center text-white mb-16">
           Cineflex Blogs

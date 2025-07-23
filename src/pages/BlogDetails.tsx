@@ -1,37 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const BlogDetail = () => {
   const navigate = useNavigate();
-  const contentRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!contentRef.current) return;
-      const el = contentRef.current;
       const scrollTop = window.scrollY;
-      const offsetTop = el.offsetTop;
-      const scrollHeight = el.scrollHeight;
-      const windowHeight = window.innerHeight;
-      const total = scrollHeight + offsetTop - windowHeight;
-      const percent = Math.min(Math.max((scrollTop - offsetTop) / total, 0), 1);
-      setScrollProgress(percent);
+      const docHeight = document.documentElement.scrollHeight;
+      const winHeight = window.innerHeight;
+      const totalScroll = docHeight - winHeight;
+      const progress = Math.min(Math.max(scrollTop / totalScroll, 0), 1);
+      setScrollProgress(progress);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // TODO: Replace with dynamic fetch by ID using axios later
-  // const post = await axios.get(`/api/blogs/${id}`);
   const post = {
     title: "Dune: Part Two – A Cinematic Masterpiece",
     description:
       "Denis Villeneuve returns with a sweeping, epic continuation of Frank Herbert’s sci-fi saga. Dune: Part Two deepens the mythology, raises the stakes, and offers one of the most visually stunning films in years.",
     date: "July 23, 2025",
     category: "Movie Review",
-    image: "src/assets/img/dune2.jpg",
+    image:
+      "https://hytrape.com/cdn/shop/articles/dune-2-1024x576_54db1b1d-128f-46b1-9870-626e427ce1cc.jpg?v=1720647755",
     content: [
       {
         heading: "Introduction",
@@ -64,10 +60,9 @@ const BlogDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0d0c1f] via-[#17162a] to-[#141326] px-4 py-12 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#0d0c1f] via-[#17162a] to-[#141326] px-4 py-24 text-white">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         <motion.div
-          ref={contentRef}
           className="lg:col-span-9 backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -176,5 +171,4 @@ const BlogDetail = () => {
     </div>
   );
 };
-
 export default BlogDetail;

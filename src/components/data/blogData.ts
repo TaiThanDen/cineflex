@@ -29,7 +29,7 @@ export const blogPosts: BlogPost[] = [
 
       Get started by choosing a subscription plan tailored to your needs and dive into the world of unlimited movies.
     `,
-    image: "/images/blog1.jpg",
+    image: "https://vudigital.co/wp-content/uploads/2024/02/premium-la-gi-phan-biet-voi-khai-niem-luxury.webp",
     category: "Announcements",
     date: "July 23, 2025"
   },
@@ -61,7 +61,7 @@ export const blogPosts: BlogPost[] = [
 
       _Dune: Part Two_ cements itself as one of the best sci-fi films of the decade.
     `,
-    image: "/images/blog2.jpg",
+    image: "https://www.elleman.vn/app/uploads/2024/03/07/231277/Timothee-Chalamet-Paul-Atreides-Zendaya-Chani-Dune-Part-2.webp",
     category: "Reviews",
     date: "July 18, 2025"
   },
@@ -70,7 +70,7 @@ export const blogPosts: BlogPost[] = [
     title: "Behind The Scenes: How We Built Cineflex",
     description: "Discover the tech stack, design ideas, and team behind Cineflex's creation.",
     content: "",
-    image: "/images/blog3.jpg",
+    image: "https://spaces-wp.imgix.net/2016/06/coding-in-the-classroom.png?auto=compress,format&q=50",
     category: "Technology",
     date: "July 15, 2025"
   }
