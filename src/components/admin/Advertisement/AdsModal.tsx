@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
     Box, Button, Modal, Step, StepLabel, Stepper, Typography,
-    Pagination, Tooltip, TextField, InputLabel, MenuItem, Select, FormControl, FormHelperText
+    Pagination, TextField, InputLabel, MenuItem, Select, FormControl, FormHelperText
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -41,7 +41,7 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
         setSelectedItem(index);
     };
 
-    const handleChangePage = (_: any, value: number) => {
+    const handleChangePage = (_: unknown, value: number) => {
         setPage(value);
     };
 
@@ -66,14 +66,12 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
             <Typography variant="body1">Chọn quảng cáo:</Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
                 {[...Array(5)].map((_, index) => (
-                    <Tooltip title="Tiếp theo" placement="right" key={index}>
-                        <Button
-                            variant={selectedItem === index ? 'contained' : 'outlined'}
-                            onClick={() => handleSelectItem(index)}
-                        >
-                            Quảng cáo #{index + 1 + (page - 1) * 5}
-                        </Button>
-                    </Tooltip>
+                    <Button
+                        variant={selectedItem === index ? 'contained' : 'outlined'}
+                        onClick={() => handleSelectItem(index)}
+                    >
+                        Quảng cáo #{index + 1 + (page - 1) * 5}
+                    </Button>
                 ))}
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
