@@ -1,21 +1,28 @@
 import { useState } from 'react';
 import {
-    Box, Button, Modal, Step, StepLabel, Stepper, Typography,
-    Pagination, TextField, InputLabel, MenuItem, Select, FormControl, FormHelperText
+    Box, Button, Step, StepLabel, Stepper, Typography,
+    Pagination, TextField, InputLabel, MenuItem, Select, FormControl, FormHelperText,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const steps = ['Chọn quảng cáo', 'Nhập thông tin'];
+const steps = ['Chọn nhà cung cấp', 'Nhập thông tin'];
+
+    // image: z
+    //     .custom<File>((v) => v instanceof File, {
+    //         message: 'Vui lòng chọn hình ảnh',
+    //     })
+
 
 const adFormSchema = z.object({
     link: z.string().url({ message: 'Link không hợp lệ' }),
-    image: z
-        .custom<File>((v) => v instanceof File, {
-            message: 'Vui lòng chọn hình ảnh',
-        }),
-    category: z.string().min(1, { message: 'Vui lòng chọn thể loại' }),
+    image: z.string().url({ message: 'Link ảnh không hợp lệ' }),
+    type: z.string().min(1, { message: 'Vui lòng chọn thể loại' }),
 });
 
 type AdForm = z.infer<typeof adFormSchema>;
@@ -24,14 +31,12 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
     const [activeStep, setActiveStep] = useState(0);
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
     const [page, setPage] = useState(1);
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     const {
         register,
         control,
         handleSubmit,
         formState: { errors },
-        setValue,
         reset,
     } = useForm<AdForm>({
         resolver: zodResolver(adFormSchema),
@@ -57,13 +62,38 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
         onClose();
         setActiveStep(0);
         setSelectedItem(null);
-        setPreviewImage(null);
         reset();
     };
 
+    const stepButton = [
+        () => {
+            return (
+                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                        variant="contained"
+                        onClick={handleNext}
+                        disabled={selectedItem === null}
+                    >
+                        Tiếp tục
+                    </Button>
+                </Box>
+            )
+        },
+        () => {
+            return (
+                <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                    <Button onClick={handleBack}>Trở lại</Button>
+                    <Button type="submit" variant="contained">
+                        Hoàn tất
+                    </Button>
+                </Box>
+            )
+        }
+    ] 
+
     const renderStepOne = () => (
         <>
-            <Typography variant="body1">Chọn quảng cáo:</Typography>
+            <Typography variant="body1">Chọn nhà cung cấp</Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
                 {[...Array(5)].map((_, index) => (
                     <Button
@@ -92,73 +122,45 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
                     helperText={errors.link?.message}
                 />
 
-                {/* Upload hình ảnh */}
-                <Button variant="outlined" component="label">
-                    Chọn hình ảnh
-                    <input
-                        type="file"
-                        hidden
-                        accept="image/*"
-                        onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                                setValue('image', file);
-                                setPreviewImage(URL.createObjectURL(file));
-                            }
-                        }}
-                    />
-                </Button>
-                {errors.image && (
-                    <FormHelperText error>{errors.image.message?.toString()}</FormHelperText>
-                )}
+                {/* Link */}
+                <TextField
+                    label="Link ảnh"
+                    fullWidth
+                    {...register('image')}
+                    error={!!errors.image}
+                    helperText={errors.image?.message}
+                />
 
-                {previewImage && (
-                    <img src={previewImage} alt="Preview" style={{ width: 200, borderRadius: 8 }} />
-                )}
 
                 {/* Thể loại */}
-                <FormControl fullWidth error={!!errors.category}>
-                    <InputLabel>Thể loại</InputLabel>
+                <FormControl fullWidth error={!!errors.type}>
+                    <InputLabel>Loại quảng cáo</InputLabel>
                     <Controller
                         control={control}
-                        name="category"
+                        name="type"
                         defaultValue=""
                         render={({ field }) => (
                             <Select label="Thể loại" {...field}>
-                                <MenuItem value="game">Game</MenuItem>
-                                <MenuItem value="tech">Công nghệ</MenuItem>
-                                <MenuItem value="food">Ẩm thực</MenuItem>
+                                <MenuItem value="0">Game</MenuItem>
+                                <MenuItem value="1">Công nghệ</MenuItem>
+                                <MenuItem value="2">Ẩm thực</MenuItem>
                             </Select>
                         )}
                     />
-                    <FormHelperText>{errors.category?.message}</FormHelperText>
+                    <FormHelperText>{errors.type?.message}</FormHelperText>
                 </FormControl>
-            </Box>
-
-            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
-                <Button onClick={handleBack}>Trở lại</Button>
-                <Button type="submit" variant="contained">
-                    Hoàn tất
-                </Button>
             </Box>
         </form>
     );
 
     return (
-        <Modal open={open} onClose={onClose}>
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 500,
-                    bgcolor: 'background.paper',
-                    borderRadius: 2,
-                    boxShadow: 24,
-                    p: 4,
-                }}
-            >
+        <Dialog
+            fullWidth
+            maxWidth='md'
+            open={open}
+            onClose={onClose}
+        >
+            <DialogTitle>
                 <Stepper activeStep={activeStep}>
                     {steps.map((label, index) => (
                         <Step key={index}>
@@ -166,25 +168,15 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
                         </Step>
                     ))}
                 </Stepper>
-
-                <Box sx={{ mt: 3 }}>
-                    {activeStep === 0 && renderStepOne()}
-                    {activeStep === 1 && renderStepTwo()}
-                </Box>
-
-                {activeStep === 0 && (
-                    <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button
-                            variant="contained"
-                            onClick={handleNext}
-                            disabled={selectedItem === null}
-                        >
-                            Tiếp tục
-                        </Button>
-                    </Box>
-                )}
-            </Box>
-        </Modal>
+            </DialogTitle>
+            <DialogContent>
+                {activeStep === 0 && renderStepOne()}
+                {activeStep === 1 && renderStepTwo()}
+            </DialogContent>
+            <DialogActions>
+                {stepButton[activeStep]()}
+            </DialogActions>
+        </Dialog>
     );
 };
 
