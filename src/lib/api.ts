@@ -582,3 +582,15 @@ export const createAd = async (body: AdvertisementCredentials) : Promise<Adverti
         throw handle(e);
     }
 } 
+
+export const getAdsRandom = async (type: number) : Promise<Advertisement> => {
+    try {
+        const rsp = await http.get<Advertisement>(`/advertisements/${type}/random`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}

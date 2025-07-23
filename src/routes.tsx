@@ -35,6 +35,7 @@ import { isCurrentUserHasSubscription } from "./lib/api.ts";
 import Subscription from "./context/Subscription.tsx";
 import AdsManagingPage from "./pages/admin/AdsManagingPage.tsx";
 import SubscriptionManagingPage from "./pages/admin/SubscriptionManagingPage.tsx";
+import AdvertisementWarper from "./layout/AdWrapper.tsx";
 
 
 
@@ -90,6 +91,11 @@ const AppRoutes = () => {
           {/* Hide VerticalSidebar on mobile */}
           <div className="absolute top-0 left-0 w-full h-max">
             <Routes>
+              <Route path="/" element={
+                <AdvertisementWarper>
+                  <Outlet />
+                </AdvertisementWarper>
+              }>
               {/* Các route public */}
               <Route path="/" element={<Landing />} />
               <Route path="/home" element={<HomePage />} />
@@ -131,6 +137,9 @@ const AppRoutes = () => {
                   <Checkout />
                 </AuthGuard>
               } />
+              </Route>
+
+
               {/* Route admin bọc bằng LayoutAdmin */}
               <Route
                 path="/admin"
