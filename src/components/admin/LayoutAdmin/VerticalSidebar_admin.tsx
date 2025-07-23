@@ -18,22 +18,22 @@ const navItems = [
   //   to: "/admin/dashboard",
   // },
   {
-    label: "Manage Movie",
+    label: "Quản lý phim",
     icon: <MdMovie size={18} />,
     to: "/admin/movies",
   },
   {
-    label: "Manage Users",
+    label: "Quản lý người dùng",
     icon: <LuUsers size={18} />,
     to: "/admin/users",
   },
   {
-    label: "Subscription",
+    label: "Quản lý VIP",
     icon: <LuCreditCard size={18} />,
     to: "/admin/subscription",
   },
   {
-    label: "Advertisment",
+    label: "Quản lý quảng cáo",
     icon: <LuBadgeInfo size={18} />,
     to: "/admin/ads",
   },
