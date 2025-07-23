@@ -155,7 +155,7 @@ const AppRoutes = () => {
               <Route
                   path="/moderator"
                   element={
-                    <AdminGuard allowed={[1]}>
+                    <AdminGuard allowed={[0,1,2]}>
                       <LayoutModerator>
                         <Outlet />
                       </LayoutModerator>
