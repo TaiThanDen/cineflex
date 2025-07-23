@@ -77,10 +77,10 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
                 ))}
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                <Pagination count={3} page={page} onChange={handleChangePage} />
+                <Pagination count={5} page={page} onChange={handleChangePage} />
             </Box>
         </>
-    );
+    )
 
     const renderStepTwo = () => (
         <form onSubmit={handleSubmit(onSubmit)}>
