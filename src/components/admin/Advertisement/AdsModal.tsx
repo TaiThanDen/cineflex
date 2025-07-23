@@ -186,7 +186,7 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
                 <Pagination count={totalPage + 1} page={page} onChange={handleChangePage} />
             </Box>
         </>
-    );
+    )
 
     const renderStepTwo = () => (
         <form>
