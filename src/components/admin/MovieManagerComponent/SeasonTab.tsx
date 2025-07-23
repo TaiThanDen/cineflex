@@ -27,7 +27,6 @@ import { toast } from "react-toastify";
 import type { SeasonCredentials } from "@/lib/types/SeasonCredentials";
 
 interface Props {
-    showId: string,
     season: Season,
     episodes: Episode[]
 }
@@ -51,7 +50,7 @@ const addEpisodeFormSchema = z.object({
 type EditSeasonField = z.infer<typeof editSeasonFormSchema>;
 type AddEpisodeField = z.infer<typeof addEpisodeFormSchema>;
 
-const SeasonTab = ({ season, episodes, showId }: Props) => {
+const SeasonTab = ({ season, episodes }: Props) => {
     const [editSeasonModalVisible, setEditSeasonModalVisible] = useState(false);
     const [addEpisodeModalVisible, setAddEpisodeModalVisible] = useState(false);
     const [deleteSeasonModalVisible, setDeleteSeasonModalVisible] = useState(false);
@@ -75,7 +74,7 @@ const SeasonTab = ({ season, episodes, showId }: Props) => {
         mutationFn: (data: SeasonCredentials) => updateSeason(season.id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['season_of_show', showId]
+                queryKey: ['seasons_of_show', season.show]
             })
         }
     });
@@ -93,7 +92,7 @@ const SeasonTab = ({ season, episodes, showId }: Props) => {
         mutationFn: () => deleteSeason(season.id),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['season_of_show', showId]
+                queryKey: ['seasons_of_show', season.show]
             })
         }
 

@@ -106,7 +106,7 @@ const MovieDetail: React.FC<Props> = ({
         onSuccess: () => {
 
             queryClient.invalidateQueries({
-                queryKey: ['seasons_of_show', movie.id],
+                queryKey: ['seasons_of_show'],
             })
         }
     })
@@ -257,7 +257,7 @@ const MovieDetail: React.FC<Props> = ({
                         </TabList>
                         <TabPanels>
                             {seasons.map((season) => (
-                                <SeasonTab showId={movie.id} season={season} episodes={episodes[season.id]} />
+                                <SeasonTab season={season} episodes={episodes[season.id]} />
                             ))}
                         </TabPanels>
                     </TabGroup>

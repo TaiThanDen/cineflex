@@ -12,7 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 import TableCell from "@mui/material/TableCell"
 import TableRow from "@mui/material/TableRow"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -38,8 +38,8 @@ type EditEpisodeField = z.infer<typeof editEpisodeFormSchema>;
 const EpisodeRow = ({ episode, index }: props) => {
     const [editEpisodeModalVisible, setEditEpisodeModalVisible] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [isDelete, setIsDelete] = useState(false);
 
+    const queryClient = useQueryClient();
 
     const editEpisodeForm = useForm<EditEpisodeField>({
         resolver: zodResolver(editEpisodeFormSchema)
@@ -49,7 +49,18 @@ const EpisodeRow = ({ episode, index }: props) => {
     const editEpisodeMutate = useMutation({
         mutationFn: (data: EpisodeCredentials) => updateEpisode(episode.id, data),
         onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['episodes_of_season', episode.season]
+            })
+        }
+    })
 
+    const deleteEpisodeMutate = useMutation({
+        mutationFn: () => deleteEpisode(episode.id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['episodes_of_season', episode.season]
+            })
         }
     })
     //onEditEpisodeSubmit
@@ -85,17 +96,18 @@ const EpisodeRow = ({ episode, index }: props) => {
 
     const handleDelete = async () => {
         try {
-            await deleteEpisode(episode.id);
+            await deleteEpisodeMutate.mutateAsync();
             toast("Đã xóa tập phim thành công");
-            setIsDelete(true);
         } catch (e) {
-            toast("Lỗi khi xóa tập phim");
+            if (e instanceof ApiException) {
+                toast(e.message)
+            }
+            toast("Unxpected")
         } finally {
             setShowModal(false);
         }
     };
 
-    if(isDelete) return null;
 
     return (
         <>
