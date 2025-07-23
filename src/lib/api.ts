@@ -16,6 +16,8 @@ import type { EpisodeCredentials } from './types/EpisodeCredentials';
 import type { SeasonCredentials } from './types/SeasonCredentials';
 import type { ShowCredentials } from './types/ShowCredentials';
 import type { UpdateAccountCredentials } from './types/UpdateAccountCredentials';
+import type { Hirer } from './types/Hirer';
+import type { HirerCredentials } from './types/HirerCredentials';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -209,7 +211,6 @@ export const getAllShows = async (page: number = 0, size: number = 12): Promise<
 
         const totalPage = +rsp.headers["x-total-page"];
 
-        console.log(totalPage);
 
         return {
             totalPage: totalPage,
@@ -501,5 +502,39 @@ export const unbanAccount = async (id: string) : Promise<void> => {
     }
     catch (e) {
         throw handle(e)
+    }
+}
+
+export const createHirer = async (body: HirerCredentials) : Promise<Hirer> => {
+    try {
+        const rsp = await http.post<Hirer, AxiosResponse<Hirer, HirerCredentials>, HirerCredentials>('/hirers', body);
+        const data = rsp.data;
+
+        return data
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const getAllHirers = async (page: number = 0, size: number = 5) : Promise<{
+    totalPage: number,
+    data: Hirer[]
+}> => {
+    try {
+        const rsp = await http.get<Hirer[], AxiosResponse<Hirer[], void>>(`/hirers?page=${page}&size=${size}`);
+        const data = rsp.data;
+        
+        const totalPage = +rsp.headers["x-total-page"];
+
+        console.log(totalPage);
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e);
     }
 }
