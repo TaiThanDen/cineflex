@@ -8,5 +8,6 @@ export interface Episode {
     duration: number,
     openingStart: number,
     openingEnding: number,
-    season: string
+    season: string,
+    commentSection: string
 }

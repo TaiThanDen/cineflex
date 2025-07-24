@@ -6,21 +6,23 @@ import ApiException from "../exceptions/ApiException";
 
 interface props {
     children: ReactNode,
-    allowed: (0 | 1 | 2)[]
+    allowed: (0 | 1 | 2)[],
+    fallBack?: ReactNode
 }
 
-const AdminGuard = ({ children, allowed } : props) => {
+const AdminGuard = ({ children, allowed, fallBack = <Navigate to="/home" /> } : props) => {
     const result = useQuery({
         queryKey: ["user-role"],
         queryFn: () => getUserRole()
     });
 
 
-    if (result.isLoading) return <>Loading...</>
+
+    if (result.isLoading) return <></>
 
     if (result.isError) {
         if (result.error instanceof ApiException && result.error.status === 401) {
-            return <Navigate to="/home" />
+            return fallBack
         }
     }
 

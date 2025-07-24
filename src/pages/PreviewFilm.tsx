@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router";
 import HeroBanner from "../components/HeroBanner";
 import SeasonEpisodeList from "../components/PreviewFilm/SeasonEpisodeList";
-import CommentSection from "../components/CommentSection";
+import CommentSection from "../components/commets/CommentSection";
 import RecommendedList from "@/components/RecommendedList";
 import MovieInfoCard from "@/components/MovieInfoCard";
 import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
@@ -187,7 +187,7 @@ const PreviewFilm = () => {
           {
             label: "Bình luận",
             key: "comments",
-            content: <CommentSection />,
+            content: <CommentSection id={showResult.data!.commentSection} />,
           },
           {
             label: "Đề xuất",
