@@ -20,7 +20,7 @@ const AdvertisementWrapper = ({ children }: Props) => {
 
     const resetAds = () => {
         setPopupAdsOpen(Math.random() < 0.5);
-        setBottomBannerAdsOpen(Math.random() < 0.5);
+        setBottomBannerAdsOpen(true);
         queryClient.invalidateQueries({
             queryKey: ["user-ads"],
         });
