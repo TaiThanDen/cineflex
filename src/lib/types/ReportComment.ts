@@ -1,9 +1,9 @@
-export interface Comment {
+export interface ReportComment {
     id: string,
     content: string,
+    status: number,
     createdTime: string,
     updatedTime: string,
     account: string,
-    section: string,
-    isDeleted: boolean
+    comment: string
 }

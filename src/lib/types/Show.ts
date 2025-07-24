@@ -9,5 +9,6 @@ export interface Show {
     uploadedTime: string,
     onGoing: boolean,
     isSeries: boolean,
-    ageRating: string
+    ageRating: string,
+    commentSection: string
 };

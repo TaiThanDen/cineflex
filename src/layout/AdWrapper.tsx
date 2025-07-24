@@ -1,5 +1,5 @@
-import BottomBannerAd from "@/components/home/BottomBannerAd"
-import PopupAd from "@/components/home/PopupAd"
+import BottomBannerAd from "@/components/AdsComponents/BottomBannerAd"
+import PopupAd from "@/components/AdsComponents/PopupAd"
 import subscription from "@/context/Subscription"
 import { getAdsRandom } from "@/lib/api"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AdvertisementWrapper = ({ children }: Props) => {
-    const isVip = useContext(subscription)
+    const isVip = useContext(subscription);
     const [popupAdsOpen, setPopupAdsOpen] = useState(true);
     const [bottomBannerAdsOpen, setBottomBannerAdsOpen] = useState(true);
 
@@ -20,7 +20,7 @@ const AdvertisementWrapper = ({ children }: Props) => {
 
     const resetAds = () => {
         setPopupAdsOpen(Math.random() < 0.5);
-        setBottomBannerAdsOpen(Math.random() < 0.5);
+        setBottomBannerAdsOpen(true);
         queryClient.invalidateQueries({
             queryKey: ["user-ads"],
         });

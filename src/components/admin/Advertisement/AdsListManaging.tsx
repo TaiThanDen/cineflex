@@ -92,7 +92,7 @@ const AdsListManaging = () => {
                 </Table>
             </TableContainer>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                <Pagination count={count} page={page} onChange={(_, page) => {
+                <Pagination count={count + 1} page={page} onChange={(_, page) => {
                     setPage(page)
                 }} />
             </Box>

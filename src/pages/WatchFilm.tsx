@@ -1,7 +1,7 @@
 // import { useState } from "react";
 import VideoPlayer from "../components/Watch_Film/VideoPlayer";
 import MovieInfoCard from "@/components/MovieInfoCard";
-import CommentSection from "@/components/CommentSection";
+import CommentSection from "@/components/commets/CommentSection";
 import RecommendedList from "@/components/RecommendedList";
 import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
 import Tabs from "@/components/Tabs";
@@ -120,7 +120,7 @@ function WatchFilm() {
           {
             label: "Bình luận",
             key: "comments",
-            content: <CommentSection id={id!} />,
+            content: <CommentSection id={currentEpisodeResult.data!.commentSection} />,
           },
           {
             label: "Đề xuất",

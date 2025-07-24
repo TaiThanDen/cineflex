@@ -20,6 +20,7 @@ import type { Hirer } from './types/Hirer';
 import type { HirerCredentials } from './types/HirerCredentials';
 import type { Advertisement } from './types/Advertisement';
 import type { AdvertisementCredentials } from './types/AdvertisementCredentials';
+import type { ReportComment } from './types/ReportComment';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -171,6 +172,27 @@ export const getCommentByEpisodes = async (episode: string, page: number = 0, si
     }
 }
 
+export const getCommentBySection = async (episode: string, page: number = 0, size: number = 12) : Promise<{
+    data: Comment[],
+    totalPage: number
+}> => {
+    const uri = `/comments/section/${episode}?page=${page}&size=${size}`;
+
+    try {
+        const rsp = await http.get<Comment[]>(uri);
+        const data = rsp.data
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
 export const getUserById = async (id: string) : Promise<Account> => {
     const uri = `/users/${id}`;
     
@@ -186,8 +208,8 @@ export const getUserById = async (id: string) : Promise<Account> => {
     }
 }
 
-export const postComment = async (content: string, episode: string) : Promise<Comment> => {
-    const uri = `/episodes/${episode}/comments`;
+export const postComment = async (content: string, section: string) : Promise<Comment> => {
+    const uri = `/comments/section/${section}`;
 
     interface CommentRequest {
         content: string
@@ -586,6 +608,78 @@ export const createAd = async (body: AdvertisementCredentials) : Promise<Adverti
 export const getAdsRandom = async (type: number) : Promise<Advertisement> => {
     try {
         const rsp = await http.get<Advertisement>(`/advertisements/${type}/random`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getPaginatedComments = async (page: number = 0, size: number = 5) : Promise<{
+    totalPage: number,
+    data: Comment[]
+}> => {
+    try {
+        const rsp = await http.get<Comment[]>(`/comments?page=${page}&size=${size}`)
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        }
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const deleteComment = async (id: string) : Promise<void> => {
+    try {
+        await http.delete(`/comments/${id}`)
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const reportComment = async (id: string, content: string) : Promise<void> => {
+    try {
+        await http.post(`comments/${id}/report`, {
+            content: content
+        })
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const getPaginatedReportComments = async (page: number = 0, size: number = 5) : Promise<{
+    totalPage: number,
+    data: ReportComment[]
+}> => {
+    try {
+        const rsp = await http.get<ReportComment[]>(`/reports?page=${page}&size=${size}`)
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        }
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getCommentById = async (id: string) : Promise<Comment> => {
+    try {
+        const rsp = await http.get<Comment>(`/comments/${id}`);
         const data = rsp.data;
 
         return data;

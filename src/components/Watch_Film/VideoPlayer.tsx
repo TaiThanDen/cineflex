@@ -3,14 +3,13 @@ import MuxPlayer from "@mux/mux-player-react";
 
 import { PiCaretLeftBold } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa6";
-
-const AD_URL = "https://example.com";
+import PauseVideoAd from "../AdsComponents/PauseVideoAd";
 
 type VideoPlayerProps = {
   url: string;
 };
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ url }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -26,6 +25,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
   const [showControls, setShowControls] = useState(true);
   const [showAdPopup, setShowAdPopup] = useState(false);
   const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
+
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -109,6 +109,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
     const last = localStorage.getItem("lastAdRedirect");
     const now = Date.now();
     if (!last || now - parseInt(last, 10) > 10 * 60 * 1000) {
+      ////////////////////
       setShowAdPopup(true);
     }
   };
@@ -156,14 +157,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
   // Chế độ rạp
   const toggleCinemaMode = () => setCinemaMode((v) => !v);
 
-  // Hàm đóng popup và tiếp tục phát video
-  const handleCloseAd = () => {
-    // Lưu thời gian chuyển hướng vào localStorage
-    localStorage.setItem("lastAdRedirect", Date.now().toString());
-    window.open(AD_URL, "_blank");
-    setShowAdPopup(false);
-    // Không cần play video vì đã chuyển hướng
-  };
+
 
   // Phím tắt tiện ích khi xem phim
   useEffect(() => {
@@ -238,21 +232,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
       >
         {/* Popup quảng cáo khi pause */}
         {showAdPopup && (
-          <div className="absolute inset-0 bg-black/70 z-50 flex flex-col items-center justify-center">
-            <div className="bg-white rounded-lg p-4 shadow-lg flex flex-col items-center">
-              <img
-                src="https://static.nutscdn.com/vimg/0-0/784543799c537bda4c8f8b9c1757bfc3.jpg"
-                alt="Quảng cáo"
-                className="max-w-xs w-full mb-4"
-              />
-              <button
-                onClick={handleCloseAd}
-                className="bg-[#23263a] text-white px-6 py-2 rounded mt-2 text-lg font-semibold hover:bg-[#3a3a4a] transition"
-              >
-                Đóng và Xem Tiếp
-              </button>
-            </div>
-          </div>
+          <PauseVideoAd onClose={() => {
+            setShowAdPopup(false)
+          }} />
         )}
         <MuxPlayer
           className="w-full h-full object-contain bg-black"
@@ -308,9 +290,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({url}) => {
                       changePlaybackRate(speed);
                       setShowSpeedMenu(false);
                     }}
-                    className={`flex justify-between items-center px-2 py-1 rounded hover:bg-white/10 cursor-pointer ${
-                      playbackRate === speed ? "bg-white/10" : ""
-                    }`}
+                    className={`flex justify-between items-center px-2 py-1 rounded hover:bg-white/10 cursor-pointer ${playbackRate === speed ? "bg-white/10" : ""
+                      }`}
                   >
                     <span>{speed}x</span>
                     {playbackRate === speed && (
