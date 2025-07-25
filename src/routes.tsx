@@ -38,6 +38,7 @@ import SubscriptionManagingPage from "./pages/admin/SubscriptionManagingPage.tsx
 import AdvertisementWarper from "./layout/AdWrapper.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Auth from "./context/Auth.tsx";
+import Sandbox from "./pages/admin/Sandbox.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -179,10 +180,11 @@ const AppRoutes = () => {
                                     <Route path="dashboard" element={<AdminPage />} />
                                     <Route path="movies" element={<ShowAdminPage />} />
                                     <Route path="movies/:id" element={<ShowDetailAdminPage />} />
-                                    {/* Thêm các route admin khác ở đây */}
                                     <Route path="users" element={<UserAdminPage />} />
                                     <Route path="subscription" element={<SubscriptionManagingPage />} />
                                     <Route path="ads" element={<AdsManagingPage></AdsManagingPage>} />
+
+                                    <Route path="sandbox" element={<Sandbox />} />
                                 </Route>
                                 {/* Moderator routes */}
                                 <Route

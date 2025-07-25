@@ -23,6 +23,7 @@ import type { ShowCredentials } from "@/lib/types/ShowCredentials";
 import { toast } from "react-toastify";
 import ApiException from "@/lib/exceptions/ApiException";
 import type { SeasonCredentials } from "@/lib/types/SeasonCredentials";
+import GenreField from "../Genre/GenreField";
 // import AddSeasonModal from "./AddSeasonModal";
 // import EditSeasonModal from "./EditSeasonModal";
 // import AddEpisodeModal from "./AddEpisodeModal";
@@ -67,6 +68,7 @@ const MovieDetail: React.FC<Props> = ({
     episodes,
     genres
 }) => {
+    const [genresValue, setGenresValue] = useState<Genre[]>(genres); 
     const [addSeasonModalVisible, setAddSeasonModalVisible] = useState(false);
     const [editShowModalVisible, setEditShowModalVisible] = useState(false);
     const [deleteShowModalVisible, setDeleteShowModalVisible] = useState(false);
@@ -432,6 +434,15 @@ const MovieDetail: React.FC<Props> = ({
                                     <div className="text-red-500">{editShowForm.formState.errors.poster.message}</div>
                                 )}
                             </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold mb-2 text-gray-700">
+                                    Thể  loại phim
+                                </label>
+                                <GenreField value={genresValue} onChange={setGenresValue} showId={movie.id} />
+                            </div>
+
+                                
 
                             {/* Description */}
                             <div>
