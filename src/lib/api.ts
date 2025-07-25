@@ -21,6 +21,7 @@ import type { HirerCredentials } from './types/HirerCredentials';
 import type { Advertisement } from './types/Advertisement';
 import type { AdvertisementCredentials } from './types/AdvertisementCredentials';
 import type { ReportComment } from './types/ReportComment';
+import type { ViewHistory } from './types/ViewHistory';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -699,4 +700,48 @@ export const getAllGenres = async () : Promise<Genre[]> => {
     catch (e) {
         throw handle(e);
     }
+}
+
+export const saveViewHistory = async (duration: number, episode: string) => {
+    try {
+        await http.post(`/episodes/${episode}/view-history`, {
+            duration: duration
+        })
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getViewHistoryEpisode = async (episode: string) : Promise<ViewHistory> => {
+    try {
+        const rsp = await http.get<ViewHistory>(`/users/view-history/${episode}`);
+        const data = rsp.data;
+
+        return data
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getViewHistory = async (page: number = 0, size: number = 6) : Promise<{
+    totalPage: number,
+    data: ViewHistory[]
+}> => {
+    try {
+        const rsp = await http.get<ViewHistory[]>(`/users/view-history?page=${page}&size=${size}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        }
+    }
+    catch (e) {
+        throw handle(e);
+    }
+
 }
