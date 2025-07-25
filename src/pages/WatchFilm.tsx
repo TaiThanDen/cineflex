@@ -6,10 +6,11 @@ import RecommendedList from "@/components/RecommendedList";
 import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
 import Tabs from "@/components/Tabs";
 import { useNavigate, useParams } from "react-router";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEpisodeById, getEpisodesBySeasonId, getGenresByShow, getSeasonById, getSeasonsByShowId, getShowById, getViewHistoryEpisode, saveViewHistory } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 import type { Episode } from "@/lib/types/Episode";
+import { useUnmount } from 'usehooks-ts'
 
 
 function WatchFilm() {
@@ -17,7 +18,8 @@ function WatchFilm() {
     const navigate = useNavigate();
     const [duration, setDuration] = useState(0);
     const currentTimeRef = useRef(0);
-    const didMountRef = useRef(false);
+    // const didMountRef = useRef(false);
+    const queryClient = useQueryClient();
 
     const updateViewHistoryMutation = useMutation({
         mutationFn: (data: number) => saveViewHistory(data, id!)
@@ -33,19 +35,12 @@ function WatchFilm() {
         currentTimeRef.current = duration;
     }, [duration])
 
-    useEffect(() => {
-        // If this is the first time, set the flag but skip the next cleanup
-        if (!didMountRef.current) {
-            didMountRef.current = true;
-            return;
-        }
-        return () => {
-            console.log(didMountRef.current);
-            if (didMountRef.current) {
-                updateViewHistoryMutation.mutateAsync(currentTimeRef.current);
-            }
-        };
-    }, []);
+    useUnmount(() => {
+        queryClient.invalidateQueries({
+            queryKey: ["view-history"]
+        })
+        updateViewHistoryMutation.mutateAsync(currentTimeRef.current);
+    })
 
     const currentSeasonId = currentEpisodeResult.data?.season;
 
