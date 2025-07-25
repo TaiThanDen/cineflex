@@ -382,7 +382,7 @@ export const deleteShow = async (showId: string): Promise<void> => {
 // Thêm genres cho show
 export const addGenresToShow = async (showId: string, genreIds: string[]): Promise<Genre[]> => {
     try {
-        const rsp = await http.post<Genre[], AxiosResponse<Genre[]>, { genres: string[] }>(
+        const rsp = await http.put<Genre[], AxiosResponse<Genre[]>, { genres: string[] }>(
             `/shows/${showId}/genres`, 
             { genres: genreIds }
         );
@@ -680,6 +680,18 @@ export const getPaginatedReportComments = async (page: number = 0, size: number 
 export const getCommentById = async (id: string) : Promise<Comment> => {
     try {
         const rsp = await http.get<Comment>(`/comments/${id}`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getAllGenres = async () : Promise<Genre[]> => {
+    try {
+        const rsp = await http.get<Genre[]>(`/genres`);
         const data = rsp.data;
 
         return data;
