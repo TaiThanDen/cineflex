@@ -129,7 +129,7 @@ const PreviewFilm = () => {
             {
               label: "Bình luận",
               key: "comments",
-              content: <CommentSection />,
+              content: <CommentSection id={id!} />,
             },
             {
               label: "Đề xuất",
