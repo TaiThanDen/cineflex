@@ -34,7 +34,7 @@ const EpisodePreview = ({ id, duration } : EpisodePreview) => {
     return <>
         <div className="h-56 overflow-hidden">
             <img
-                src={`https://image.mux.com/${currentEpisodeResult.data?.url}/thumbnail.png?width=214&height=121&time=${duration}`}
+                src={`https://image.mux.com/${currentEpisodeResult.data?.url}/thumbnail.png?width=600&height=400&time=${duration}`}
                 alt=""
                 className="w-full h-full object-cover"
             />
