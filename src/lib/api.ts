@@ -142,11 +142,8 @@ export const getGenresByShow = async (id: string) : Promise<Genre[]> => {
 }
 
 export const getShowsByGenres = async (...genres: string[]) : Promise<Show[]> => {
-    const uri = `/shows?${
-        genres.map((g) => {
-            return `genres=${g}`
-        }).join('&')
-    }`;
+    console.log(genres);
+    const uri = `/shows?page=0&size=100`;
 
     try {
         const rsp = await http.get<Show[]>(uri);

@@ -18,6 +18,9 @@ const AccountCell = ({ id }: AccountProps) => {
         queryFn: () => getUserById(id)
     })
 
+    if (accountResult.isLoading) return <TableCell className="py-2 px-3">Loading...</TableCell>
+    if (accountResult.isError) return <TableCell className="py-2 px-3">Error loading account</TableCell>
+
     return (
         <TableCell className="py-2 px-3">
             <div className="flex justify-start items-center gap-3">
@@ -37,6 +40,9 @@ const ReportRow = ({ report, index } : Props) => {
         queryKey: ["comment", report.comment],
         queryFn: () => getCommentById(report.comment)
     });
+
+    if (commentResult.isLoading) return <TableRow><TableCell colSpan={5}>Loading...</TableCell></TableRow>
+    if (commentResult.isError) return <TableRow><TableCell colSpan={5}>Error loading comment</TableCell></TableRow>
 
     return (
         <>
