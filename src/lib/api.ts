@@ -22,6 +22,8 @@ import type { Advertisement } from './types/Advertisement';
 import type { AdvertisementCredentials } from './types/AdvertisementCredentials';
 import type { ReportComment } from './types/ReportComment';
 import type { ViewHistory } from './types/ViewHistory';
+import type { CommentSection } from './types/CommentSection';
+import type { ResetPasswordField } from './types/ResetPasswordField';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -170,11 +172,11 @@ export const getCommentByEpisodes = async (episode: string, page: number = 0, si
     }
 }
 
-export const getCommentBySection = async (episode: string, page: number = 0, size: number = 12) : Promise<{
+export const getCommentBySection = async (section: string, page: number = 0, size: number = 12, deleted: boolean = false) : Promise<{
     data: Comment[],
     totalPage: number
 }> => {
-    const uri = `/comments/section/${episode}?page=${page}&size=${size}`;
+    const uri = `/comments/sections/${section}${deleted?'/deleted':''}?page=${page}&size=${size}`;
 
     try {
         const rsp = await http.get<Comment[]>(uri);
@@ -207,7 +209,7 @@ export const getUserById = async (id: string) : Promise<Account> => {
 }
 
 export const postComment = async (content: string, section: string) : Promise<Comment> => {
-    const uri = `/comments/section/${section}`;
+    const uri = `/comments/sections/${section}`;
 
     interface CommentRequest {
         content: string
@@ -741,4 +743,180 @@ export const getViewHistory = async (page: number = 0, size: number = 6) : Promi
         throw handle(e);
     }
 
+}
+
+export const getAccountsPremium = async (page: number = 0, size: number = 6) : Promise<{
+    totalPage: number,
+    data: Account[]
+}> => {
+    try {
+        const rsp = await http.get<Account[]>(`/users/premium?size=${size}&page=${page}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        }
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const getSubscriptionOfAccount = async (account: string) : Promise<Subscription> => {
+    const uri = `/users/${account}/subscription`;
+
+    try {
+        const rsp = await http.get<Subscription, AxiosResponse<Subscription>>(uri);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getBillingDetailsOfAccount = async (account: string, page: number = 0, size: number = 6) : Promise<{
+    data: BillingDetail[],
+    totalPage: number
+}> => {
+    try {
+        const rsp = await http.get<BillingDetail[]>(`/users/${account}/bills?size=${size}&page=${page}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        }
+    }
+    catch (e) {
+        throw handle(e)
+    }
+}
+
+export const updateHirer = async (id: string, hirer: HirerCredentials) : Promise<Hirer> => {
+    try {
+        const rsp = await http.put<Hirer, AxiosResponse<Hirer>, HirerCredentials>(
+            `/hirers/${id}`, 
+            hirer
+        );
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const updateAd = async (id: string, body: AdvertisementCredentials) : Promise<Advertisement> => {
+    try {
+        const rsp = await http.put<Advertisement, AxiosResponse<Advertisement, AdvertisementCredentials>, AdvertisementCredentials>(`/advertisements/${id}`, body);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+} 
+
+export const getCommentSection = async (id: string) : Promise<CommentSection> => {
+    try {
+        const rsp = await http.get<CommentSection>(`/comments/sections/${id}/information`);
+        const data = rsp.data
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const declineReport = async(id: string) => {
+    try {
+        await http.post<void>(`/comments/report/${id}/ignore`);
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const approveReport = async(id: string) => {
+    try {
+        await http.post<void>(`/comments/report/${id}/approve`);
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getCommentSections = async (page: number = 0, size: number = 6) : Promise<{
+    totalPage: number,
+    data: CommentSection[]
+}> => {
+    try {
+        const rsp = await http.get<CommentSection[]>(`/comments/sections?page=${page}&size=${size}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        }
+    }
+    catch (e) {
+        throw handle(e);
+    }
+
+}
+
+export const getEpisodeViewCount = async (id: string) : Promise<number> => {
+    try {
+        const rsp = await http.get<number>(`/episodes/${id}/views`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const increaseEpisodeViewCount = async (id: string) : Promise<number> => {
+    try {
+        const rsp = await http.post<number>(`/episodes/${id}/views`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const sendOtp = async (email: string) : Promise<void> => {
+    try {
+        await http.post(`/authentication/send-otp`, {
+            "email": email
+        });
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const resetPassword = async (body: ResetPasswordField) : Promise<void> => {
+    try {
+        await http.post<void, AxiosResponse<void, ResetPasswordField>, ResetPasswordField>(`/authentication/reset-password`, body)
+    }
+    catch (e) {
+        throw handle(e);
+    }
 }

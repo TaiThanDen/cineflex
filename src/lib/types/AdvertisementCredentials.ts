@@ -2,5 +2,6 @@ export interface AdvertisementCredentials {
     link: string,
     image: string,
     type: number,
-    hirer: string
+    hirer: string,
+    enabled?: boolean
 }

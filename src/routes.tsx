@@ -39,6 +39,8 @@ import AdvertisementWarper from "./layout/AdWrapper.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Auth from "./context/Auth.tsx";
 import Sandbox from "./pages/admin/Sandbox.tsx";
+import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -128,6 +130,11 @@ const AppRoutes = () => {
                                         path="/preview/:id"
                                         element={<PreviewFilm />}
                                     />
+                                    <Route path="/reset-password" element={
+                                        <AuthGuard type="no">
+                                            <ResetPasswordPage />
+                                        </AuthGuard>
+                                    } />
                                     <Route path="/login" element={
                                         <AuthGuard type="no">
                                             <Login />
@@ -199,8 +206,8 @@ const AppRoutes = () => {
                                         </ThemeProvider>
                                     }
                                 >
-                                    <Route path="comment/:id" element={<CommentModeratorPage />} />
-                                    <Route path="comment" element={<CommentModeratorPage />} />
+                                    <Route path="sections/:id" element={<SingleCommentSection />} />
+                                    <Route path="sections" element={<CommentModeratorPage />} />
                                     <Route path="all-comments" element={<AllCommentsPage />} />
                                     <Route path="reports" element={<ReportsPage />} />
                                 </Route>

@@ -7,7 +7,7 @@ import SeasonEpisodeMiniList from "@/components/SeasonEpisodeMiniList";
 import Tabs from "@/components/Tabs";
 import { useNavigate, useParams } from "react-router";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getEpisodeById, getEpisodesBySeasonId, getGenresByShow, getSeasonById, getSeasonsByShowId, getShowById, getViewHistoryEpisode, saveViewHistory } from "@/lib/api";
+import { getEpisodeById, getEpisodesBySeasonId, getGenresByShow, getSeasonById, getSeasonsByShowId, getShowById, getViewHistoryEpisode, increaseEpisodeViewCount, saveViewHistory } from "@/lib/api";
 import { useEffect, useRef, useState } from "react";
 import type { Episode } from "@/lib/types/Episode";
 import { useUnmount } from 'usehooks-ts'
@@ -31,9 +31,24 @@ function WatchFilm() {
         enabled: !!id
     });
 
+    const increaseViewCountMutation = useMutation({
+        mutationFn: increaseEpisodeViewCount,
+        onSuccess: (data) => {
+            console.log(data)
+        },
+    })
+
     useEffect(() => {
         currentTimeRef.current = duration;
     }, [duration])
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (id) increaseViewCountMutation.mutate(id);
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
+
+        return () => clearTimeout(timer); // cleanup if the user leaves before 5 min
+    }, []);
 
     useUnmount(() => {
         queryClient.invalidateQueries({
