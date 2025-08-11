@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Filter } from "lucide-react";
 import type { ShowQuery } from "@/lib/types/ShowQuery";
 import { useQuery } from "@tanstack/react-query";
-import { queryShow } from "@/lib/api";
+import { getAllGenres, queryShow } from "@/lib/api";
 import { Pagination } from "@mui/material";
 import MovieSection from "@/components/home/MovieSection";
 
@@ -12,15 +12,17 @@ const filterOptions = {
     type: ["Tất cả", "Phim lẻ", "Phim bộ"],
     rating: ["Tất cả", "G", "PG", "13+", "16+", "18+"],
     year: ["Tất cả", "2025", "2024", "2023", "2022", "2021", "2020"],
-    genre: [
-        "Tất cả", "Anime", "Hành Động", "Hài", "Kinh Dị", "Tâm Lý",
-        "Lãng Mạn", "Viễn Tưởng", "Phiêu Lưu", "Phép Thuật", "Khoa Học",
-    ],
+
 };
 
 const SearchResults = () => {
     const { search } = useLocation();
     const query = new URLSearchParams(search).get("q")?.toLowerCase() || "";
+
+    const allGenresResult = useQuery({
+        queryKey: ["genres"],
+        queryFn: () => getAllGenres()
+    })
     // const queryClient = useQueryClient();
 
     const [page, setPage] = useState(1);
@@ -118,6 +120,36 @@ const SearchResults = () => {
                             </div>
                         </div>
                     ))}
+
+                    {!allGenresResult.isLoading && !allGenresResult.isError && (
+                    <div>
+                        <p className="text-gray-300 mb-1 font-medium capitalize"> Genre:</p>
+                        <div className="flex flex-wrap gap-2">
+                            <button
+                                onClick={() => handleFilterChange("genre", "Tất cả")}
+                                className={`px-3 py-1 rounded-xl border transition-colors duration-200 ${filters.genre === "Tất cả"
+                                        ? "border-purple-500 text-purple-400"
+                                        : "bg-transparent border-transparent text-gray-300 hover:text-purple-400"
+                                    }`}
+                            >
+                                Tất cả
+                            </button>
+                            {allGenresResult.data!.map((opt) => (
+                                <button
+                                    key={opt.id}
+                                    onClick={() => handleFilterChange("genre", opt.name)}
+                                    className={`px-3 py-1 rounded-xl border transition-colors duration-200 ${filters.genre === opt.name
+                                            ? "border-purple-500 text-purple-400"
+                                            : "bg-transparent border-transparent text-gray-300 hover:text-purple-400"
+                                        }`}
+                                >
+                                    {opt.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    )}
+
                     <button
                         onClick={() =>
                             setFilters({
