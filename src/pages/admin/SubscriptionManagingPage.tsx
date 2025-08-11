@@ -64,7 +64,7 @@ const SubscriptionManagingPage = () => {
             </TableContainer>
             <Pagination 
                 className="flex items-center justify-center" 
-                count={totalPage}
+                count={totalPage + 1}
                 page={page}
                 onChange={(_, p) => {
                     setPage(p);
