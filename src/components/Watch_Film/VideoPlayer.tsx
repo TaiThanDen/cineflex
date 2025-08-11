@@ -33,9 +33,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
 
         if (!player) return;
 
-        if (player.currentTime > episode.openingEnding) return;
+        if (player.currentTime > episode.openingEnd) return;
 
-        player.currentTime = episode.openingEnding;
+        player.currentTime = episode.openingEnd;
     }
 
 
