@@ -4,7 +4,7 @@ import Banner from "./Banner";
 
 const FilmsBanner = () => {
     const result = useQuery({
-        queryKey: ['shows_of_genres', 'Phim Hàn Quốc'],
+        queryKey: ['shows'],
         queryFn: () => getAllShows(0, 100),
     });
 

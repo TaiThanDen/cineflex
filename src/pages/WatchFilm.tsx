@@ -130,7 +130,8 @@ function WatchFilm() {
 
     return (
         <div className="bg-[#23263a] min-h-screen text-white">
-            <VideoPlayer startTime={viewHistoryResult.data?.duration} onCurrentTimeChange={setDuration} url={currentEpisodeResult.data!.url} />
+            <VideoPlayer startTime={viewHistoryResult.data?.duration} onCurrentTimeChange={setDuration} episode={currentEpisodeResult.data!} >
+            </VideoPlayer>
 
             {/* Tabs */}
             <Tabs

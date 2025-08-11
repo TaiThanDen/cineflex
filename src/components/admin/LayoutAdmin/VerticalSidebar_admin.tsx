@@ -6,6 +6,7 @@ import {
   LuBadgeInfo,
   // LuLifeBuoy,
   LuLogOut,
+  LuTags
 } from "react-icons/lu";
 import { MdMovie } from "react-icons/md";
 import Logo from "../../../assets/img/logo.png";
@@ -17,6 +18,11 @@ const navItems = [
   //   icon: <LuLayoutDashboard size={18} />,
   //   to: "/admin/dashboard",
   // },
+  {
+    label: "Quản thể loại",
+    icon: <LuTags size={18} />,
+    to: "/admin/genres",
+  },
   {
     label: "Quản lý phim",
     icon: <MdMovie size={18} />,

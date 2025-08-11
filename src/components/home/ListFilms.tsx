@@ -1,5 +1,5 @@
 import MovieSection from "./MovieSection";
-import { getAllShows } from "@/lib/api";
+import { queryShow } from "@/lib/api";
 import { useQueries } from "@tanstack/react-query";
 
 
@@ -11,16 +11,22 @@ const ListFilms = () => {
     queries: [
       {
         queryKey: ['shows_of_genres', 'Phim Hàn Quốc'],
-        queryFn: () => getAllShows(0, 100),
+        queryFn: () => queryShow({
+          genres: ["Phim Hàn Quốc"]
+        }, 0, 4),
         
       },
       {
         queryKey: ['shows_of_genres', 'Phim Trung Quốc'],
-        queryFn: () => getAllShows(0, 100)
+        queryFn: () => queryShow({
+          genres: ["Phim Trung Quốc"]
+        }, 0, 4),
       },
       {
         queryKey: ['shows_of_genres', 'Phim US-UK'],
-        queryFn: () => getAllShows(0, 100)
+        queryFn: () => queryShow({
+          genres: ["Phim US-UK"]
+        }, 0, 4),
       }
     ]
    })

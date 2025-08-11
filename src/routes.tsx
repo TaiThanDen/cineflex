@@ -1,4 +1,4 @@
-import { Routes, Route, matchPath, useLocation, Outlet } from "react-router";
+import { Routes, Route, useLocation, Outlet } from "react-router";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./layout/footer";
 import HomePage from "./pages/Home";
@@ -41,6 +41,7 @@ import Auth from "./context/Auth.tsx";
 import Sandbox from "./pages/admin/Sandbox.tsx";
 import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
+import GenresList from "./pages/admin/GenresList.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -80,9 +81,6 @@ const AppRoutes = () => {
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
 
-    const isWatchPage =
-        matchPath("/watch/:id", location.pathname) ||
-        location.pathname === "/watch";
     const isAdminPage = location.pathname.startsWith("/admin");
     const isModeratorPage = location.pathname.startsWith("/moderator");
     const isLandingPage = location.pathname === "/";
@@ -93,7 +91,7 @@ const AppRoutes = () => {
             <div className="w-full h-screen">
                 <div className="flex h-full w-screen">
                     {/* Ẩn VerticalSidebar khi ở đầu trang /watch, chỉ hiện khi scroll */}
-                    {!isMobile && !isAdminPage && !isModeratorPage && !isLandingPage && (!isWatchPage || scrolled) && (
+                    {!isMobile && !isAdminPage && !isModeratorPage && !isLandingPage && (
                         <VerticalSidebar />
                     )}
                     <div
@@ -185,6 +183,7 @@ const AppRoutes = () => {
                                 >
 
                                     <Route path="dashboard" element={<AdminPage />} />
+                                    <Route path="genres" element={<GenresList />}/>
                                     <Route path="movies" element={<ShowAdminPage />} />
                                     <Route path="movies/:id" element={<ShowDetailAdminPage />} />
                                     <Route path="users" element={<UserAdminPage />} />

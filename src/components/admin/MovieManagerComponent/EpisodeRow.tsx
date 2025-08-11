@@ -42,7 +42,15 @@ const EpisodeRow = ({ episode, index }: props) => {
     const queryClient = useQueryClient();
 
     const editEpisodeForm = useForm<EditEpisodeField>({
-        resolver: zodResolver(editEpisodeFormSchema)
+        resolver: zodResolver(editEpisodeFormSchema),
+        defaultValues: {
+            description: episode.description,
+            duration: episode.duration.toString(),
+            number: episode.number,
+            releaseDate: episode.releaseDate,
+            title: episode.title,
+            url: episode.url
+        }
     })
 
 

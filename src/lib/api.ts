@@ -24,6 +24,7 @@ import type { ReportComment } from './types/ReportComment';
 import type { ViewHistory } from './types/ViewHistory';
 import type { CommentSection } from './types/CommentSection';
 import type { ResetPasswordField } from './types/ResetPasswordField';
+import type { ShowQuery } from './types/ShowQuery';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -915,6 +916,176 @@ export const sendOtp = async (email: string) : Promise<void> => {
 export const resetPassword = async (body: ResetPasswordField) : Promise<void> => {
     try {
         await http.post<void, AxiosResponse<void, ResetPasswordField>, ResetPasswordField>(`/authentication/reset-password`, body)
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const isFavorite = async (show: string) : Promise<boolean> => {
+    try {
+        const rsp = await http.get<boolean>(`/shows/${show}/is-favorite`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const getFavoriteCount = async (show: string) : Promise<number> => {
+    try {
+        const rsp = await http.get<number>(`/shows/${show}/favorite`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const favoriteShow = async (show: string) : Promise<void> => {
+    try {
+        await http.post<void>(`/shows/${show}/favorite`)
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const unfavoriteShow = async (show: string) : Promise<void> => {
+    try {
+        await http.post<void>(`/shows/${show}/unfavorite`)
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+/////
+export const getEpisodeActualView = async (episode: string) : Promise<number> => {
+    try {
+        const rsp = await http.get<number>(`/episodes/${episode}/views`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+/////
+export const getEpisodeLike = async (episode: string) : Promise<number> => {
+    try {
+        const rsp = await http.get<number>(`/episodes/${episode}/like`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const unlikeEpisode = async (episode: string) : Promise<void> => {
+    try {
+        await http.post<void>(`/episodes/${episode}/unlike`)
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const isLiked = async (like: string) : Promise<boolean> => {
+    try {
+        const rsp = await http.get<boolean>(`/episodes/${like}/is-liked`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const likeEpisode = async (episode: string) : Promise<void> => {
+    try {
+        await http.post<void>(`/episodes/${episode}/like`)
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+export const queryShow = async (query : ShowQuery, page: number = 0, size: number = 6) : Promise<{
+    totalPage: number,
+    data: Show[]
+}> => {
+    try {
+        let url = `/shows/query?`;
+
+        const keyword = query.keyword;
+        const genres = query.genres;
+        const from = query.from;
+        const to = query.to;
+        const ageRating = query.ageRating;
+        const series = query.series;
+
+        url += `page=${page}&size=${size}`;
+
+        if (keyword !== undefined) url += `&keyword=${keyword}`;
+
+        if (from !== undefined) url += `&from=${from}`;
+
+        if (to !== undefined) url += `&to=${to}`;
+
+        if (ageRating !== undefined) url += `&ageRating=${encodeURIComponent(ageRating)}`;
+
+        if (series !== undefined) url += `&series=${series}`;
+
+        if (genres !== undefined) {
+            const genreParam = "&"
+
+            const genreQuery = genres.map((g) => {
+                return `genres=${g}`
+            }).join('&');
+
+
+            url += genreParam + genreQuery;
+        }
+
+
+        console.log(url);
+
+        const rsp = await http.get<Show[]>(url);
+
+        const data = rsp.data;
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
+
+
+export const addGenre = async (name: string) : Promise<Genre> => {
+    try {
+        interface G {
+            name: string
+        }
+        const rsp = await http.post<Genre, AxiosResponse<Genre, G>, G>('/genres', {
+            name: name
+        });
+
+        const data = rsp.data;
+
+        return data
     }
     catch (e) {
         throw handle(e);

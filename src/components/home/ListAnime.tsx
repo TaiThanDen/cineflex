@@ -1,6 +1,6 @@
 import MovieSection from "./MovieSection";
 import { useQueries } from "@tanstack/react-query";
-import { getAllShows } from "@/lib/api";
+import { queryShow } from "@/lib/api";
 
 
 const ListAnime = () => {
@@ -9,15 +9,21 @@ const ListAnime = () => {
     queries: [
       {
         queryKey: ['shows_of_genres', 'Anime', 'Mới'],
-        queryFn: () => getAllShows(0, 100),
+        queryFn: () => queryShow({
+          genres: ['Anime', 'Mới']
+        }, 0, 4),
       },
       {
         queryKey: ['shows_of_genres', 'Anime', 'Trinh thám'],
-        queryFn: () => getAllShows(0, 100)
+        queryFn: () => queryShow({
+          genres: ['Anime', 'Trinh thám']
+        }, 0, 4),
       },
       {
         queryKey: ['shows_of_genres', 'Anime', 'Thập kỷ'],
-        queryFn: () => getAllShows(0, 100)
+        queryFn: () => queryShow({
+          genres: ['Anime', 'Thập kỷ']
+        }, 0, 4),
       }
     ]
    })

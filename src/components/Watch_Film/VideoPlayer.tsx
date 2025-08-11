@@ -4,14 +4,16 @@ import MuxPlayer, { type MuxPlayerRefAttributes } from "@mux/mux-player-react";
 import { PiCaretLeftBold } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa6";
 import PauseVideoAd from "../AdsComponents/PauseVideoAd";
+import type { Episode } from "@/lib/types/Episode";
+import EpisodeInformation from "./EpisodeInfomation";
 
 type VideoPlayerProps = {
-    url: string;
     onCurrentTimeChange?: (_: number) => void;
-    startTime?: number
+    startTime?: number;
+    episode: Episode;
 };
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onCurrentTimeChange, startTime }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange, startTime }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(1);
@@ -26,7 +28,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onCurrentTimeChange, sta
     const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
     const playerRef = useRef<MuxPlayerRefAttributes>(null);
 
+    const skipIntro = () => {
+        const player = playerRef.current;
 
+        if (!player) return;
+
+        if (player.currentTime > episode.openingEnding) return;
+
+        player.currentTime = episode.openingEnding;
+    }
 
 
     useEffect(() => {
@@ -202,7 +212,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onCurrentTimeChange, sta
 
 
     return (
-        <div className="bg-[#23263a] text-white w-full pt-0 sm:min-h-full relative ">
+        <div className="bg-black mt-20 text-white w-[95%] mx-auto rounded-2xl relative overflow-hidden">
             {/* Overlay Cinema Mode */}
             {cinemaMode && (
                 <div
@@ -212,8 +222,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onCurrentTimeChange, sta
             )}
             <div
                 ref={containerRef}
-                className="relative w-full flex justify-center items-center"
-                style={{ height: "100vh", minHeight: "0" }} // Sửa ở đây
+                className="relative w-full flex justify-center items-center overflow-hidden"
                 tabIndex={0}
             >
                 {/* Popup quảng cáo khi pause */}
@@ -224,14 +233,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onCurrentTimeChange, sta
                 )}
                 <MuxPlayer
                     ref={playerRef}
-                    className="w-full h-full object-contain bg-black"
-                    style={{
-                        width: "100vw",
-                        height: "100vh",
-                        aspectRatio: "16/9",
-                        background: "black",
-                    }}
-                    playbackId={url}
+                    className="w-full h-[90%] object-contain"
+                    playbackId={episode.url}
                     autoPlay
                     metadata={{
                         video_title: "Solo Leveling-S1E1-1080P",
@@ -322,6 +325,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, onCurrentTimeChange, sta
           />
         )} */}
             </div>
+
+            <EpisodeInformation episode={episode} skipIntro={skipIntro} />
+
         </div>
     );
 };
