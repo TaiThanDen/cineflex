@@ -42,7 +42,7 @@ const ListFilms = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center px-2">
           <h2 className={`text-xl md:text-2xl font-bold text-yellow-300`}>
-            Phim US-UK mới
+            Phim Trung Quốc mới
           </h2>
           <button className="text-white text-sm hover:underline flex items-center gap-1">
             Xem toàn bộ ➔
@@ -55,7 +55,7 @@ const ListFilms = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center px-2">
           <h2 className={`text-xl md:text-2xl font-bold text-purple-300`}>
-            Phim Trung Quốc mới
+            Phim US-UK mới
           </h2>
           <button className="text-white text-sm hover:underline flex items-center gap-1">
             Xem toàn bộ ➔
