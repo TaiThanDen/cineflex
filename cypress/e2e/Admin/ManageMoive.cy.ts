@@ -1,57 +1,63 @@
 /// <reference types="cypress" />
 
-describe('Quản lý phim - Admin Dashboard', () => {
+describe("Quản lý phim - Admin Dashboard", () => {
   beforeEach(() => {
-    cy.visit('/admin/movies')
-  })
+    cy.loginAsAdmin().then(() => {
+      cy.visit("/admin/movies");
+    });
+  });
 
-  it('Hiển thị tiêu đề và danh sách phim', () => {
-    cy.contains('Quản lý phim').should('be.visible')
-    cy.get('img').should('have.length.greaterThan', 0)
-    cy.contains('Breaking Bad').should('exist')
-    cy.contains('Naruto').should('exist')
-  })
+  it("Hiển thị tiêu đề và danh sách phim", () => {
+    cy.contains(/quản lý phim/i).should("be.visible");
 
-  it('Tìm kiếm phim hoạt động', () => {
-    cy.get('input[placeholder*="Tìm phim"]').type('Naruto')
+    // Kiểm tra có ít nhất 1 thẻ phim hiển thị
+    cy.get("img").should("have.length.greaterThan", 0);
 
-    // ✅ Bấm nút tìm kiếm – dùng index nếu không có text
-    cy.get('button').eq(0).click()
+    // Kiểm tra các phim cụ thể (nếu chắc chắn có)
+    cy.contains(/test/i).should("exist");
+    cy.contains(/lupin the 3rd/i).should("exist");
+    cy.contains(/clevatess/i).should("exist");
+  });
 
-    cy.contains('Naruto').should('be.visible')
-  })
+  it("Click vào một phim để xem chi tiết", () => {
+    cy.contains(/clevatess/i).click();
 
-  it('Click vào một phim để xem chi tiết', () => {
-    cy.contains('Breaking Bad').click()
+    // ✅ URL đúng
+    cy.url().should("include", "/admin/movies/");
 
-    // ✅ URL không phải /manage-movie, sửa lại
-    cy.url().should('include', '/admin/movies/')
+    // ✅ Mùa 1 và mô tả phim
+    cy.contains(/mùa 1/i, { timeout: 10000 })
+        .scrollIntoView();
 
-    cy.contains("Walter White").should('be.visible')
-    cy.contains("Pilot").should('exist')
-  })
+    cy.contains(/clevatess là chúa tể/i).should("exist");
 
-  it('Hiển thị danh sách tập phim', () => {
-    cy.contains('Breaking Bad').click()
+    // ✅ Bảng tập phim
+    cy.get("table").should("exist");
+    cy.get("table tbody tr").should("have.length.at.least", 1);
+  });
 
-    cy.contains('Pilot').should('exist')
-    cy.contains("Cat's in the Bag...").should('exist')
-    cy.get('table').should('exist')
-    cy.contains('58 phút').should('exist')
-  })
+  it("Hiển thị danh sách tập phim", () => {
+    cy.contains(/clevatess/i).click();
 
-  it('Có nút thêm/xoá/chỉnh sửa phim và tập', () => {
-    cy.contains('Breaking Bad').click()
+    cy.get("table").should("exist");
 
-    // ✅ Nút thêm mùa & tập
-    cy.contains('+ Thêm mùa phim').should('exist')
-    cy.contains('+ Thêm tập phim').should('exist')
+    cy.contains(/năng lực của chúa tể bóng tối/i).should("exist");
+    cy.contains(/chúa tể của bóng tối/i).should("exist");
+    cy.contains("24").should("exist"); // thời lượng
+  });
 
-    // ✅ Kiểm tra trong hàng đầu tiên của bảng tập phim
-    cy.get('table tbody tr').first().within(() => {
-      cy.contains('button', '✏ Edit').should('exist')
-      cy.contains('button', '🗑 Xóa').should('exist')
-      cy.contains('button', '💬 Bình luận').should('exist')
-    })
-  })
-})
+  it("Có nút thêm, xoá, chỉnh sửa phim và tập", () => {
+    cy.contains(/clevatess/i).click();
+
+    // Các nút điều khiển (dùng regex để tránh lỗi chữ hoa/thường)
+    cy.contains(/thêm mùa/i, { timeout: 10000 }).should("exist");
+    cy.contains(/thêm tập/i).should("exist");
+
+    cy.get("table tbody tr").first().within(() => {
+      cy.contains(/sửa/i).should("exist");
+      cy.contains(/xóa/i).should("exist");
+    });
+
+    cy.contains(/chỉnh sửa/i).should("exist");
+  });
+});

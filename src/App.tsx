@@ -55,7 +55,6 @@ const App = () => {
           <AppRoutes />
         </Auth.Provider>             
       </QueryClientProvider>
-
     </Router>
   );
 };

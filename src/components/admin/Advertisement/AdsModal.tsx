@@ -64,7 +64,7 @@ const AdsModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => 
     const renderStepOne = () => (
         <>
             <Typography variant="body1">Chọn quảng cáo:</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
+            <Box className="flex flex-col gap-2 mt-2">
                 {[...Array(5)].map((_, index) => (
                     <Tooltip title="Tiếp theo" placement="right" key={index}>
                         <Button
