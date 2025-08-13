@@ -2,6 +2,7 @@
 
 describe('Admin - Quản lý người dùng', () => {
   beforeEach(() => {
+    cy.loginAsAdmin();
     cy.visit('/admin/users');
   });
 
@@ -10,56 +11,60 @@ describe('Admin - Quản lý người dùng', () => {
     cy.get('.shadow.p-4').should('have.length.greaterThan', 0);
   });
 
-  it('Tìm kiếm người dùng hoạt động đúng', () => {
-    cy.get('input[placeholder="Tìm người dùng..."]').clear().type('Tuấn');
+  it('Hiển thị modal khi nhấn vào người dùng', () => {
+    cy.get('.shadow.p-4').eq(2).scrollIntoView().click();
 
-    // Thêm chờ debounce hoặc sự kiện cập nhật UI (nếu có)
-    cy.wait(300);
-
-    cy.get('.shadow.p-4').each(($el) => {
-      cy.wrap($el).should('contain.text', 'Tuấn');
+    cy.get('[role="dialog"]', { timeout: 10000 }).should('be.visible').within(() => {
+      cy.contains('Username').should('exist');
+      cy.contains('Email').should('exist');
+      cy.contains('Vai trò').should('exist');
+      cy.contains('Trạng thái').should('exist');
     });
   });
 
-  it('Hiển thị modal khi nhấn vào một người dùng', () => {
-    cy.get('.shadow.p-4').first().click();
+  it('Đóng modal khi click nút Hủy', () => {
+    cy.get('.shadow.p-4').eq(2).scrollIntoView().click();
 
-    cy.get('.fixed.inset-0 .bg-white').should('be.visible');
+    cy.get('[role="dialog"]', { timeout: 10000 }).within(() => {
+      cy.contains('Hủy').click();
+    });
 
-    // Fix lỗi within do nhiều div.bg-white
-    cy.get('.fixed.inset-0 .bg-white').first().within(() => {
-      cy.contains('Email:').should('exist');
-      cy.contains('SĐT:').should('exist');
+    cy.get('[role="dialog"]').should('not.exist');
+  });
+
+  it('Hiển thị nút Cấm/Bỏ lệnh cấm và Lưu khi mở modal', () => {
+    cy.get('.shadow.p-4').eq(2).scrollIntoView().click();
+
+    cy.get('[role="dialog"]').within(() => {
+      cy.contains(/^Cấm$|^Bỏ lệnh cấm$/).should('exist');
+      cy.contains('Lưu').should('exist');
+      cy.contains('Hủy').should('exist');
     });
   });
 
-  it('Đóng modal khi click bên ngoài', () => {
-    cy.get('.shadow.p-4').first().click();
+  it('Cấm người dùng', () => {
+    // Chọn user thứ 2 có trạng thái đang hoạt động
+    cy.get('.shadow.p-4').eq(2).should('contain', 'Đang hoạt động').click();
 
-    cy.get('.fixed.inset-0 .bg-white').should('be.visible');
+    cy.get('[role="dialog"]').within(() => {
+      cy.contains(/^Cấm$/).click();
+      cy.contains('Lưu').click();
+    });
 
-    // Click overlay với force do có thể bị che
-    cy.get('.bg-black\\/30').click('topLeft', { force: true });
-
-    cy.get('.fixed.inset-0 .bg-white').should('not.exist');
+    // Xác nhận trạng thái đã bị cấm
+    cy.get('.shadow.p-4').eq(2).should('contain', 'Đã bị cấm');
   });
 
-  it('Hiển thị nút Sửa và Xóa khi mở modal', () => {
-    cy.get('.shadow.p-4').first().click();
+  it('Bỏ lệnh cấm người dùng', () => {
+    // Chọn user thứ 2 đang bị cấm
+    cy.get('.shadow.p-4').eq(2).should('contain', 'Đã bị cấm').click();
 
-    cy.get('.fixed.inset-0 .bg-white').first().within(() => {
-      cy.contains('Sửa').should('be.visible');
-      cy.contains('Xóa').should('be.visible');
+    cy.get('[role="dialog"]').within(() => {
+      cy.contains(/^Bỏ lệnh cấm$/).click();
+      cy.contains('Lưu').click();
     });
-  });
 
-  it('Thêm người dùng mới khi nhấn nút', () => {
-    cy.get('.shadow.p-4').then((cardsBefore) => {
-      const countBefore = cardsBefore.length;
-
-      cy.contains('+ Thêm người dùng').click();
-
-      cy.get('.shadow.p-4').should('have.length.greaterThan', countBefore);
-    });
+    // Xác nhận trạng thái quay lại hoạt động
+    cy.get('.shadow.p-4').eq(2).should('contain', 'Đang hoạt động');
   });
 });

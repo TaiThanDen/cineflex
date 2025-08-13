@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
-const viewports = [
-  { label: 'Mobile', width: 375, height: 667 },
-  { label: 'Tablet', width: 768, height: 1024 },
-  { label: 'Desktop', width: 1280, height: 800 }
-]
+// const viewports = [
+//   { label: 'Mobile', width: 375, height: 667 },
+//   { label: 'Tablet', width: 768, height: 1024 },
+//   { label: 'Desktop', width: 1280, height: 800 }
+// ]
 
 describe('Admin Dashboard - Responsive', () => {
   viewports.forEach((vp) => {

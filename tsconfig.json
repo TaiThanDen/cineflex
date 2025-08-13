@@ -10,9 +10,12 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "cypress"],
     "paths": {
       "@/*": ["./*"]
     }
-  }
+  },
+  "include": [
+    "cypress/**/*.ts"
+  ]
 }
