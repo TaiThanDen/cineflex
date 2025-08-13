@@ -44,7 +44,8 @@ const addEpisodeFormSchema = z.object({
     url: z.string(),
     duration: z.string().regex(/^\d+?$/, "Thời lượng phim phải là số"),
     releaseDate: z.string(),
-    description: z.string()
+    description: z.string(),
+    openingEnd: z.string().regex(/^\d+?$/, "Thời lượng phim phải là số")
 })
 
 type EditSeasonField = z.infer<typeof editSeasonFormSchema>;
@@ -149,7 +150,7 @@ const SeasonTab = ({ season, episodes }: Props) => {
                 number: data.number,
                 title: data.title,
                 url: data.url,
-                openingEnd: 0,
+                openingEnd: +data.openingEnd,
                 openingStart: 0
             }
 
@@ -369,7 +370,25 @@ const SeasonTab = ({ season, episodes }: Props) => {
                                 <div className="text-red-500">{addEpisodeForm.formState.errors.duration.message}</div>
                             )}
                             <p className="text-gray-500 text-sm mt-1">
-                                Định dạng hỗ trợ: "45 phút", "1h 30m", "90 min"
+                                Tính theo giây
+                            </p>
+                        </div>
+
+                        {/* Duration */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-2 text-gray-700">
+                                Kết thúc intro
+                            </label>
+                            <input
+                                {...addEpisodeForm.register('openingEnd')}
+                                type="text"
+                                className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500`}
+                            />
+                            {addEpisodeForm.formState.errors.openingEnd && (
+                                <div className="text-red-500">{addEpisodeForm.formState.errors.openingEnd.message}</div>
+                            )}
+                            <p className="text-gray-500 text-sm mt-1">
+                                Tính theo giây
                             </p>
                         </div>
 

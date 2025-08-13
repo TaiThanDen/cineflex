@@ -21,7 +21,7 @@ const navItems = [
     {
         label: "Quản lý bình luận",
         icon: <MdComment size={18} />,
-        to: "/moderator/comment",
+        to: "/moderator/sections",
     },
 ];
 

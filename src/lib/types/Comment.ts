@@ -4,5 +4,6 @@ export interface Comment {
     createdTime: string,
     updatedTime: string,
     account: string,
-    episode: string,
+    section: string,
+    isDeleted: boolean
 }

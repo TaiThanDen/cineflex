@@ -1,6 +1,6 @@
 import MovieSection from "./MovieSection";
 import { useQueries } from "@tanstack/react-query";
-import { getShowsByGenres } from "@/lib/api";
+import { queryShow } from "@/lib/api";
 
 
 const ListAnime = () => {
@@ -9,15 +9,21 @@ const ListAnime = () => {
     queries: [
       {
         queryKey: ['shows_of_genres', 'Anime', 'Mới'],
-        queryFn: () => getShowsByGenres('Anime', 'Mới'),
+        queryFn: () => queryShow({
+          genres: ['Anime', 'Mới']
+        }, 0, 4),
       },
       {
         queryKey: ['shows_of_genres', 'Anime', 'Trinh thám'],
-        queryFn: () => getShowsByGenres('Anime', 'Trinh thám')
+        queryFn: () => queryShow({
+          genres: ['Anime', 'Trinh thám']
+        }, 0, 4),
       },
       {
         queryKey: ['shows_of_genres', 'Anime', 'Thập kỷ'],
-        queryFn: () => getShowsByGenres('Anime', 'Thập kỷ')
+        queryFn: () => queryShow({
+          genres: ['Anime', 'Thập kỷ']
+        }, 0, 4),
       }
     ]
    })
@@ -33,7 +39,7 @@ const ListAnime = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={result[0].data} showViewAll={false} />
+        <MovieSection title="" data={result[0].data?.data ?? []} showViewAll={false} />
       </div>
 
       <div className="space-y-4">
@@ -45,7 +51,7 @@ const ListAnime = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={result[1].data} showViewAll={false} />
+        <MovieSection title="" data={result[1].data?.data ?? []} showViewAll={false} />
       </div>
 
 
@@ -58,7 +64,7 @@ const ListAnime = () => {
             Xem toàn bộ ➔
           </button>
         </div>
-        <MovieSection title="" data={result[2].data} showViewAll={false} />
+        <MovieSection title="" data={result[2].data?.data ?? []} showViewAll={false} />
       </div>
     </div>
   );

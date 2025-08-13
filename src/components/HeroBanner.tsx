@@ -1,7 +1,6 @@
 import { FaPlay } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router";
-import { Link } from "react-router";
 import type { Show } from "@/lib/types/Show";
 
 interface HeroBannerProps {
@@ -69,12 +68,13 @@ const HeroBanner = ({ item, children }: HeroBannerProps) => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-2 sm:mt-4 w-full">
-              <Link to={"/ads"} className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium px-4 sm:px-6 py-2 rounded flex items-center justify-center gap-2">
+                <button 
+                  onClick={handleMoreInfo}
+                  className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium px-4 sm:px-6 py-2 rounded flex items-center justify-center gap-2"
+                >
                   <FaPlay />
                   <p>Watch Now</p>
                 </button>
-              </Link>
               <button
                 className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white font-medium px-4 sm:px-6 py-2 rounded"
                 onClick={handleMoreInfo}

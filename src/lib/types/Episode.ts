@@ -7,6 +7,7 @@ export interface Episode {
     releaseDate: string,
     duration: number,
     openingStart: number,
-    openingEnding: number,
-    season: string
+    openingEnd: number,
+    season: string,
+    commentSection: string
 }

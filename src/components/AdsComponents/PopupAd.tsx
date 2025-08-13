@@ -1,10 +1,10 @@
 
 const PopupAd = ({
-                     image,
-                     link,
-                     open,
-                     onClose,
-                 }: {
+    image,
+    link,
+    open,
+    onClose,
+}: {
     image: string;
     link: string;
     open: boolean;

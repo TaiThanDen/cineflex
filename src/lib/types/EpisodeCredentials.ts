@@ -6,5 +6,5 @@ export interface EpisodeCredentials {
     releaseDate: string;
     duration: number;
     openingStart?: number;
-    openingEnd?: number;
+    openingEnd: number;
 }
