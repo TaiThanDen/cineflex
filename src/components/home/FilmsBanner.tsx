@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllShows } from "@/lib/api";
+import { queryShow } from "@/lib/api";
 import Banner from "./Banner";
 
 const FilmsBanner = () => {
     const result = useQuery({
-        queryKey: ['shows'],
-        queryFn: () => getAllShows(0, 100),
+        queryKey: ['shows', 10],
+        queryFn: () => queryShow({
+            genres: ['Phim US-UK']
+        }, 0, 10),
     });
 
     if (result.isLoading) return <>Loading</>
