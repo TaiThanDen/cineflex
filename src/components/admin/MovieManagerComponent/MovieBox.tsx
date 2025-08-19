@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getFavoriteCount } from "@/lib/api";
-import { Eye, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import type { Show } from "@/lib/types/Show";
 import { Link } from "react-router";
 

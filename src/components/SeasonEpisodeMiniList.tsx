@@ -1,11 +1,6 @@
 import type { Episode } from "@/lib/types/Episode";
 import type { Season } from "@/lib/types/Season";
 import { FaPlay } from "react-icons/fa";
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import {
-  ChevronDownIcon
-} from '@heroicons/react/16/solid'
-
 interface props {
   currentSeason: string | undefined;
   currentEpisode: string | undefined;
@@ -18,7 +13,6 @@ interface props {
 const SeasonEpisodeMiniList = ({
   currentSeason,
   currentEpisode,
-  onSeasonChange,
   onEpisodeSelect,
   seasons,
   episodes
