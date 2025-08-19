@@ -35,9 +35,6 @@
 //     }
 //   }
 // }
-/// <reference types="cypress" />
-
-/// <reference types="cypress" />
 
 Cypress.Commands.add('loginAsAdmin', () => {
   cy.request("POST", "https://cineflex.mooo.com/api/authentication/login", {

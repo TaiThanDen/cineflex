@@ -31,6 +31,7 @@ describe("Quản lý phim - Admin Dashboard", () => {
   });
 
   it("Hiển thị danh sách tập phim", () => {
+<<<<<<< HEAD
     cy.contains(/S Line/i).click();
 
     cy.get("table").should("exist");

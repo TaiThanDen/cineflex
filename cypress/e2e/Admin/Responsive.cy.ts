@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // /// <reference types="cypress" />
 //
 // // const viewports = [
