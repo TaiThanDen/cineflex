@@ -36,15 +36,19 @@
 //   }
 // }
 /// <reference types="cypress" />
-Cypress.Commands.add("loginAsAdmin", () => {
-    cy.request("POST", "https://cineflex.mooo.com/api/authentication/login", {
-        email: "tuanhhhts00576@fpt.edu.vn",
-        password: "admin123456",
-    }).then((response) => {
-        const token = response.body;
-        cy.window().then((win) => {
-            win.localStorage.setItem("auth", token);
-        });
+
+/// <reference types="cypress" />
+
+Cypress.Commands.add('loginAsAdmin', () => {
+  cy.request("POST", "https://cineflex.mooo.com/api/authentication/login", {
+    email: "tuanhhhts00576@fpt.edu.vn",
+    password: "admin123456",
+  }).then((response) => {
+    const token = response.body;
+    cy.window().then((win) => {
+      win.localStorage.setItem("auth", token);
     });
+  });
 });
-export {};
+
+
