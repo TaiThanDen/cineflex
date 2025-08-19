@@ -1091,3 +1091,15 @@ export const addGenre = async (name: string) : Promise<Genre> => {
         throw handle(e);
     }
 }
+
+export const increaseShowViewCount = async (id: string) : Promise<number> => {
+    try {
+        const rsp = await http.post<number>(`/shows/${id}/views`);
+        const data = rsp.data;
+
+        return data;
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}

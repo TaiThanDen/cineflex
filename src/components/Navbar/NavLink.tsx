@@ -6,7 +6,7 @@ interface props {
     children: ReactNode
 }
 
-const NavLink = ({path, children}: props) => {
+const NavLink = ({ path, children }: props) => {
     return (
         <li className='my-5'>
             <Link to={path} className="opacity-100 transition-colors font-bold text-nowrap overflow-x-hidden">

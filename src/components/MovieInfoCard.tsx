@@ -65,12 +65,6 @@ const MovieInfoCard = ({ show, seasonCount, genres }: props) => {
 
     return (
         <div className="bg-[#23263a] text-white p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-8 items-start w-full">
-            {/* Poster */}
-            {/* <img
-        src={show.thumbnail}
-        alt="Lãnh Địa Tử Chiến"
-        className="w-[100px] h-[140px] sm:w-[120px] sm:h-[170px] object-cover rounded-lg shadow-md mx-auto sm:mx-0"
-      /> */}
 
             {/* Main Info + Description */}
             <div className="flex-1 flex flex-col gap-2 min-w-[180px] sm:min-w-[250px]">
@@ -81,18 +75,9 @@ const MovieInfoCard = ({ show, seasonCount, genres }: props) => {
                             {show.title}
                         </h1>
                     </div>
-                    {/* <p className="text-yellow-400 font-semibold text-base sm:text-lg">
-            MobLand
-          </p> */}
 
                     {/* Tags */}
                     <div className="flex flex-wrap items-center gap-2 mt-2 text-xs sm:text-sm">
-                        <span className="border border-yellow-500 px-2 py-0.5 rounded text-yellow-500 font-semibold">
-                            IMDb 8.5
-                        </span>
-                        {/* <span className="bg-yellow-400 text-black px-2 py-0.5 rounded font-semibold">
-              4K
-            </span> */}
                         <span className="bg-white text-black px-2 py-0.5 rounded font-semibold">
                             {show.ageRating}
                         </span>
@@ -111,11 +96,11 @@ const MovieInfoCard = ({ show, seasonCount, genres }: props) => {
                                         await handleHeartClick()
                                     }}
                                 >
-                                    <Heart className="aspect-square" color="#ab8fd2" fill={isFavoriteResult.data?'#ab8fd2':'#ffffff00'} />
+                                    <Heart className="aspect-square" color="#ab8fd2" fill={isFavoriteResult.data ? '#ab8fd2' : '#ffffff00'} />
                                     <div className="text-[#ab8fd2] font-semibold">
-                                    {
-                                        favoriteCountResult.data ? favoriteCountResult.data : 0
-                                    }
+                                        {
+                                            favoriteCountResult.data ? favoriteCountResult.data : 0
+                                        }
                                     </div>
                                 </Button>
                             </> : <></>
@@ -129,23 +114,14 @@ const MovieInfoCard = ({ show, seasonCount, genres }: props) => {
                             <span className="bg-[#2f3147] px-2 py-0.5 rounded">{g.name}</span>
                         ))}
                     </div>
-
-
-                    {/* Status */}
-                    {/* <div className="flex items-center gap-2 mt-4">
-            <span className="bg-[#2a1e1c] text-orange-400 px-4 py-1 rounded-full text-xs sm:text-sm flex items-center gap-2">
-              🕒 Đã chiếu: 9 / 10 tập
-            </span>
-          </div> */}
                 </div>
-
+                <div className="text-yellow-400 mt-2 cursor-pointer hover:underline flex items-center gap-1 font-medium">
+                    Thông tin phim <PiInfoBold className="inline text-base" />
+                </div>
                 {/* Description  */}
                 <div className="text-xs sm:text-sm text-gray-300 leading-relaxed min-w-[180px] sm:min-w-[250px] max-w-full sm:max-w-[420px] mt-4 sm:mt-6">
                     <div className="line-clamp-4">
                         {show.description}
-                    </div>
-                    <div className="text-yellow-400 mt-2 cursor-pointer hover:underline flex items-center gap-1 font-medium">
-                        Thông tin phim <PiInfoBold className="inline text-base" />
                     </div>
                 </div>
             </div>

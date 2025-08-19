@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_API_URL: string = (import.meta.env.VITE_BASE_API_URL ?? "http://localhost:8080/api");
+const BASE_API_URL: string = (import.meta.env.VITE_BASE_API_URL ?? "https://cineflex.mooo.com/api");
 // const BASE_API_URL: string = 'https://cineflex-api.onrender.com/api';
 // const BASE_API_URL: string = 'http://localhost:8080/api';
 

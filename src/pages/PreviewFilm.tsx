@@ -144,7 +144,11 @@ const PreviewFilm = () => {
 
     return (
         <div className="min-h-screen bg-[#23263a] text-white">
-            <HeroBanner item={showResult.data!}>
+            <HeroBanner
+                item={showResult.data!}
+                isPreviewPage={true}
+                firstEpisodeId={episodeResult.length > 0 && episodeResult[0].data && episodeResult[0].data.length > 0 ? episodeResult[0].data[0].id : undefined}
+            >
                 <SeasonEpisodeList
                     seasons={seasonResult.data!}
                     episodesBySeason={episodesBySeason}

@@ -27,14 +27,13 @@ const Navbar = ({ scrolled }: props) => {
 
   return (
     <nav
-      className={`flex flex-row w-full transition-all duration-300 ease-in-out sticky left-0 top-0 text-white z-20 h-15 ${
-        scrolled
-          ? "bg-[#2f3147]"
-          : "bg-gradient-to-b from-[#23263a] to-transparent"
-      }`}
+      className={`flex flex-row w-full transition-all duration-300 ease-in-out sticky left-0 top-0 text-white z-20 h-15 ${scrolled
+        ? "bg-[#2f3147]"
+        : "bg-gradient-to-b from-[#23263a] to-transparent"
+        }`}
     >
       <Link
-        to="/"
+        to="/home"
         className="flex items-center space-x-3 w-full rtl:space-x-reverse flex-1 my-5 font-bold text-center mx-5"
       >
         CINEFLEX
@@ -57,9 +56,9 @@ const Navbar = ({ scrolled }: props) => {
         </div>
       </div>
       <ul className="items-cente justify-center pl-5 space-x-8 hidden lg:flex flex-auto flex-row w-full">
-        <NavLink path="/">Phim lẻ</NavLink>
-        <NavLink path="/">Phim bộ</NavLink>
-        <DropDown path="/" items={[{ label: <label>aaa</label>, path: "1" }]}>
+        <NavLink path="/movies">Phim lẻ</NavLink>
+        <NavLink path="/series">Phim bộ</NavLink>
+        <DropDown path="/filter" items={[]}>
           Thể loại
         </DropDown>
       </ul>
