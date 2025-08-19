@@ -33,28 +33,28 @@ const SeasonEpisodeMiniList = ({
     <div className="space-y-4 pb-4">
       <div className="flex items-center gap-4">
         <h2 className="text-xl font-bold flex-1 ">
-        <Menu>
-          <MenuButton className="inline-flex items-center gap-2 rounded-md bg-[#23263a] px-3 py-1.5 text-sm/6 font-semibold text-white">
-            {seasons.filter((season) => season.id === (currentSeason || seasons[0].id))[0].title}
-            <ChevronDownIcon className="size-4 fill-white/60" />
-          </MenuButton>
+          {/* <Menu>
+            <MenuButton className="inline-flex items-center gap-2 rounded-md bg-[#23263a] px-3 py-1.5 text-sm/6 font-semibold text-white">
+              {seasons.filter((season) => season.id === (currentSeason || seasons[0].id))[0].title}
+              <ChevronDownIcon className="size-4 fill-white/60" />
+            </MenuButton>
 
-          <MenuItems
-            transition
-            anchor="bottom start"
-            className="w-52 z-30 origin-bottom rounded-xl border border-white/5 bg-[#2f3147] p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
-          >
-            {seasons.map((s) => (
-              <MenuItem>
-                <button 
-                onClick={() => onSeasonChange(s.id)}
-                className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-focus:bg-white/10">
-                  {s.title}
-                </button>
-              </MenuItem>
-            ))}
-          </MenuItems>
-        </Menu>
+            <MenuItems
+              transition
+              anchor="bottom start"
+              className="w-52 z-30 origin-bottom rounded-xl border border-white/5 bg-[#2f3147] p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
+            >
+              {seasons.map((s) => (
+                <MenuItem>
+                  <button
+                    onClick={() => onSeasonChange(s.id)}
+                    className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-focus:bg-white/10">
+                    {s.title}
+                  </button>
+                </MenuItem>
+              ))}
+            </MenuItems>
+          </Menu> */}
         </h2>
 
       </div>

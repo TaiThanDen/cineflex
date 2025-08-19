@@ -20,7 +20,7 @@ function PopularSectionReusable<T>({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative z-10 w-full pl-0 pt-18">
+    <div className="relative w-full top-5 pl-0 mt-20">
       <h2 className="text-white text-xl font-semibold mb-4">{sectionTitle}</h2>
       <div
         ref={scrollRef}
@@ -34,11 +34,10 @@ function PopularSectionReusable<T>({
         {items.map((item, index) => (
           <div
             key={index}
-            className={`w-[219px] rounded-lg overflow-hidden relative flex-shrink-0 shadow-lg cursor-pointer border-2 transition-all duration-300 ${
-              selectedTitle === getTitle(item)
-                ? "border-violet-500"
-                : "border-transparent"
-            }`}
+            className={`w-[219px] rounded-lg overflow-hidden relative flex-shrink-0 shadow-lg cursor-pointer border-2 transition-all duration-300 ${selectedTitle === getTitle(item)
+              ? "border-violet-500"
+              : "border-transparent"
+              }`}
             onClick={() => onSelect(item, index)}
           >
             <img

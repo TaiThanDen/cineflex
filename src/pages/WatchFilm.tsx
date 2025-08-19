@@ -167,7 +167,7 @@ function WatchFilm() {
                     {
                         label: "Đề xuất",
                         key: "recommend",
-                        content: <RecommendedList />,
+                        content: <RecommendedList currentShowId={showId} />,
                     },
                 ]}
             />

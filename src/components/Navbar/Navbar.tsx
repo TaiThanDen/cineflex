@@ -1,16 +1,24 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom"; // ✅ should be react-router-dom
 import { FaSearch, FaBars } from "react-icons/fa";
 import NavLink from "./NavLink";
-import DropDown from "./DropDown"; // adjust path as needed
+import DropDown from "./DropDown";
+import { useQuery } from "@tanstack/react-query";
+import { getAllGenres } from "@/lib/api";
 
-interface props {
+interface Props {
   scrolled: boolean;
 }
 
-const Navbar = ({ scrolled }: props) => {
+const Navbar = ({ scrolled }: Props) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  // ✅ fetch genres dynamically
+  const { data: genres, isLoading } = useQuery({
+    queryKey: ["genres"],
+    queryFn: () => getAllGenres(),
+  });
 
   const handleSubmit = () => {
     const trimmed = search.trim();
@@ -23,6 +31,10 @@ const Navbar = ({ scrolled }: props) => {
     if (e.key === "Enter") {
       handleSubmit();
     }
+  };
+
+  const handleGenreSelect = (genre: string) => {
+    navigate(`/genre?genre=${encodeURIComponent(genre)}`);
   };
 
   return (
@@ -38,6 +50,8 @@ const Navbar = ({ scrolled }: props) => {
       >
         CINEFLEX
       </Link>
+
+      {/* Search bar */}
       <div className="w-[50%] relative m-2">
         <div className="relative flex gap-4">
           <input
@@ -55,13 +69,28 @@ const Navbar = ({ scrolled }: props) => {
           </button>
         </div>
       </div>
-      <ul className="items-cente justify-center pl-5 space-x-8 hidden lg:flex flex-auto flex-row w-full">
-        <NavLink path="/movies">Phim lẻ</NavLink>
-        <NavLink path="/series">Phim bộ</NavLink>
-        <DropDown path="/filter" items={[]}>
+
+      {/* Navigation links */}
+      <ul className="items-center justify-center pl-5 space-x-8 hidden lg:flex flex-auto flex-row w-full">
+        <NavLink path="/">Phim lẻ</NavLink>
+        <NavLink path="/">Phim bộ</NavLink>
+
+        {/* ✅ Dynamic Genre Dropdown */}
+        <DropDown
+          items={
+            isLoading
+              ? [{ label: <span>Loading...</span>, onClick: () => { } }]
+              : genres?.map((g: any) => ({
+                label: g.name,
+                onClick: () => handleGenreSelect(g.name), // ✅ use navigate
+              })) || []
+          }
+        >
           Thể loại
         </DropDown>
       </ul>
+
+      {/* Mobile menu */}
       <div className="px-5 h-full md:hidden flex items-center justify-center">
         <FaBars />
       </div>

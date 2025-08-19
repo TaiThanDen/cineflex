@@ -134,7 +134,7 @@ const PreviewFilm = () => {
                         {
                             label: "Đề xuất",
                             key: "recommend",
-                            content: <RecommendedList />,
+                            content: <RecommendedList currentShowId={id} />,
                         },
                     ]}
                 />
@@ -196,7 +196,7 @@ const PreviewFilm = () => {
                     {
                         label: "Đề xuất",
                         key: "recommend",
-                        content: <RecommendedList />,
+                        content: <RecommendedList currentShowId={id} />,
                     },
                 ]}
             />

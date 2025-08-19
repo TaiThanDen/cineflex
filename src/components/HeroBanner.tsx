@@ -100,11 +100,11 @@ const HeroBanner = ({ item, children, isPreviewPage = false, firstEpisodeId }: H
             <div className="text-xs sm:text-sm uppercase tracking-wide font-semibold text-[#7f22fe] mt-10 sm:mt-20">
               CineFlex
             </div>
-            <h1 className="text-2xl sm:text-5xl font-bold leading-tight break-words">
+            <h1 className="text-2xl sm:text-5xl font-bold leading-tight break-words mb-2">
               {item.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-200">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-200 mb-2">
               <span>{(new Date(item.releaseDate)).getFullYear()}</span>
               <span>•</span>
               <span>
@@ -116,8 +116,8 @@ const HeroBanner = ({ item, children, isPreviewPage = false, firstEpisodeId }: H
             </div>
 
             <p
-              className="text-gray-200 max-w-full sm:max-w-xl text-xs sm:text-sm leading-relaxed overflow-y-auto scrollbar-hide"
-              style={{ maxHeight: "60px" }}
+              className="text-gray-200 max-w-full sm:max-w-xl text-xs sm:text-sm leading-relaxed overflow-y-auto scrollbar-hide "
+              style={{ maxHeight: "120px" }}
             >
               {item.description}
             </p>
@@ -182,7 +182,7 @@ const HeroBanner = ({ item, children, isPreviewPage = false, firstEpisodeId }: H
       </div>
 
       {/* Nội dung phụ */}
-      <div className="relative z-10 w-full px-4 sm:px-8 pb-4 sm:pb-8">
+      <div className="relative z-10 w-full px-4 sm:px-8  sm:pb-8">
         {children}
       </div>
     </div>
