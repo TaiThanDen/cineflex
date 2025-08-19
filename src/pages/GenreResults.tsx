@@ -1,11 +1,11 @@
 import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { Filter } from "lucide-react";
-import type { ShowQuery } from "@/lib/types/ShowQuery";
 import { useQuery } from "@tanstack/react-query";
-import { getAllGenres, queryShow } from "@/lib/api";
+import { queryShow } from "@/lib/api";
 import { Pagination } from "@mui/material";
 import MovieSection from "@/components/home/MovieSection";
+import type { ShowQuery } from "@/lib/types/ShowQuery";
 
 const filterOptions = {
   type: ["Tất cả", "Phim lẻ", "Phim bộ"],
@@ -13,18 +13,12 @@ const filterOptions = {
   year: ["Tất cả", "2025", "2024", "2023", "2022", "2021", "2020"],
 };
 
-const SearchResults = () => {
+const GenreResults = () => {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
 
-  // ✅ read params
-  const query = params.get("q")?.toLowerCase() || "";
-  const genreParam = params.get("genre") || "Tất cả";
-
-  const allGenresResult = useQuery({
-    queryKey: ["genres"],
-    queryFn: () => getAllGenres(),
-  });
+  // ✅ get selected genre from URL param
+  const selectedGenre = params.get("genre") || "Tất cả";
 
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
@@ -32,7 +26,7 @@ const SearchResults = () => {
   const queryObject: ShowQuery = {
     ageRating: undefined,
     from: undefined,
-    genres: undefined,
+    genres: selectedGenre !== "Tất cả" ? [selectedGenre] : undefined,
     keyword: undefined,
     to: undefined,
     series: undefined,
@@ -42,50 +36,49 @@ const SearchResults = () => {
     type: "Tất cả",
     rating: "Tất cả",
     year: "Tất cả",
-    genre: genreParam, // ✅ prefill with URL param
   });
 
-  const searcResult = useQuery({
-    queryKey: ["search", page],
+  const genreResult = useQuery({
+    queryKey: ["genre", selectedGenre, page],
     queryFn: () => queryShow(queryObject, page - 1, 8),
+    staleTime: 5000,
   });
 
   useEffect(() => {
-    setTotalPage((searcResult.data?.totalPage ?? 0) + 1);
-  }, [searcResult]);
+    setTotalPage((genreResult.data?.totalPage ?? 0) + 1);
+  }, [genreResult]);
 
   const [showFilters, setShowFilters] = useState(false);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
-    setPage(1); // ✅ reset to first page when filter changes
+    setPage(1);
   };
 
+  // ✅ re-apply filters when they change
   useEffect(() => {
     const isSeries = filters.type === "Phim bộ";
+
+    queryObject.genres = selectedGenre !== "Tất cả" ? [selectedGenre] : undefined;
+
     if (filters.rating !== "Tất cả") queryObject.ageRating = filters.rating;
-    if (filters.type !== "Tất cả") {
-      queryObject.series = isSeries;
-    }
+    if (filters.type !== "Tất cả") queryObject.series = isSeries;
     if (filters.year !== "Tất cả") {
       queryObject.from = `${filters.year}-01-01`;
       queryObject.to = `${filters.year}-12-31`;
     }
-    if (filters.genre !== "Tất cả") {
-      queryObject.genres = [filters.genre];
-    }
-    if (query !== "") queryObject.keyword = query;
 
-    searcResult.refetch();
-  }, [filters, query]);
+    genreResult.refetch();
+  }, [filters, selectedGenre]);
 
   return (
     <div className="lg:pt-[7%] sm:p-[5%] px-1 md:px-2 max-w-7xl mx-auto">
+      {/* Title */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl md:text-3xl text-purple-400 font-semibold">
-          Kết quả tìm kiếm:{" "}
+          Thể loại:{" "}
           <span className="italic text-white">
-            {query || filters.genre}
+            {selectedGenre}
           </span>
         </h2>
       </div>
@@ -99,6 +92,7 @@ const SearchResults = () => {
         <span className="hidden sm:inline">Lọc</span>
       </button>
 
+      {/* Filters */}
       {showFilters && (
         <div className="bg-[#2b2e45c8] p-4 rounded-lg mb-6 shadow-inner space-y-4 text-sm">
           {Object.entries(filterOptions).map(([key, options]) => (
@@ -122,40 +116,6 @@ const SearchResults = () => {
             </div>
           ))}
 
-          {/* Dynamic Genre buttons */}
-          {!allGenresResult.isLoading && !allGenresResult.isError && (
-            <div>
-              <p className="text-gray-300 mb-1 font-medium capitalize">
-                Genre:
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => handleFilterChange("genre", "Tất cả")}
-                  className={`px-3 py-1 rounded-xl border transition-colors duration-200 ${
-                    filters.genre === "Tất cả"
-                      ? "border-purple-500 text-purple-400"
-                      : "bg-transparent border-transparent text-gray-300 hover:text-purple-400"
-                  }`}
-                >
-                  Tất cả
-                </button>
-                {allGenresResult.data!.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => handleFilterChange("genre", opt.name)}
-                    className={`px-3 py-1 rounded-xl border transition-colors duration-200 ${
-                      filters.genre === opt.name
-                        ? "border-purple-500 text-purple-400"
-                        : "bg-transparent border-transparent text-gray-300 hover:text-purple-400"
-                    }`}
-                  >
-                    {opt.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Reset filters */}
           <button
             onClick={() =>
@@ -163,7 +123,6 @@ const SearchResults = () => {
                 type: "Tất cả",
                 rating: "Tất cả",
                 year: "Tất cả",
-                genre: "Tất cả",
               })
             }
             className="text-xs text-red-400 hover:text-red-300 border border-red-400 px-2 py-1 rounded-md transition"
@@ -174,10 +133,10 @@ const SearchResults = () => {
       )}
 
       {/* Results */}
-      {searcResult.data?.data && searcResult.data.data.length !== 0 ? (
+      {genreResult.data?.data && genreResult.data.data.length !== 0 ? (
         <MovieSection
           title=""
-          data={searcResult.data.data}
+          data={genreResult.data.data}
           showViewAll={false}
         />
       ) : (
@@ -196,4 +155,4 @@ const SearchResults = () => {
   );
 };
 
-export default SearchResults;
+export default GenreResults;
