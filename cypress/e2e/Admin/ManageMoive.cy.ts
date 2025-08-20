@@ -31,7 +31,7 @@ describe("Quản lý phim - Admin Dashboard", () => {
   });
 
   it("Hiển thị danh sách tập phim", () => {
-<<<<<<< HEAD
+    
     cy.contains(/S Line/i).click();
 
     cy.get("table").should("exist");
@@ -321,5 +321,6 @@ it("Chỉnh sửa mùa", () => {
 
     cy.contains(/Cypress Movie Updated/i).should("not.exist");
   });
+  
 });
 

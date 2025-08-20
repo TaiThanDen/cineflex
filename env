@@ -1,0 +1,6 @@
+VITE_BASE_API_URL = 'https://cineflex.mooo.com/api'
+VITE_WEBSOCKET_APU_URL = 'https://cineflex.mooo.com/ws'
+
+# http://localhost:8080
+
+# https://https://cineflex.mooo.com
