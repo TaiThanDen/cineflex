@@ -25,6 +25,7 @@ import type { ViewHistory } from './types/ViewHistory';
 import type { CommentSection } from './types/CommentSection';
 import type { ResetPasswordField } from './types/ResetPasswordField';
 import type { ShowQuery } from './types/ShowQuery';
+// import type { Favorite } from './types/Favorite';
 
 const handle = (e: unknown) : ApiException => {
     if (axios.isAxiosError(e)) {
@@ -1054,8 +1055,6 @@ export const queryShow = async (query : ShowQuery, page: number = 0, size: numbe
 
             url += genreParam + genreQuery;
         }
-
-
         console.log(url);
 
         const rsp = await http.get<Show[]>(url);
@@ -1072,7 +1071,6 @@ export const queryShow = async (query : ShowQuery, page: number = 0, size: numbe
         throw handle(e);
     }
 }
-
 
 export const addGenre = async (name: string) : Promise<Genre> => {
     try {
