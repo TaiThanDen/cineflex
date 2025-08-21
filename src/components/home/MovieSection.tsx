@@ -7,12 +7,14 @@ interface MovieSectionProps {
   selectedTitle?: string;
   onSelect?: (item: Show) => void;
   showViewAll?: boolean;
+  overflowX?: boolean;
 }
 
 const MovieSection = ({
   title,
   data,
   showViewAll = false,
+  overflowX = true,
 }: MovieSectionProps) => {
   return (
     <div className="w-full">
@@ -27,9 +29,18 @@ const MovieSection = ({
         </div>
       )}
 
-      {/* Container scrollable on mobile, grid on md+ */}
-      <div className="overflow-x-auto md:overflow-visible px-2 scrollbar-hide">
-        <div className="flex gap-3 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div
+        className={`px-2 scrollbar-hide ${overflowX
+          ? "overflow-x-auto md:overflow-visible"
+          : "overflow-visible"
+          }`}
+      >
+        <div
+          className={`gap-3 ${overflowX
+            ? "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            : "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4"
+            }`}
+        >
           {data !== undefined ? (
             <>
               {data.map((item) => (

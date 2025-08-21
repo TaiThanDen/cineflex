@@ -6,7 +6,7 @@ Write-Host "===============================================" -ForegroundColor Gr
 # Check if Node.js is installed
 try {
     $nodeVersion = node --version
-    Write-Host "✅ Node.js version: $nodeVersion" -ForegroundColor Green
+    Write-Host " Node.js version: $nodeVersion" -ForegroundColor Green
 }
 catch {
     Write-Host "❌ Node.js not found. Please install Node.js first." -ForegroundColor Red
@@ -16,7 +16,7 @@ catch {
 # Check if npm is available
 try {
     $npmVersion = npm --version
-    Write-Host "✅ npm version: $npmVersion" -ForegroundColor Green
+    Write-Host " npm version: $npmVersion" -ForegroundColor Green
 }
 catch {
     Write-Host "❌ npm not found." -ForegroundColor Red
@@ -43,11 +43,11 @@ Write-Host "□ Check console for logs/errors" -ForegroundColor White
 
 Write-Host ""
 Write-Host "📊 Expected Results:" -ForegroundColor Yellow
-Write-Host "✅ Thêm episode: Modal đóng + episode xuất hiện" -ForegroundColor Green
-Write-Host "✅ Sửa episode: Modal đóng + thông tin cập nhật" -ForegroundColor Green
-Write-Host "✅ Xóa episode: Modal đóng + episode biến mất" -ForegroundColor Green
-Write-Host "✅ Loading states hiển thị đúng" -ForegroundColor Green
-Write-Host "✅ Không có window.location.reload()" -ForegroundColor Green
+Write-Host " Thêm episode: Modal đóng + episode xuất hiện" -ForegroundColor Green
+Write-Host " Sửa episode: Modal đóng + thông tin cập nhật" -ForegroundColor Green
+Write-Host " Xóa episode: Modal đóng + episode biến mất" -ForegroundColor Green
+Write-Host " Loading states hiển thị đúng" -ForegroundColor Green
+Write-Host " Không có window.location.reload()" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "📋 Season Management Test Checklist:" -ForegroundColor Magenta
@@ -80,7 +80,7 @@ Write-Host "   - Modal đóng và hiển thị thông báo thành công" -Foregr
 Write-Host "   - Phim mới xuất hiện trong danh sách" -ForegroundColor Gray
 Write-Host "   - UI tự động cập nhật không cần reload" -ForegroundColor Gray
 Write-Host ""
-Write-Host "2. ✅ Test validation form" -ForegroundColor White
+Write-Host "2.  Test validation form" -ForegroundColor White
 Write-Host "   - Tên phim: bắt buộc, ít nhất 2 ký tự" -ForegroundColor Gray
 Write-Host "   - URL poster: bắt buộc, format URL hợp lệ" -ForegroundColor Gray
 Write-Host "   - Mô tả: bắt buộc, ít nhất 10 ký tự" -ForegroundColor Gray

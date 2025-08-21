@@ -7,7 +7,7 @@ Mở Developer Tools (F12) → Console tab và xem các log sau:
 ### Khi thêm episode:
 
 ```
-✅ Expected logs:
+ Expected logs:
 "Thêm tập mới:" + episode data
 "Thêm tập phim thành công!"
 
@@ -18,7 +18,7 @@ Mở Developer Tools (F12) → Console tab và xem các log sau:
 ### Khi sửa episode:
 
 ```
-✅ Expected logs:
+ Expected logs:
 "Cập nhật tập phim thành công!"
 
 ❌ Error logs to watch:
@@ -28,7 +28,7 @@ Mở Developer Tools (F12) → Console tab và xem các log sau:
 ### Khi xóa episode:
 
 ```
-✅ Expected logs:
+ Expected logs:
 "Deleting episode:" + episode object
 "Current season:" + season object
 "Xóa tập phim thành công!"
@@ -107,7 +107,7 @@ queryClient.invalidateQueries({ queryKey: ["all-movies-with-details"] });
 queryClient.isMutating();
 ```
 
-## 5. Expected Behavior ✅
+## 5. Expected Behavior
 
 - **NO page reload** (`window.location.reload()`)
 - **Instant UI updates** after operations

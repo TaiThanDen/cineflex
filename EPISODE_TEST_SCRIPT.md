@@ -170,7 +170,7 @@ const handleConfirm = async () => {
 };
 ```
 
-### ✅ Checklist tổng quát:
+### Checklist tổng quát:
 
 - [ ] Tất cả operations hoạt động không cần reload
 - [ ] Loading states hiển thị đúng

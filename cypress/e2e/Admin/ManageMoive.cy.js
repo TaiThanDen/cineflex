@@ -16,13 +16,13 @@ describe("Quản lý phim - Admin Dashboard", () => {
     });
     it("Click vào một phim để xem chi tiết", () => {
         cy.contains(/clevatess/i).click();
-        // ✅ URL đúng
+        //  URL đúng
         cy.url().should("include", "/admin/movies/");
-        // ✅ Mùa 1 và mô tả phim
+        //  Mùa 1 và mô tả phim
         cy.contains(/mùa 1/i, { timeout: 10000 })
             .scrollIntoView();
         cy.contains(/clevatess là chúa tể/i).should("exist");
-        // ✅ Bảng tập phim
+        //  Bảng tập phim
         cy.get("table").should("exist");
         cy.get("table tbody tr").should("have.length.at.least", 1);
     });
