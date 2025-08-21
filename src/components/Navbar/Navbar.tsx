@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // ✅ should be react-router-dom
+import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaBars } from "react-icons/fa";
-import NavLink from "./NavLink";
 import DropDown from "./DropDown";
 import { useQuery } from "@tanstack/react-query";
 import { getAllGenres } from "@/lib/api";
@@ -14,7 +13,7 @@ const Navbar = ({ scrolled }: Props) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  // ✅ fetch genres dynamically
+  //  fetch genres dynamically
   const { data: genres, isLoading } = useQuery({
     queryKey: ["genres"],
     queryFn: () => getAllGenres(),
@@ -33,8 +32,15 @@ const Navbar = ({ scrolled }: Props) => {
     }
   };
 
+  //  Chuyển hướng đến /search thay vì /genre
   const handleGenreSelect = (genre: string) => {
-    navigate(`/genre?genre=${encodeURIComponent(genre)}`);
+    navigate(`/search?genre=${encodeURIComponent(genre)}`);
+  };
+
+  //  Handlers cho Phim lẻ/bộ
+  const handleMovieTypeSelect = (isSeries: boolean) => {
+    const type = isSeries ? "Phim bộ" : "Phim lẻ";
+    navigate(`/search?type=${encodeURIComponent(type)}`);
   };
 
   return (
@@ -72,17 +78,33 @@ const Navbar = ({ scrolled }: Props) => {
 
       {/* Navigation links */}
       <ul className="items-center justify-center pl-5 space-x-8 hidden lg:flex flex-auto flex-row w-full">
-        <NavLink path="/">Phim lẻ</NavLink>
-        <NavLink path="/">Phim bộ</NavLink>
+        {/*  Chuyển thành buttons navigate */}
+        <li className="my-5">
+          <button
+            onClick={() => handleMovieTypeSelect(false)}
+            className="text-white opacity-100 transition-colors cursor-pointer font-bold hover:text-purple-400"
+          >
+            Phim lẻ
+          </button>
+        </li>
 
-        {/* ✅ Dynamic Genre Dropdown */}
+        <li className="my-5">
+          <button
+            onClick={() => handleMovieTypeSelect(true)}
+            className="text-white opacity-100 transition-colors cursor-pointer font-bold hover:text-purple-400"
+          >
+            Phim bộ
+          </button>
+        </li>
+
+        {/*  Dynamic Genre Dropdown */}
         <DropDown
           items={
             isLoading
               ? [{ label: <span>Loading...</span>, onClick: () => { } }]
               : genres?.map((g: any) => ({
                 label: g.name,
-                onClick: () => handleGenreSelect(g.name), // ✅ use navigate
+                onClick: () => handleGenreSelect(g.name),
               })) || []
           }
         >

@@ -235,7 +235,7 @@ npm run dev
 # 7. Check responsiveness
 ```
 
-### ✅ Success Criteria
+### Success Criteria
 
 Chức năng được coi là thành công khi:
 

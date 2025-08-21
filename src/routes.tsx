@@ -42,7 +42,6 @@ import Sandbox from "./pages/admin/Sandbox.tsx";
 import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import GenresList from "./pages/admin/GenresList.tsx";
-import GenreResults from "./pages/GenreResults.tsx";
 import Favorite from "./pages/Favorite.tsx";
 
 const darkTheme = createTheme({
@@ -126,7 +125,6 @@ const AppRoutes = () => {
                                     <Route path="/home" element={<HomePage />} />
                                     <Route path="/ads" element={<AdsPage />} />
                                     <Route path="/search" element={<SearchResults />} />
-                                    <Route path="/genre" element={<GenreResults />} />
                                     <Route
                                         path="/preview/:id"
                                         element={<PreviewFilm />}
@@ -188,9 +186,8 @@ const AppRoutes = () => {
 
                                     }
                                 >
-
+                                    <Route path="genres" element={<GenresList />} />
                                     <Route path="dashboard" element={<AdminPage />} />
-                                    <Route path="genres" element={<GenresList />}/>
                                     <Route path="movies" element={<ShowAdminPage />} />
                                     <Route path="movies/:id" element={<ShowDetailAdminPage />} />
                                     <Route path="users" element={<UserAdminPage />} />

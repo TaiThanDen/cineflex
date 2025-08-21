@@ -208,13 +208,13 @@ const episodes = await getEpisodesBySeasonId(seasonId);
 
 ### Features đã implement:
 
-- ✅ Tab navigation
-- ✅ Episode count badges
-- ✅ Season descriptions
-- ✅ Responsive horizontal scroll
-- ✅ Loading states
-- ✅ Empty states
-- ✅ Consistent styling
+- Tab navigation
+- Episode count badges
+- Season descriptions
+- Responsive horizontal scroll
+- Loading states
+- Empty states
+- Consistent styling
 
 ### Có thể thêm:
 

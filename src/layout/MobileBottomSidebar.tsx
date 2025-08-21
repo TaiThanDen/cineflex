@@ -1,17 +1,20 @@
-import { FaHome, FaHeart, FaUser, FaPlay, FaRedo } from "react-icons/fa";
+import { FaHome, FaHeart, FaUser, FaRedo } from "react-icons/fa";
+import {
+  BoltIcon,
+} from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 
 const MobileBottomSidebar = () => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-[#2f3147] z-50 px-4 py-2 flex justify-between items-center shadow-t rounded-t-3xl sm:hidden">
-      <button className="flex flex-col items-center text-[#7f22fe]">
+      <Link to="/home" className="flex flex-col items-center text-[#7f22fe]">
         <FaHome className="text-lg mb-1" />
         <span className="text-xs">Home</span>
-      </button>
-      <button className="flex flex-col items-center text-white">
-        <FaPlay className="text-lg mb-1" />
+      </Link>
+      <Link to="/plans" className="flex flex-col items-center text-white">
+        <BoltIcon className="text-lg mb-1" />
         <span className="text-xs">Play</span>
-      </button>
+      </Link>
       <Link to="/continue" className="flex flex-col items-center text-white">
         <FaRedo className="text-lg mb-1" />
         <span className="text-xs">Continue</span>
@@ -20,10 +23,10 @@ const MobileBottomSidebar = () => {
         <FaHeart className="text-lg mb-1" />
         <span className="text-xs">Like</span>
       </button>
-      <button className="flex flex-col items-center text-white">
+      <Link to="profile" className="flex flex-col items-center text-white">
         <FaUser className="text-lg mb-1" />
         <span className="text-xs">User</span>
-      </button>
+      </Link>
     </div>
   );
 };
