@@ -61,13 +61,27 @@ const FavoritesPage: React.FC = () => {
           </div>
         )}
       </div>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-        <Pagination
-          count={count}
-          page={page}
-          onChange={(_, page) => setPage(page)}
-        />
-      </Box>
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+    <Pagination
+        count={count}
+        page={page}
+        onChange={(_, page) => setPage(page)}
+        sx={{
+        color: "white",
+        "& .MuiPaginationItem-root": {
+            color: "white",     
+        },
+        "& .MuiPaginationItem-root.Mui-selected": {
+            backgroundColor: "rgba(255,255,255,0.2)", 
+            color: "white",         
+        },
+        "& .MuiPaginationItem-root:hover": {
+            backgroundColor: "rgba(255,255,255,0.2)", 
+        },
+        }}
+    />
+    </Box>
+
     </div>
   )
 }
