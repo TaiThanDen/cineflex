@@ -67,6 +67,7 @@ const HeroBanner = ({ item, children, isPreviewPage = false, firstEpisodeId }: H
     } finally {
       queryClient.invalidateQueries({ queryKey: ["is-show-favorite", item.id] });
       queryClient.invalidateQueries({ queryKey: ["show-favorite-count", item.id] });
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
     }
   };
 

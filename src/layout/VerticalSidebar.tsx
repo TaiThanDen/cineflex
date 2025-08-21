@@ -14,6 +14,8 @@ import { useContext } from "react";
 import Auth from "@/context/Auth";
 import { useQuery } from "@tanstack/react-query";
 import { me } from "@/lib/api";
+import { HeartIcon } from "@heroicons/react/24/outline";
+
 
 
 const VerticalSidebar = () => {
@@ -50,6 +52,13 @@ const VerticalSidebar = () => {
         <Link to="/plans" className="text-white hover:text-purple-500">
           <BoltIcon className="h-6 w-6" />
         </Link>
+
+        {auth !== '' &&
+          <Link to="/favorites" className="text-white hover:text-purple-500">
+            <HeartIcon className="h-6 w-6" />
+          </Link>
+        }
+
         {/* <BellIcon className="h-6 w-6" /> */}
       </div>
       <div className="flex flex-col items-center gap-4 z-10 text-white">

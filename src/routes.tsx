@@ -43,6 +43,7 @@ import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import GenresList from "./pages/admin/GenresList.tsx";
 import GenreResults from "./pages/GenreResults.tsx";
+import Favorite from "./pages/Favorite.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -168,7 +169,11 @@ const AppRoutes = () => {
                                         </AuthGuard>
                                     } />
                                 </Route>
-
+                                <Route path="/favorites" element={
+                                    <AuthGuard>
+                                        <Favorite />
+                                    </AuthGuard>
+                                } />
                                 {/* Route admin bọc bằng LayoutAdmin */}
                                 <Route
                                     path="/admin"

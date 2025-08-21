@@ -1103,3 +1103,23 @@ export const increaseShowViewCount = async (id: string) : Promise<number> => {
         throw handle(e);
     }
 }
+  
+export const getFavorites = async (page: number = 0, size: number = 6): Promise<{
+    totalPage: number,
+    data: Show[]
+}> => {
+    try {
+        const rsp = await http.get<Show[]>(`/favorites?page=${page}&size=${size}`);
+        const data = rsp.data;
+
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e);
+    }
+}
