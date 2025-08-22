@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  // LuLayoutDashboard,
+  LuLayoutDashboard,
   LuUsers,
   LuCreditCard,
   LuBadgeInfo,
@@ -13,11 +13,11 @@ import Logo from "../../../assets/img/logo.png";
 import { Link, useLocation } from "react-router";
 
 const navItems = [
-  // {
-  //   label: "Dashboard",
-  //   icon: <LuLayoutDashboard size={18} />,
-  //   to: "/admin/dashboard",
-  // },
+  {
+    label: "Dashboard",
+    icon: <LuLayoutDashboard size={18} />,
+    to: "/admin/dashboard",
+  },
   {
     label: "Quản thể loại",
     icon: <LuTags size={18} />,
