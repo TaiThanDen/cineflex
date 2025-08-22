@@ -42,8 +42,8 @@ import Sandbox from "./pages/admin/Sandbox.tsx";
 import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import GenresList from "./pages/admin/GenresList.tsx";
-import GenreResults from "./pages/GenreResults.tsx";
 import Favorite from "./pages/Favorite.tsx";
+import GenreResults from "./pages/GenreResults.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
