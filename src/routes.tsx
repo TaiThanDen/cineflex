@@ -43,7 +43,6 @@ import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import GenresList from "./pages/admin/GenresList.tsx";
 import Favorite from "./pages/Favorite.tsx";
-import GenreResults from "./pages/GenreResults.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -126,7 +125,6 @@ const AppRoutes = () => {
                                     <Route path="/home" element={<HomePage />} />
                                     <Route path="/ads" element={<AdsPage />} />
                                     <Route path="/search" element={<SearchResults />} />
-                                    <Route path="/genre" element={<GenreResults />} />
                                     <Route
                                         path="/preview/:id"
                                         element={<PreviewFilm />}
