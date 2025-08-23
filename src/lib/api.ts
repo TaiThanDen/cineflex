@@ -25,7 +25,7 @@ import type { ViewHistory } from './types/ViewHistory';
 import type { CommentSection } from './types/CommentSection';
 import type { ResetPasswordField } from './types/ResetPasswordField';
 import type { ShowQuery } from './types/ShowQuery';
-import { de } from 'zod/v4/locales';
+
 // import type { Favorite } from './types/Favorite';
 
 const handle = (e: unknown) : ApiException => {
