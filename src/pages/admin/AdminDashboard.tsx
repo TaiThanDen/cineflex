@@ -83,36 +83,7 @@ const userGrowthSeries = [
   { name: "Subscribers", data: [18000, 31000, 22000, 19000, 26000, 18000] },
 ];
 
-// Dữ liệu chart Revenue
-const revenueOptions = {
-  chart: { type: "area", height: 280, toolbar: { show: false } },
-  dataLabels: { enabled: false },
-  stroke: { curve: "smooth", width: 3 },
-  fill: {
-    type: "gradient",
-    gradient: {
-      shadeIntensity: 1,
-      opacityFrom: 0.5,
-      opacityTo: 0.1,
-      stops: [0, 90, 100],
-    },
-  },
-  xaxis: {
-    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
-  },
-  yaxis: { title: { text: "Revenue ($)" }, min: 0 },
-  tooltip: {
-    enabled: true,
-    theme: "dark",
-    y: { formatter: (val: number) => "$" + val.toLocaleString() },
-  },
-};
-const revenueSeries = [
-  {
-    name: "Revenue",
-    data: [0, 5000, 15000, 12000, 20000, 23000, 18000, 27000, 30000],
-  },
-];
+
 
 // Dữ liệu podcast table
 const podcasts: Podcast[] = [
@@ -127,13 +98,6 @@ const podcasts: Podcast[] = [
   },
 ];
 
-// Dữ liệu cho chart Thể loại phim được xem nhiều nhất
-const topMovieGenresOptions = {
-  chart: { type: "pie" },
-  labels: ["Anime", "Action", "Drama", "Comedy", "Horror"],
-  legend: { position: "bottom" },
-};
-const topMovieGenresSeries = [12000, 9500, 8700, 7600, 5400];
 
 // Dữ liệu cho chart Thể loại blog được đọc nhiều nhất
 const topBlogGenresOptions = {

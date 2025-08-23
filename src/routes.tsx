@@ -43,6 +43,7 @@ import SingleCommentSection from "./pages/moderator/SingleCommentSection.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import GenresList from "./pages/admin/GenresList.tsx";
 import Favorite from "./pages/Favorite.tsx";
+import Like from "./pages/Like.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -153,6 +154,11 @@ const AppRoutes = () => {
                                         <AuthGuard>
                                             <Continue />
                                         </AuthGuard>} />
+                                    <Route path="/like" element={
+                                        <AuthGuard>
+                                            <Like />
+                                        </AuthGuard>
+                                    } />
                                     <Route path="/watch/:id" element={<WatchFilm />} />
                                     <Route path="/plans" element={
                                         <AuthGuard>
