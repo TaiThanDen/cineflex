@@ -1123,11 +1123,24 @@ export const getFavorites = async (page: number = 0, size: number = 10): Promise
     }
 }
 
-export const getTopFavoriteShows = async (size: number = 10): Promise<Show[]> => {
-    try {
-        const rsp = await http.get<Show[]>(`/favorites/top?limit=${size}`);
-        return rsp.data;
-    }catch(e) {
-        throw handle(e);
-    }
+export const getTopFavorites = async (
+  page: number = 0,
+  size: number = 10
+): Promise<{
+  totalPage: number;
+  data: Show[];
+}> => {
+  try {
+    const rsp = await http.get<Show[]>(`/favorites/top?page=${page}&size=${size}`);
+    const data = rsp.data;
+
+    const totalPage = +rsp.headers["x-total-page"];
+
+    return {
+      totalPage: totalPage,
+      data: data,
+    };
+  } catch (e) {
+    throw handle(e);
+  }
 };

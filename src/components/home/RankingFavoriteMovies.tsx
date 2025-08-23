@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTopFavoriteShows } from "@/lib/api";
+import { getTopFavorites } from "@/lib/api";
 import type { Show } from "@/lib/types/Show";
 import { Link } from "react-router";
 const RankingFavoriteMovies = () => {
@@ -8,8 +8,9 @@ const RankingFavoriteMovies = () => {
     useEffect(() => {
         const fetchTopMovies = async () => {
             try {
-                const movies = await getTopFavoriteShows();
-                setTopMovies(movies);
+                // request top 10 favorites
+                const rsp = await getTopFavorites(0, 10);
+                setTopMovies(rsp.data);
             } catch (error) {
                 console.error("Không lấy được phim :", error);
             }
@@ -31,7 +32,7 @@ const RankingFavoriteMovies = () => {
                         return (
                             <div key={movie.id} className="w-[160px] sm:w-[270px] md:w-[350px]  cursor-pointer">
                                 <Link to={`/preview/${movie.id}`} className="group block">
-                                    <div className="rounded-lg overflow-hidden border-2 border-transparent group-hover:border-purple-300 transition-all duration-200">
+                                    <div className="rounded-lg overflow-hidden border-2 border-transparent group-hover:border-purple-300 hover:border-5 transition-all duration-200">
                                         {/* Thumbnail */}
                                         <img
                                             src={movie.thumbnail}
@@ -41,7 +42,7 @@ const RankingFavoriteMovies = () => {
                                         {/* Info*/}
                                         <div className="mt-3 md:w-[350px] w-auto flex item-start gap-3">
                                             {/*Rank*/}
-                                            <div className="w-12 text-5xl font-extrabold leading-none text-purple-300 select-none ">
+                                            <div className="w-auto text-6xl font-extrabold leading-none text-purple-300 select-none ">
                                                 {idx + 1}
                                             </div>
                                             <div className="flex-1">
