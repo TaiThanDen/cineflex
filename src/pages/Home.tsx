@@ -3,6 +3,7 @@ import ListAnime from "@/components/home/ListAnime";
 import Partners from "@/pages/Partners";
 import FilmsBanner from "@/components/home/FilmsBanner";
 import AnimeBanner from "@/components/home/AnimeBanner";
+import RankingFavoriteMovies from "@/components/home/RankingFavoriteMovies";
 // import FilmsBanner from "@/components/home/FilmsBanner";
 const HomePage = () => {
 
@@ -12,7 +13,7 @@ const HomePage = () => {
 
       <ListFilms />
       <Partners />
-
+      <RankingFavoriteMovies />
       <AnimeBanner />
 
       <ListAnime />
