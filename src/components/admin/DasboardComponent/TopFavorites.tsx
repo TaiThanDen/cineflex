@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getTopFavorites, getFavoriteCount } from "@/lib/api";
+import { getTopFavorites, getFavoriteCount, getGenresByShow } from "@/lib/api";
 import type { Show } from "@/lib/types/Show";
 import { Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +10,10 @@ const FavoriteCard: React.FC<{ movie: Show }> = ({ movie }) => {
     queryKey: ["show-favorite-count", movie.id],
     queryFn: () => getFavoriteCount(movie.id),
   });
+   const genres = useQuery({
+          queryKey: ['genres_of_show', movie.id],
+          queryFn: () => getGenresByShow(movie.id)
+      });
 
   return (
     <div
@@ -31,6 +35,9 @@ const FavoriteCard: React.FC<{ movie: Show }> = ({ movie }) => {
             {favoriteCountResult.data ?? 0}
           </div>
         </div>
+        <p className="text-gray-400 text-xs truncate">
+          {(genres.isLoading || genres.isError) ? 'Đang tải thể loại' : genres.data!.map((genre) => genre.name).join(', ')}
+        </p>
       </div>
     </div>
   );

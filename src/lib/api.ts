@@ -1141,4 +1141,46 @@ export const getTopFavorites = async (
   } catch (e) {
     throw handle(e);
   }
+  
+};
+export interface Stats {
+  totalUsers: number;
+  freeUsers: number;
+  activeSubscriptions: number;
+}
+
+export const getAllStats = async (): Promise<Stats> => {
+  try {
+    const rsp = await http.get<Stats>(`/stats`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalUsers = async (): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/stats/total`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getFreeUsers = async (): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/stats/free`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getActiveSubscriptions = async (): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/stats/premium`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
 };
