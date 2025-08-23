@@ -25,6 +25,7 @@ import type { ViewHistory } from './types/ViewHistory';
 import type { CommentSection } from './types/CommentSection';
 import type { ResetPasswordField } from './types/ResetPasswordField';
 import type { ShowQuery } from './types/ShowQuery';
+import { de } from 'zod/v4/locales';
 // import type { Favorite } from './types/Favorite';
 
 const handle = (e: unknown) : ApiException => {
@@ -1102,7 +1103,7 @@ export const increaseShowViewCount = async (id: string) : Promise<number> => {
     }
 }
   
-export const getFavorites = async (page: number = 0, size: number = 6): Promise<{
+export const getFavorites = async (page: number = 0, size: number = 10): Promise<{
     totalPage: number,
     data: Show[]
 }> => {
@@ -1121,9 +1122,10 @@ export const getFavorites = async (page: number = 0, size: number = 6): Promise<
         throw handle(e);
     }
 }
+
 export const getTopFavorites = async (
   page: number = 0,
-  size: number = 6
+  size: number = 10
 ): Promise<{
   totalPage: number;
   data: Show[];
