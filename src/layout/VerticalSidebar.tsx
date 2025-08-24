@@ -1,12 +1,10 @@
 import {
   UserIcon,
   HomeIcon,
-  // ChartBarIcon,
-  // CalendarIcon,
   BoltIcon,
-  // BellIcon,
   Cog6ToothIcon,
   ClockIcon,
+  HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "@/assets/img/logo.jpg";
 import { Link } from "react-router";
@@ -49,15 +47,21 @@ const VerticalSidebar = () => {
           </Link>
         }
 
-        <Link to="/plans" className="text-white hover:text-purple-500">
-          <BoltIcon className="h-6 w-6" />
-        </Link>
+        {auth !== '' &&
+          <Link to="/like" className="text-white hover:text-purple-500">
+            <HandThumbUpIcon className="h-6 w-6" />
+          </Link>
+        }
 
         {auth !== '' &&
           <Link to="/favorites" className="text-white hover:text-purple-500">
             <HeartIcon className="h-6 w-6" />
           </Link>
         }
+
+        <Link to="/plans" className="text-white hover:text-purple-500">
+          <BoltIcon className="h-6 w-6" />
+        </Link>
 
         {/* <BellIcon className="h-6 w-6" /> */}
       </div>
