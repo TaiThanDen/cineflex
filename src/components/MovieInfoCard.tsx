@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import Auth from "@/context/Auth";
+import StarRating from "@/components/home/StarRating";
 
 interface props {
     show: Show,
@@ -105,6 +106,8 @@ const MovieInfoCard = ({ show, seasonCount, genres }: props) => {
                                 </Button>
                             </> : <></>
                         }
+                        <StarRating showId={show.id} />
+
 
                     </div>
 

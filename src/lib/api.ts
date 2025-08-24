@@ -28,7 +28,7 @@ import type { ShowQuery } from './types/ShowQuery';
 
 // import type { Favorite } from './types/Favorite';
 
-const handle = (e: unknown) : ApiException => {
+const handle = (e: unknown): ApiException => {
     if (axios.isAxiosError(e)) {
         return new ApiException(e.response?.status, e.message);
     }
@@ -37,7 +37,7 @@ const handle = (e: unknown) : ApiException => {
     }
 }
 
-export const login = async (credentials: LoginCredentials) : Promise<string> => {
+export const login = async (credentials: LoginCredentials): Promise<string> => {
     try {
         const rsp = await http.post<string, AxiosResponse<string, LoginCredentials>>("/authentication/login", credentials);
         const data = rsp.data;
@@ -49,7 +49,7 @@ export const login = async (credentials: LoginCredentials) : Promise<string> => 
     }
 }
 
-export const register = async (credentials: RegisterCredential) : Promise<string> => {
+export const register = async (credentials: RegisterCredential): Promise<string> => {
     try {
         const rsp = await http.post<string, AxiosResponse<string, RegisterCredential>>("/authentication/register", credentials);
         const data = rsp.data;
@@ -61,7 +61,7 @@ export const register = async (credentials: RegisterCredential) : Promise<string
     }
 }
 
-export const me = async () : Promise<Account> => {
+export const me = async (): Promise<Account> => {
     try {
         const rsp = await http.get<Account>("/authentication/profile");
         const data = rsp.data;
@@ -73,7 +73,7 @@ export const me = async () : Promise<Account> => {
     }
 }
 
-export const getShowById = async (id: string, page: number = 0, size: number = 12) : Promise<Show> => {
+export const getShowById = async (id: string, page: number = 0, size: number = 12): Promise<Show> => {
     try {
         const rsp = await http.get<Show>(`/shows/${id}?page=${page}&size=${size}`);
         const data = rsp.data;
@@ -85,11 +85,11 @@ export const getShowById = async (id: string, page: number = 0, size: number = 1
     }
 }
 
-export const getSeasonsByShowId = async (id: string, page: number = 0, size: number = 12) : Promise<Season[]> => {
+export const getSeasonsByShowId = async (id: string, page: number = 0, size: number = 12): Promise<Season[]> => {
     try {
         const rsp = await http.get<Season[]>(`/shows/${id}/seasons?page=${page}&size=${size}`);
         const data = rsp.data;
-        
+
         return data;
     }
     catch (e) {
@@ -97,10 +97,10 @@ export const getSeasonsByShowId = async (id: string, page: number = 0, size: num
     }
 }
 
-export const getEpisodesBySeasonId = async (id: string, page: number = 0, size: number = 12) : Promise<Episode[]> => {
+export const getEpisodesBySeasonId = async (id: string, page: number = 0, size: number = 12): Promise<Episode[]> => {
     try {
         const rsp = await http.get<Episode[]>(`/seasons/${id}/episodes?page=${page}&size=${size}`);
-        const data= rsp.data;
+        const data = rsp.data;
 
         return data;
     }
@@ -109,7 +109,7 @@ export const getEpisodesBySeasonId = async (id: string, page: number = 0, size: 
     }
 }
 
-export const getSeasonById = async (id: string) : Promise<Season> => {
+export const getSeasonById = async (id: string): Promise<Season> => {
     try {
         const rsp = await http.get<Season>(`/seasons/${id}`);
         const data = rsp.data;
@@ -121,7 +121,7 @@ export const getSeasonById = async (id: string) : Promise<Season> => {
     }
 }
 
-export const getEpisodeById = async (id: string) : Promise<Episode> => {
+export const getEpisodeById = async (id: string): Promise<Episode> => {
     try {
         const rsp = await http.get<Episode>(`/episodes/${id}`);
         const data = rsp.data
@@ -134,7 +134,7 @@ export const getEpisodeById = async (id: string) : Promise<Episode> => {
     }
 }
 
-export const getGenresByShow = async (id: string) : Promise<Genre[]> => {
+export const getGenresByShow = async (id: string): Promise<Genre[]> => {
     try {
         const rsp = await http.get<Genre[]>(`/shows/${id}/genres`);
         const data = rsp.data;
@@ -146,7 +146,7 @@ export const getGenresByShow = async (id: string) : Promise<Genre[]> => {
     }
 }
 
-export const getShowsByGenres = async (...genres: string[]) : Promise<Show[]> => {
+export const getShowsByGenres = async (...genres: string[]): Promise<Show[]> => {
     console.log(genres);
     const uri = `/shows?page=0&size=100`;
 
@@ -161,7 +161,7 @@ export const getShowsByGenres = async (...genres: string[]) : Promise<Show[]> =>
     }
 }
 
-export const getCommentByEpisodes = async (episode: string, page: number = 0, size: number = 12) : Promise<Comment[]> => {
+export const getCommentByEpisodes = async (episode: string, page: number = 0, size: number = 12): Promise<Comment[]> => {
     const uri = `/episodes/${episode}/comments?page=${page}&size=${size}`;
 
     try {
@@ -175,11 +175,11 @@ export const getCommentByEpisodes = async (episode: string, page: number = 0, si
     }
 }
 
-export const getCommentBySection = async (section: string, page: number = 0, size: number = 12, deleted: boolean = false) : Promise<{
+export const getCommentBySection = async (section: string, page: number = 0, size: number = 12, deleted: boolean = false): Promise<{
     data: Comment[],
     totalPage: number
 }> => {
-    const uri = `/comments/sections/${section}${deleted?'/deleted':''}?page=${page}&size=${size}`;
+    const uri = `/comments/sections/${section}${deleted ? '/deleted' : ''}?page=${page}&size=${size}`;
 
     try {
         const rsp = await http.get<Comment[]>(uri);
@@ -196,9 +196,9 @@ export const getCommentBySection = async (section: string, page: number = 0, siz
     }
 }
 
-export const getUserById = async (id: string) : Promise<Account> => {
+export const getUserById = async (id: string): Promise<Account> => {
     const uri = `/users/${id}`;
-    
+
     try {
         const rsp = await http.get<Account>(uri);
         const data = rsp.data;
@@ -211,7 +211,7 @@ export const getUserById = async (id: string) : Promise<Account> => {
     }
 }
 
-export const postComment = async (content: string, section: string) : Promise<Comment> => {
+export const postComment = async (content: string, section: string): Promise<Comment> => {
     const uri = `/comments/sections/${section}`;
 
     interface CommentRequest {
@@ -231,7 +231,7 @@ export const postComment = async (content: string, section: string) : Promise<Co
     }
 }
 
-export const getAllShows = async (page: number = 0, size: number = 12): Promise<{totalPage: number, data: Show[]}> => {
+export const getAllShows = async (page: number = 0, size: number = 12): Promise<{ totalPage: number, data: Show[] }> => {
     try {
         const rsp = await http.get<Show[]>(`/shows?page=${page}&size=${size}`);
         const data = rsp.data;
@@ -255,7 +255,7 @@ export const getAllShows = async (page: number = 0, size: number = 12): Promise<
 export const addEpisodeToSeason = async (seasonId: string, episodeData: EpisodeCredentials): Promise<Episode> => {
     try {
         const rsp = await http.post<Episode, AxiosResponse<Episode>, EpisodeCredentials>(
-            `/seasons/${seasonId}/episodes`, 
+            `/seasons/${seasonId}/episodes`,
             episodeData
         );
         const data = rsp.data;
@@ -271,7 +271,7 @@ export const addEpisodeToSeason = async (seasonId: string, episodeData: EpisodeC
 export const updateEpisode = async (episodeId: string, episodeData: EpisodeCredentials): Promise<Episode> => {
     try {
         const rsp = await http.put<Episode, AxiosResponse<Episode>, EpisodeCredentials>(
-            `/episodes/${episodeId}`, 
+            `/episodes/${episodeId}`,
             episodeData
         );
         const data = rsp.data;
@@ -299,7 +299,7 @@ export const deleteEpisode = async (episodeId: string): Promise<void> => {
 export const addSeasonToShow = async (showId: string, seasonData: SeasonCredentials): Promise<Season> => {
     try {
         const season = await http.post<Season, AxiosResponse<Season>, SeasonCredentials>(
-            `/shows/${showId}/seasons`, 
+            `/shows/${showId}/seasons`,
             seasonData
         );
         const data = season.data;
@@ -315,7 +315,7 @@ export const addSeasonToShow = async (showId: string, seasonData: SeasonCredenti
 export const updateSeason = async (seasonId: string, seasonData: SeasonCredentials): Promise<Season> => {
     try {
         const rsp = await http.put<Season, AxiosResponse<Season>, SeasonCredentials>(
-            `/seasons/${seasonId}`, 
+            `/seasons/${seasonId}`,
             seasonData
         );
         const data = rsp.data;
@@ -343,7 +343,7 @@ export const deleteSeason = async (seasonId: string): Promise<void> => {
 export const addShow = async (showData: ShowCredentials): Promise<Show> => {
     try {
         const rsp = await http.post<Show, AxiosResponse<Show>, ShowCredentials>(
-            '/shows', 
+            '/shows',
             showData
         );
 
@@ -360,7 +360,7 @@ export const addShow = async (showData: ShowCredentials): Promise<Show> => {
 export const updateShow = async (showId: string, showData: ShowCredentials): Promise<Show> => {
     try {
         const rsp = await http.put<Show, AxiosResponse<Show>, ShowCredentials>(
-            `shows/${showId}`, 
+            `shows/${showId}`,
             showData
         );
         const data = rsp.data
@@ -386,7 +386,7 @@ export const deleteShow = async (showId: string): Promise<void> => {
 export const addGenresToShow = async (showId: string, genreIds: string[]): Promise<Genre[]> => {
     try {
         const rsp = await http.put<Genre[], AxiosResponse<Genre[]>, { genres: string[] }>(
-            `/shows/${showId}/genres`, 
+            `/shows/${showId}/genres`,
             { genres: genreIds }
         );
         const data = rsp.data;
@@ -398,7 +398,7 @@ export const addGenresToShow = async (showId: string, genreIds: string[]): Promi
     }
 }
 
-export const createOrder = async () : Promise<BillingDetail> => {
+export const createOrder = async (): Promise<BillingDetail> => {
     const uri = `/orders`;
 
     try {
@@ -412,7 +412,7 @@ export const createOrder = async () : Promise<BillingDetail> => {
     }
 }
 
-export const getBillingDetail = async (id: string) : Promise<BillingDetail> => {
+export const getBillingDetail = async (id: string): Promise<BillingDetail> => {
     const uri = `/orders/${id}`;
 
     try {
@@ -426,7 +426,7 @@ export const getBillingDetail = async (id: string) : Promise<BillingDetail> => {
     }
 }
 
-export const getUserRole = async () : Promise<number> => {
+export const getUserRole = async (): Promise<number> => {
     const uri = `authentication/role`;
     try {
         const rsp = await http.get<number, AxiosResponse<number>>(uri);
@@ -439,7 +439,7 @@ export const getUserRole = async () : Promise<number> => {
     }
 }
 
-export const getCurrentUserSubscription = async () : Promise<Subscription> => {
+export const getCurrentUserSubscription = async (): Promise<Subscription> => {
     const uri = `/users/subscription`;
 
     try {
@@ -453,13 +453,13 @@ export const getCurrentUserSubscription = async () : Promise<Subscription> => {
     }
 }
 
-export const sendVerificationEmail=  async (email: string) : Promise<void> => {
+export const sendVerificationEmail = async (email: string): Promise<void> => {
     interface SendEmailCredentials {
         email: string
     }
 
     const uri = "/authentication/verify"
-    
+
     try {
         await http.post<void, AxiosResponse<void, SendEmailCredentials>, SendEmailCredentials>(uri, {
             email: email
@@ -470,17 +470,17 @@ export const sendVerificationEmail=  async (email: string) : Promise<void> => {
     }
 }
 
-export const isCurrentUserHasSubscription = async () : Promise<boolean> => {
+export const isCurrentUserHasSubscription = async (): Promise<boolean> => {
     const subscription: Subscription = await getCurrentUserSubscription();
 
     return isObjectEmpty(subscription);
 }
 
-const isObjectEmpty = <T>(object: T) : boolean => {
+const isObjectEmpty = <T>(object: T): boolean => {
     return JSON.stringify(object) !== '""';
 }
 
-export const getAccountPaginated = async (page: number = 0, size: number = 6) : Promise<{
+export const getAccountPaginated = async (page: number = 0, size: number = 6): Promise<{
     totalPage: number,
     data: Account[]
 }> => {
@@ -502,7 +502,7 @@ export const getAccountPaginated = async (page: number = 0, size: number = 6) : 
     }
 }
 
-export const updateAccount = async (accountCreentials: UpdateAccountCredentials, id: string) : Promise<Account> => {
+export const updateAccount = async (accountCreentials: UpdateAccountCredentials, id: string): Promise<Account> => {
     try {
         const rsp = await http.put<Account, AxiosResponse<Account, UpdateAccountCredentials>>(`/users/${id}`, accountCreentials);
         const data = rsp.data
@@ -514,7 +514,7 @@ export const updateAccount = async (accountCreentials: UpdateAccountCredentials,
     }
 }
 
-export const banAccount = async (id: string) : Promise<void> => {
+export const banAccount = async (id: string): Promise<void> => {
     try {
         await http.put(`/users/${id}/ban`)
     }
@@ -523,7 +523,7 @@ export const banAccount = async (id: string) : Promise<void> => {
     }
 }
 
-export const unbanAccount = async (id: string) : Promise<void> => {
+export const unbanAccount = async (id: string): Promise<void> => {
     try {
         await http.put(`/users/${id}/unban`)
     }
@@ -532,7 +532,7 @@ export const unbanAccount = async (id: string) : Promise<void> => {
     }
 }
 
-export const createHirer = async (body: HirerCredentials) : Promise<Hirer> => {
+export const createHirer = async (body: HirerCredentials): Promise<Hirer> => {
     try {
         const rsp = await http.post<Hirer, AxiosResponse<Hirer, HirerCredentials>, HirerCredentials>('/hirers', body);
         const data = rsp.data;
@@ -544,14 +544,14 @@ export const createHirer = async (body: HirerCredentials) : Promise<Hirer> => {
     }
 }
 
-export const getAllHirers = async (page: number = 0, size: number = 5) : Promise<{
+export const getAllHirers = async (page: number = 0, size: number = 5): Promise<{
     totalPage: number,
     data: Hirer[]
 }> => {
     try {
         const rsp = await http.get<Hirer[], AxiosResponse<Hirer[], void>>(`/hirers?page=${page}&size=${size}`);
         const data = rsp.data;
-        
+
         const totalPage = +rsp.headers["x-total-page"];
 
         return {
@@ -564,7 +564,7 @@ export const getAllHirers = async (page: number = 0, size: number = 5) : Promise
     }
 }
 
-export const getHirerById = async (id: string) : Promise<Hirer> => {
+export const getHirerById = async (id: string): Promise<Hirer> => {
     try {
         const rsp = await http.get<Hirer, AxiosResponse<Hirer, void>>(`/hirers/${id}`);
         const data = rsp.data;
@@ -576,7 +576,7 @@ export const getHirerById = async (id: string) : Promise<Hirer> => {
     }
 }
 
-export const getAllAds = async (page: number = 0, size: number = 5) : Promise<{
+export const getAllAds = async (page: number = 0, size: number = 5): Promise<{
     data: Advertisement[],
     totalPage: number
 }> => {
@@ -585,7 +585,7 @@ export const getAllAds = async (page: number = 0, size: number = 5) : Promise<{
         const data = rsp.data;
 
         const totalPage = +rsp.headers["x-total-page"];
-        
+
         return {
             data: data,
             totalPage: totalPage
@@ -596,7 +596,7 @@ export const getAllAds = async (page: number = 0, size: number = 5) : Promise<{
     }
 }
 
-export const createAd = async (body: AdvertisementCredentials) : Promise<Advertisement> => {
+export const createAd = async (body: AdvertisementCredentials): Promise<Advertisement> => {
     try {
         const rsp = await http.post<Advertisement, AxiosResponse<Advertisement, AdvertisementCredentials>, AdvertisementCredentials>('/advertisements', body);
         const data = rsp.data;
@@ -606,9 +606,9 @@ export const createAd = async (body: AdvertisementCredentials) : Promise<Adverti
     catch (e) {
         throw handle(e);
     }
-} 
+}
 
-export const getAdsRandom = async (type: number) : Promise<Advertisement> => {
+export const getAdsRandom = async (type: number): Promise<Advertisement> => {
     try {
         const rsp = await http.get<Advertisement>(`/advertisements/${type}/random`);
         const data = rsp.data;
@@ -620,7 +620,7 @@ export const getAdsRandom = async (type: number) : Promise<Advertisement> => {
     }
 }
 
-export const getPaginatedComments = async (page: number = 0, size: number = 5) : Promise<{
+export const getPaginatedComments = async (page: number = 0, size: number = 5): Promise<{
     totalPage: number,
     data: Comment[]
 }> => {
@@ -640,7 +640,7 @@ export const getPaginatedComments = async (page: number = 0, size: number = 5) :
     }
 }
 
-export const deleteComment = async (id: string) : Promise<void> => {
+export const deleteComment = async (id: string): Promise<void> => {
     try {
         await http.delete(`/comments/${id}`)
     }
@@ -649,7 +649,7 @@ export const deleteComment = async (id: string) : Promise<void> => {
     }
 }
 
-export const reportComment = async (id: string, content: string) : Promise<void> => {
+export const reportComment = async (id: string, content: string): Promise<void> => {
     try {
         await http.post(`comments/${id}/report`, {
             content: content
@@ -660,7 +660,7 @@ export const reportComment = async (id: string, content: string) : Promise<void>
     }
 }
 
-export const getPaginatedReportComments = async (page: number = 0, size: number = 5) : Promise<{
+export const getPaginatedReportComments = async (page: number = 0, size: number = 5): Promise<{
     totalPage: number,
     data: ReportComment[]
 }> => {
@@ -680,7 +680,7 @@ export const getPaginatedReportComments = async (page: number = 0, size: number 
     }
 }
 
-export const getCommentById = async (id: string) : Promise<Comment> => {
+export const getCommentById = async (id: string): Promise<Comment> => {
     try {
         const rsp = await http.get<Comment>(`/comments/${id}`);
         const data = rsp.data;
@@ -692,7 +692,7 @@ export const getCommentById = async (id: string) : Promise<Comment> => {
     }
 }
 
-export const getAllGenres = async () : Promise<Genre[]> => {
+export const getAllGenres = async (): Promise<Genre[]> => {
     try {
         const rsp = await http.get<Genre[]>(`/genres`);
         const data = rsp.data;
@@ -715,7 +715,7 @@ export const saveViewHistory = async (duration: number, episode: string) => {
     }
 }
 
-export const getViewHistoryEpisode = async (episode: string) : Promise<ViewHistory> => {
+export const getViewHistoryEpisode = async (episode: string): Promise<ViewHistory> => {
     try {
         const rsp = await http.get<ViewHistory>(`/users/view-history/${episode}`);
         const data = rsp.data;
@@ -727,7 +727,7 @@ export const getViewHistoryEpisode = async (episode: string) : Promise<ViewHisto
     }
 }
 
-export const getViewHistory = async (page: number = 0, size: number = 6) : Promise<{
+export const getViewHistory = async (page: number = 0, size: number = 6): Promise<{
     totalPage: number,
     data: ViewHistory[]
 }> => {
@@ -748,7 +748,7 @@ export const getViewHistory = async (page: number = 0, size: number = 6) : Promi
 
 }
 
-export const getAccountsPremium = async (page: number = 0, size: number = 6) : Promise<{
+export const getAccountsPremium = async (page: number = 0, size: number = 6): Promise<{
     totalPage: number,
     data: Account[]
 }> => {
@@ -768,7 +768,7 @@ export const getAccountsPremium = async (page: number = 0, size: number = 6) : P
     }
 }
 
-export const getSubscriptionOfAccount = async (account: string) : Promise<Subscription> => {
+export const getSubscriptionOfAccount = async (account: string): Promise<Subscription> => {
     const uri = `/users/${account}/subscription`;
 
     try {
@@ -782,7 +782,7 @@ export const getSubscriptionOfAccount = async (account: string) : Promise<Subscr
     }
 }
 
-export const getBillingDetailsOfAccount = async (account: string, page: number = 0, size: number = 6) : Promise<{
+export const getBillingDetailsOfAccount = async (account: string, page: number = 0, size: number = 6): Promise<{
     data: BillingDetail[],
     totalPage: number
 }> => {
@@ -802,10 +802,10 @@ export const getBillingDetailsOfAccount = async (account: string, page: number =
     }
 }
 
-export const updateHirer = async (id: string, hirer: HirerCredentials) : Promise<Hirer> => {
+export const updateHirer = async (id: string, hirer: HirerCredentials): Promise<Hirer> => {
     try {
         const rsp = await http.put<Hirer, AxiosResponse<Hirer>, HirerCredentials>(
-            `/hirers/${id}`, 
+            `/hirers/${id}`,
             hirer
         );
         const data = rsp.data;
@@ -817,7 +817,7 @@ export const updateHirer = async (id: string, hirer: HirerCredentials) : Promise
     }
 }
 
-export const updateAd = async (id: string, body: AdvertisementCredentials) : Promise<Advertisement> => {
+export const updateAd = async (id: string, body: AdvertisementCredentials): Promise<Advertisement> => {
     try {
         const rsp = await http.put<Advertisement, AxiosResponse<Advertisement, AdvertisementCredentials>, AdvertisementCredentials>(`/advertisements/${id}`, body);
         const data = rsp.data;
@@ -827,9 +827,9 @@ export const updateAd = async (id: string, body: AdvertisementCredentials) : Pro
     catch (e) {
         throw handle(e);
     }
-} 
+}
 
-export const getCommentSection = async (id: string) : Promise<CommentSection> => {
+export const getCommentSection = async (id: string): Promise<CommentSection> => {
     try {
         const rsp = await http.get<CommentSection>(`/comments/sections/${id}/information`);
         const data = rsp.data
@@ -841,7 +841,7 @@ export const getCommentSection = async (id: string) : Promise<CommentSection> =>
     }
 }
 
-export const declineReport = async(id: string) => {
+export const declineReport = async (id: string) => {
     try {
         await http.post<void>(`/comments/report/${id}/ignore`);
     }
@@ -850,7 +850,7 @@ export const declineReport = async(id: string) => {
     }
 }
 
-export const approveReport = async(id: string) => {
+export const approveReport = async (id: string) => {
     try {
         await http.post<void>(`/comments/report/${id}/approve`);
     }
@@ -859,7 +859,7 @@ export const approveReport = async(id: string) => {
     }
 }
 
-export const getCommentSections = async (page: number = 0, size: number = 6) : Promise<{
+export const getCommentSections = async (page: number = 0, size: number = 6): Promise<{
     totalPage: number,
     data: CommentSection[]
 }> => {
@@ -880,7 +880,7 @@ export const getCommentSections = async (page: number = 0, size: number = 6) : P
 
 }
 
-export const getEpisodeViewCount = async (id: string) : Promise<number> => {
+export const getEpisodeViewCount = async (id: string): Promise<number> => {
     try {
         const rsp = await http.get<number>(`/episodes/${id}/views`);
         const data = rsp.data;
@@ -892,7 +892,7 @@ export const getEpisodeViewCount = async (id: string) : Promise<number> => {
     }
 }
 
-export const increaseEpisodeViewCount = async (id: string) : Promise<number> => {
+export const increaseEpisodeViewCount = async (id: string): Promise<number> => {
     try {
         const rsp = await http.post<number>(`/episodes/${id}/views`);
         const data = rsp.data;
@@ -904,7 +904,7 @@ export const increaseEpisodeViewCount = async (id: string) : Promise<number> => 
     }
 }
 
-export const sendOtp = async (email: string) : Promise<void> => {
+export const sendOtp = async (email: string): Promise<void> => {
     try {
         await http.post(`/authentication/send-otp`, {
             "email": email
@@ -915,7 +915,7 @@ export const sendOtp = async (email: string) : Promise<void> => {
     }
 }
 
-export const resetPassword = async (body: ResetPasswordField) : Promise<void> => {
+export const resetPassword = async (body: ResetPasswordField): Promise<void> => {
     try {
         await http.post<void, AxiosResponse<void, ResetPasswordField>, ResetPasswordField>(`/authentication/reset-password`, body)
     }
@@ -924,7 +924,7 @@ export const resetPassword = async (body: ResetPasswordField) : Promise<void> =>
     }
 }
 
-export const isFavorite = async (show: string) : Promise<boolean> => {
+export const isFavorite = async (show: string): Promise<boolean> => {
     try {
         const rsp = await http.get<boolean>(`/shows/${show}/is-favorite`);
         const data = rsp.data;
@@ -936,7 +936,7 @@ export const isFavorite = async (show: string) : Promise<boolean> => {
     }
 }
 
-export const getFavoriteCount = async (show: string) : Promise<number> => {
+export const getFavoriteCount = async (show: string): Promise<number> => {
     try {
         const rsp = await http.get<number>(`/shows/${show}/favorite`);
         const data = rsp.data;
@@ -948,7 +948,7 @@ export const getFavoriteCount = async (show: string) : Promise<number> => {
     }
 }
 
-export const favoriteShow = async (show: string) : Promise<void> => {
+export const favoriteShow = async (show: string): Promise<void> => {
     try {
         await http.post<void>(`/shows/${show}/favorite`)
     }
@@ -957,7 +957,7 @@ export const favoriteShow = async (show: string) : Promise<void> => {
     }
 }
 
-export const unfavoriteShow = async (show: string) : Promise<void> => {
+export const unfavoriteShow = async (show: string): Promise<void> => {
     try {
         await http.post<void>(`/shows/${show}/unfavorite`)
     }
@@ -966,7 +966,7 @@ export const unfavoriteShow = async (show: string) : Promise<void> => {
     }
 }
 /////
-export const getEpisodeActualView = async (episode: string) : Promise<number> => {
+export const getEpisodeActualView = async (episode: string): Promise<number> => {
     try {
         const rsp = await http.get<number>(`/episodes/${episode}/views`);
         const data = rsp.data;
@@ -978,7 +978,7 @@ export const getEpisodeActualView = async (episode: string) : Promise<number> =>
     }
 }
 /////
-export const getEpisodeLike = async (episode: string) : Promise<number> => {
+export const getEpisodeLike = async (episode: string): Promise<number> => {
     try {
         const rsp = await http.get<number>(`/episodes/${episode}/like`);
         const data = rsp.data;
@@ -990,7 +990,7 @@ export const getEpisodeLike = async (episode: string) : Promise<number> => {
     }
 }
 
-export const unlikeEpisode = async (episode: string) : Promise<void> => {
+export const unlikeEpisode = async (episode: string): Promise<void> => {
     try {
         await http.post<void>(`/episodes/${episode}/unlike`)
     }
@@ -999,7 +999,7 @@ export const unlikeEpisode = async (episode: string) : Promise<void> => {
     }
 }
 
-export const isLiked = async (like: string) : Promise<boolean> => {
+export const isLiked = async (like: string): Promise<boolean> => {
     try {
         const rsp = await http.get<boolean>(`/episodes/${like}/is-liked`);
         const data = rsp.data;
@@ -1011,7 +1011,7 @@ export const isLiked = async (like: string) : Promise<boolean> => {
     }
 }
 
-export const likeEpisode = async (episode: string) : Promise<void> => {
+export const likeEpisode = async (episode: string): Promise<void> => {
     try {
         await http.post<void>(`/episodes/${episode}/like`)
     }
@@ -1020,7 +1020,23 @@ export const likeEpisode = async (episode: string) : Promise<void> => {
     }
 }
 
-export const queryShow = async (query : ShowQuery, page: number = 0, size: number = 6) : Promise<{
+export const getLikedEpisodesByUser = async (size: number = 20): Promise<{ totalPage: number, data: Episode[] }> => {
+    try {
+        const rsp = await http.get<Episode[]>(`/episodes/liked?page=${size}`);
+        const data = rsp.data;
+        const totalPage = +rsp.headers["x-total-page"];
+
+        return {
+            totalPage: totalPage,
+            data: data
+        };
+    }
+    catch (e) {
+        throw handle(e);
+    };
+}
+
+export const queryShow = async (query: ShowQuery, page: number = 0, size: number = 6): Promise<{
     totalPage: number,
     data: Show[]
 }> => {
@@ -1073,7 +1089,7 @@ export const queryShow = async (query : ShowQuery, page: number = 0, size: numbe
     }
 }
 
-export const addGenre = async (name: string) : Promise<Genre> => {
+export const addGenre = async (name: string): Promise<Genre> => {
     try {
         interface G {
             name: string
@@ -1091,7 +1107,7 @@ export const addGenre = async (name: string) : Promise<Genre> => {
     }
 }
 
-export const increaseShowViewCount = async (id: string) : Promise<number> => {
+export const increaseShowViewCount = async (id: string): Promise<number> => {
     try {
         const rsp = await http.post<number>(`/shows/${id}/views`);
         const data = rsp.data;
@@ -1102,7 +1118,7 @@ export const increaseShowViewCount = async (id: string) : Promise<number> => {
         throw handle(e);
     }
 }
-  
+
 export const getFavorites = async (page: number = 0, size: number = 10): Promise<{
     totalPage: number,
     data: Show[]
@@ -1124,17 +1140,17 @@ export const getFavorites = async (page: number = 0, size: number = 10): Promise
 }
 
 export const getTopFavorites = async (
-  page: number = 0,
-  size: number = 10
+    page: number = 0,
+    size: number = 10
 ): Promise<{
-  totalPage: number;
-  data: Show[];
+    totalPage: number;
+    data: Show[];
 }> => {
-  try {
-    const rsp = await http.get<Show[]>(`/favorites/top?page=${page}&size=${size}`);
-    const data = rsp.data;
+    try {
+        const rsp = await http.get<Show[]>(`/favorites/top?page=${page}&size=${size}`);
+        const data = rsp.data;
 
-    const totalPage = +rsp.headers["x-total-page"];
+        const totalPage = +rsp.headers["x-total-page"];
 
     return {
       totalPage: totalPage,
@@ -1153,7 +1169,7 @@ export interface Stats {
 
 export const getAllStats = async (): Promise<Stats> => {
   try {
-    const rsp = await http.get<Stats>(`/stats`);
+    const rsp = await http.get<Stats>(`/users/stats`);
     return rsp.data;
   } catch (e) {
     throw handle(e);
@@ -1162,7 +1178,7 @@ export const getAllStats = async (): Promise<Stats> => {
 
 export const getTotalUsers = async (): Promise<number> => {
   try {
-    const rsp = await http.get<number>(`/stats/total`);
+    const rsp = await http.get<number>(`/users/stats/total`);
     return rsp.data;
   } catch (e) {
     throw handle(e);
@@ -1171,7 +1187,7 @@ export const getTotalUsers = async (): Promise<number> => {
 
 export const getFreeUsers = async (): Promise<number> => {
   try {
-    const rsp = await http.get<number>(`/stats/free`);
+    const rsp = await http.get<number>(`/users/stats/free`);
     return rsp.data;
   } catch (e) {
     throw handle(e);
@@ -1180,8 +1196,60 @@ export const getFreeUsers = async (): Promise<number> => {
 
 export const getActiveSubscriptions = async (): Promise<number> => {
   try {
-    const rsp = await http.get<number>(`/stats/premium`);
+    const rsp = await http.get<number>(`/users/stats/premium`);
     return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalRevenue = async (): Promise<number> => {
+  const uri = `/orders/revenue/total`;
+
+  try {
+    const rsp = await http.get<number>(uri);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalAds = async (): Promise<number> => {
+  const uri = `/advertisements/count`;
+
+  try {
+    const rsp = await http.get<number>(uri);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+// Ratings
+export const getShowAverageRate = async (id: string): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/shows/${id}/avg-rate`);
+    return rsp.data ?? 0;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getUserShowRate = async (id: string): Promise<number | null> => {
+  try {
+    const rsp = await http.get<{ value: number }>(`/shows/${id}/rate`);
+    return rsp.data?.value ?? null;
+  } catch (e) {
+    if ((e as ApiException).status === 401) {
+      return null; // not logged in
+    }
+    throw handle(e);
+  }
+};
+
+export const rateShow = async (id: string, value: number): Promise<void> => {
+  try {
+    await http.post(`/shows/${id}/rate`, { value });
   } catch (e) {
     throw handle(e);
   }

@@ -9,27 +9,31 @@ import {
 const COLORS = ["#82ca9d", "#8884d8"]; // Free, Premium
 
 const StatsCharts: React.FC = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data: stats, isLoading: statsLoading, isError: statsError } = useQuery({
     queryKey: ["stats"],
     queryFn: getAllStats,
   });
 
-  if (isLoading) return <p>Đang tải thống kê...</p>;
-  if (isError || !data) return <p>Lỗi khi tải dữ liệu.</p>;
+  // const { data: ads, isLoading: adsLoading, isError: adsError } = useQuery({
+  //   queryKey: ["ads"],
+  //   queryFn: getTotalAds,
+  // });
 
+  if (statsLoading ) return <p>Đang tải thống kê...</p>;
+  if (statsError || !stats) return <p>Lỗi khi tải dữ liệu.</p>;
   // Pie chart data
   const pieData = [
-    { name: "Người dùng miễn phí", value: data.freeUsers },
-    { name: "Người dùng premium", value: data.activeSubscriptions },
+    { name: "Người dùng miễn phí", value: stats.freeUsers },
+    { name: "Người dùng premium", value: stats.activeSubscriptions },
   ];
 
   // Bar chart data
   const barData = [
     {
       name: "Người dùng",
-      "Tổng số": data.totalUsers,
-      "Miễn phí": data.freeUsers,
-      "Premium": data.activeSubscriptions,
+      "Tổng số": stats.totalUsers,
+      "Miễn phí": stats.freeUsers,
+      "Premium": stats.activeSubscriptions,
     },
   ];
 

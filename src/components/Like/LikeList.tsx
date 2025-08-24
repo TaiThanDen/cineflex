@@ -1,24 +1,26 @@
-import { getViewHistory } from "@/lib/api";
-import { Box, Pagination } from "@mui/material";
+import { getLikedEpisodesByUser } from "@/lib/api";
+import type { Episode } from "@/lib/types/Episode";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
+import EpisodeCard from "./EpisodeCard";
+import { Box, Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
-import ContinueCard from "@/components/history/ContinueCard";
 import React from "react";
 
-const ContinueWatching: React.FC = () => {
+const LikeList: React.FC = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
 
-    const viewHistoryResult = useQuery({
-        queryKey: ['view-history', page],
-        queryFn: () => getViewHistory(page - 1, 5),
-    })
+    const { data, isLoading, isError, refetch } = useQuery({
+        queryKey: ["liked_episodes", page],
+        queryFn: () => getLikedEpisodesByUser(page - 1),
+    });
 
     useEffect(() => {
-        setCount(viewHistoryResult.data?.totalPage ?? 0)
-    }, [viewHistoryResult])
+        setCount(data?.totalPage ?? 0);
+    }, [data]);
 
-    if (viewHistoryResult.isLoading) {
+    if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
@@ -28,11 +30,10 @@ const ContinueWatching: React.FC = () => {
                     </p>
                 </div>
             </div>
-        )
+        );
     }
 
-    // Xử lý trạng thái lỗi
-    if (viewHistoryResult.isError) {
+    if (isError) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
@@ -41,10 +42,10 @@ const ContinueWatching: React.FC = () => {
                         Lỗi tải dữ liệu
                     </h2>
                     <p className="text-gray-400 mb-4">
-                        Không thể tải dữ liệu phim. Vui lòng thử lại.
+                        Không thể tải danh sách đã thích. Vui lòng thử lại.
                     </p>
                     <button
-                        onClick={() => viewHistoryResult.refetch()}
+                        onClick={() => refetch()}
                         className="bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded transition-colors"
                     >
                         Thử lại
@@ -54,21 +55,27 @@ const ContinueWatching: React.FC = () => {
         );
     }
 
-    const viewHistories = viewHistoryResult.data?.data ?? [];
+    const episodes: Episode[] = data?.data ?? [];
 
-    if (viewHistories.length === 0) {
+    if (episodes.length === 0) {
         return (
             <div className="min-h-screen bg-[#23263a] text-white py-10 px-6 pt-24">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex items-center justify-center min-h-[50vh]">
                         <div className="text-center">
-                            <div className="text-6xl mb-4">📺</div>
+                            <div className="text-6xl mb-4">💜</div>
                             <h2 className="text-2xl font-bold text-gray-600 mb-2">
-                                Chưa có lịch sử xem
+                                Chưa có tập nào được thích
                             </h2>
                             <p className="text-gray-400 mb-4">
-                                Hãy xem một tập để tiếp tục ở đây.
+                                Hãy thích một tập để xem ở đây.
                             </p>
+                            <Link
+                                to="/"
+                                className="bg-purple-600 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded transition-colors"
+                            >
+                                Khám phá nội dung
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -79,10 +86,10 @@ const ContinueWatching: React.FC = () => {
     return (
         <div className="min-h-screen bg-[#23263a] text-white py-10 px-6 pt-24">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl font-bold mb-8">Continue Watching</h2>
+                <h2 className="text-3xl font-bold mb-8">Tập đã thích</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {viewHistories.map((vh) => (
-                        <ContinueCard key={vh.episode} viewHistory={vh} />
+                    {episodes.map((episode) => (
+                        <EpisodeCard key={episode.id} episode={episode} />
                     ))}
                 </div>
             </div>
@@ -109,4 +116,4 @@ const ContinueWatching: React.FC = () => {
     );
 };
 
-export default ContinueWatching;
+export default LikeList;
