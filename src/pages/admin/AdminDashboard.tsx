@@ -16,7 +16,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useQuery } from "@tanstack/react-query";
-import { getAllStats } from "@/lib/api";
+import { getTotalRevenue, getAllStats } from "@/lib/api";
 import StatsCharts from "@/components/admin/DasboardComponent/StatsCharts";
 
 const AdminDashboard: React.FC = () => {
@@ -26,29 +26,40 @@ const AdminDashboard: React.FC = () => {
   const handleConfirm = () => {
     setConfirmedTop(top); // pass confirmed value to TopFavorites
   };
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["stats"],
-    queryFn: getAllStats,
+  const { data: stats, isLoading: statsLoading, isError: statsError } = useQuery({
+  queryKey: ["stats"],
+  queryFn: getAllStats,
   });
 
-  if (isLoading) return <p>Đang tải thống kê...</p>;
-  if (isError || !data) return <p>Lỗi khi tải dữ liệu.</p>;
+  const { data: revenue, isLoading: revenueLoading, isError: revenueError } = useQuery({
+  queryKey: ["revenue"],
+  queryFn: getTotalRevenue,
+  });
+
+  // const { data: ads, isLoading: adsLoading, isError: adsError } = useQuery({
+  // queryKey: ["ads"],
+  // queryFn: getTotalAds,
+  // });
+
+if (statsLoading || revenueLoading ) return <p>Đang tải thống kê...</p>;
+if (statsError || revenueError || !stats) return <p>Lỗi khi tải dữ liệu.</p>;
 
   // Dummy chart data
-  const revenueData = [
-    { month: "Hiện tại", revenue: data.activeSubscriptions * 10 },
+    const revenueData = [
+    { label: "Tổng doanh thu", revenue: revenue ?? 0 },
   ];
 
   const userGrowthData = [
-    { day: "Tổng", users: data.totalUsers },
-    { day: "Free", users: data.freeUsers },
-    { day: "Premium", users: data.activeSubscriptions },
+    { day: "Tổng", users: stats.totalUsers },
+    { day: "Free", users: stats.freeUsers },
+    { day: "Premium", users: stats.activeSubscriptions },
   ];
 
   const pieData = [
-    { name: "Free", value: data.freeUsers },
-    { name: "Premium", value: data.activeSubscriptions },
+    { name: "Free", value: stats.freeUsers },
+    { name: "Premium", value: stats.activeSubscriptions },  
   ];
+  
 
   const COLORS = ["#6366F1", "#EC4899", "#FBBF24"];
 
@@ -81,15 +92,16 @@ const AdminDashboard: React.FC = () => {
       <div className="flex-1 overflow-y-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Favorites section */}
         <div className="bg-white shadow rounded-xl p-4 col-span-1 lg:col-span-2">
-          <h2 className="text-lg font-semibold mb-4">Top Favorites</h2>
+          <h2 className="text-lg font-semibold mb-4">Top phim được yêu thích nhất</h2>
           <TopFavorites top={confirmedTop} />
         </div>
         <div className="col-span-1 lg:col-span-2">
           <StatsCharts />
         </div>
-        {/* Dummy Charts */}
+
+        {/* Charts */}
         <div className="bg-white shadow rounded-xl p-4">
-          <h2 className="text-lg font-semibold mb-4">Revenue Overview</h2>
+          <h2 className="text-lg font-semibold mb-4">Tổng quan doanh thu</h2>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -102,7 +114,7 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="bg-white shadow rounded-xl p-4">
-          <h2 className="text-lg font-semibold mb-4">User Growth</h2>
+          <h2 className="text-lg font-semibold mb-4">Phát triển người dùng</h2>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={userGrowthData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -121,7 +133,7 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="bg-white shadow rounded-xl p-4">
-          <h2 className="text-lg font-semibold mb-4">Content Distribution</h2>
+          <h2 className="text-lg font-semibold mb-4">Phân bổ nội dung</h2>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie

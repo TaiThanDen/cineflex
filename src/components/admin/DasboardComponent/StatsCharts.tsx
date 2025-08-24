@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllStats } from "@/lib/api";
+import { getAllStats, getTotalAds } from "@/lib/api";
 import {
   PieChart, Pie, Cell, Tooltip, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer
@@ -9,27 +9,31 @@ import {
 const COLORS = ["#82ca9d", "#8884d8"]; // Free, Premium
 
 const StatsCharts: React.FC = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data: stats, isLoading: statsLoading, isError: statsError } = useQuery({
     queryKey: ["stats"],
     queryFn: getAllStats,
   });
 
-  if (isLoading) return <p>Đang tải thống kê...</p>;
-  if (isError || !data) return <p>Lỗi khi tải dữ liệu.</p>;
+  const { data: ads, isLoading: adsLoading, isError: adsError } = useQuery({
+    queryKey: ["ads"],
+    queryFn: getTotalAds,
+  });
 
+  if (statsLoading || adsLoading) return <p>Đang tải thống kê...</p>;
+  if (statsError || adsError || !stats) return <p>Lỗi khi tải dữ liệu.</p>;
   // Pie chart data
   const pieData = [
-    { name: "Người dùng miễn phí", value: data.freeUsers },
-    { name: "Người dùng premium", value: data.activeSubscriptions },
+    { name: "Người dùng miễn phí", value: stats.freeUsers },
+    { name: "Người dùng premium", value: stats.activeSubscriptions },
   ];
 
   // Bar chart data
   const barData = [
     {
       name: "Người dùng",
-      "Tổng số": data.totalUsers,
-      "Miễn phí": data.freeUsers,
-      "Premium": data.activeSubscriptions,
+      "Tổng số": stats.totalUsers,
+      "Miễn phí": stats.freeUsers,
+      "Premium": stats.activeSubscriptions,
     },
   ];
 
@@ -78,6 +82,16 @@ const StatsCharts: React.FC = () => {
             <Bar dataKey="Premium" fill="#ffc658" />
           </BarChart>
         </ResponsiveContainer>
+      </div>
+
+      {/* Ads card */}
+      <div className="bg-white p-6 rounded-2xl shadow flex flex-col items-center justify-center">
+        <h2 className="text-lg font-bold mb-2 text-gray-700">
+          Tổng số quảng cáo
+        </h2>
+        <p className="text-4xl font-extrabold text-emerald-500">
+          {ads ?? 0}
+        </p>
       </div>
     </div>
   );

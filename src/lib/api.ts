@@ -1151,7 +1151,7 @@ export interface Stats {
 
 export const getAllStats = async (): Promise<Stats> => {
   try {
-    const rsp = await http.get<Stats>(`/stats`);
+    const rsp = await http.get<Stats>(`/users/stats`);
     return rsp.data;
   } catch (e) {
     throw handle(e);
@@ -1160,7 +1160,7 @@ export const getAllStats = async (): Promise<Stats> => {
 
 export const getTotalUsers = async (): Promise<number> => {
   try {
-    const rsp = await http.get<number>(`/stats/total`);
+    const rsp = await http.get<number>(`/users/stats/total`);
     return rsp.data;
   } catch (e) {
     throw handle(e);
@@ -1169,7 +1169,7 @@ export const getTotalUsers = async (): Promise<number> => {
 
 export const getFreeUsers = async (): Promise<number> => {
   try {
-    const rsp = await http.get<number>(`/stats/free`);
+    const rsp = await http.get<number>(`/users/stats/free`);
     return rsp.data;
   } catch (e) {
     throw handle(e);
@@ -1178,7 +1178,29 @@ export const getFreeUsers = async (): Promise<number> => {
 
 export const getActiveSubscriptions = async (): Promise<number> => {
   try {
-    const rsp = await http.get<number>(`/stats/premium`);
+    const rsp = await http.get<number>(`/users/stats/premium`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalRevenue = async (): Promise<number> => {
+  const uri = `/orders/revenue/total`;
+
+  try {
+    const rsp = await http.get<number>(uri);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalAds = async (): Promise<number> => {
+  const uri = `/advertisements/dash/total`;
+
+  try {
+    const rsp = await http.get<number>(uri);
     return rsp.data;
   } catch (e) {
     throw handle(e);
