@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useContext } from "react";
 import Auth from "@/context/Auth";
 import type { Show } from "@/lib/types/Show";
+import StarRating from "@/components/home/StarRating";
 
 interface HeroBannerProps {
   item: Show;
@@ -167,6 +168,7 @@ const HeroBanner = ({ item, children, isPreviewPage = false, firstEpisodeId }: H
                   </div>
                 </Button>
               )}
+              <StarRating showId={item.id} />
 
               {/* Fallback More Info nếu không có dữ liệu favorite */}
               {!isPreviewPage && isFavoriteResult.data === null && (

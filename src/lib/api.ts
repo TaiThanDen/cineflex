@@ -1215,7 +1215,7 @@ export const getTotalRevenue = async (): Promise<number> => {
 };
 
 export const getTotalAds = async (): Promise<number> => {
-  const uri = `/advertisements/dash/total`;
+  const uri = `/advertisements/count`;
 
   try {
     const rsp = await http.get<number>(uri);
@@ -1225,3 +1225,32 @@ export const getTotalAds = async (): Promise<number> => {
   }
 };
 
+// Ratings
+export const getShowAverageRate = async (id: string): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/shows/${id}/avg-rate`);
+    return rsp.data ?? 0;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getUserShowRate = async (id: string): Promise<number | null> => {
+  try {
+    const rsp = await http.get<{ value: number }>(`/shows/${id}/rate`);
+    return rsp.data?.value ?? null;
+  } catch (e) {
+    if ((e as ApiException).status === 401) {
+      return null; // not logged in
+    }
+    throw handle(e);
+  }
+};
+
+export const rateShow = async (id: string, value: number): Promise<void> => {
+  try {
+    await http.post(`/shows/${id}/rate`, { value });
+  } catch (e) {
+    throw handle(e);
+  }
+};
