@@ -1152,12 +1152,76 @@ export const getTopFavorites = async (
 
         const totalPage = +rsp.headers["x-total-page"];
 
-        return {
-            totalPage: totalPage,
-            data: data,
-        };
-    } catch (e) {
-        throw handle(e);
-    }
+    return {
+      totalPage: totalPage,
+      data: data,
+    };
+  } catch (e) {
+    throw handle(e);
+  }
+  
+};
+export interface Stats {
+  totalUsers: number;
+  freeUsers: number;
+  activeSubscriptions: number;
+}
+
+export const getAllStats = async (): Promise<Stats> => {
+  try {
+    const rsp = await http.get<Stats>(`/users/stats`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalUsers = async (): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/users/stats/total`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getFreeUsers = async (): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/users/stats/free`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getActiveSubscriptions = async (): Promise<number> => {
+  try {
+    const rsp = await http.get<number>(`/users/stats/premium`);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalRevenue = async (): Promise<number> => {
+  const uri = `/orders/revenue/total`;
+
+  try {
+    const rsp = await http.get<number>(uri);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
+};
+
+export const getTotalAds = async (): Promise<number> => {
+  const uri = `/advertisements/dash/total`;
+
+  try {
+    const rsp = await http.get<number>(uri);
+    return rsp.data;
+  } catch (e) {
+    throw handle(e);
+  }
 };
 

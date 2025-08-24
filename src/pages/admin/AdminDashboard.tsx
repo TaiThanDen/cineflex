@@ -1,143 +1,163 @@
-import React from "react";
-import Overview from "../../components/admin/DasboardComponent/Overview";
-import type { OverviewItem } from "../../components/admin/DasboardComponent/Overview";
-import ChartBox from "../../components/admin/DasboardComponent/ChartBox";
-import PodcastTable, {
-  type Podcast,
-} from "../../components/admin/DasboardComponent/PodcastTable";
-import ChartTopFavorites from "../../components/admin/DasboardComponent/ChartTopFavorites";
+import React, { useState } from "react";
+import TopFavorites from "@/components/admin/DasboardComponent/TopFavorites";
+import { TextField } from "@mui/material";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+} from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import { getTotalRevenue, getAllStats } from "@/lib/api";
+import StatsCharts from "@/components/admin/DasboardComponent/StatsCharts";
 
-const overviewStats: OverviewItem[] = [
-  {
-    title: "Total Users",
-    value: (
-      <>
-        155,000
-        <span
-          className="percent text-green-500 ml-2"
-          title="+2.5% from last month"
-        >
-          +2.5%
-        </span>
-      </>
-    ),
-    details: [
-      { label: "Active users", value: "37,898" },
-      { label: "New Signups", value: "83,832" },
-      { label: "Subscribed", value: "35%" },
-    ],
-  },
-  {
-    title: "Total Movie",
-    value: 322,
-    className: "",
-    details: [
-      { label: "Anime", value: 110, className: "free" },
-      { label: "Movie", value: 212, className: "premium" },
-    ],
-  },
-  {
-    title: "Total Profit",
-    value: "32730$",
-    className: "bg-indigo-100",
-    button: {
-      className:
-        "bg-black text-white px-5 py-2 rounded-lg mt-2 font-semibold flex items-center gap-2 hover:bg-gray-800 transition",
-      title: "Add New Quiz",
-      label: "+ Add New",
-      icon: (
-        <svg
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          width={16}
-          height={16}
-        >
-          <path
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            strokeWidth="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
+const AdminDashboard: React.FC = () => {
+  const [top, setTop] = useState(10);
+  const [confirmedTop, setConfirmedTop] = useState(10);
+
+  const handleConfirm = () => {
+    setConfirmedTop(top); // pass confirmed value to TopFavorites
+  };
+  const { data: stats, isLoading: statsLoading, isError: statsError } = useQuery({
+  queryKey: ["stats"],
+  queryFn: getAllStats,
+  });
+
+  const { data: revenue, isLoading: revenueLoading, isError: revenueError } = useQuery({
+  queryKey: ["revenue"],
+  queryFn: getTotalRevenue,
+  });
+
+  // const { data: ads, isLoading: adsLoading, isError: adsError } = useQuery({
+  // queryKey: ["ads"],
+  // queryFn: getTotalAds,
+  // });
+
+if (statsLoading || revenueLoading ) return <p>Đang tải thống kê...</p>;
+if (statsError || revenueError || !stats) return <p>Lỗi khi tải dữ liệu.</p>;
+
+  // Dummy chart data
+    const revenueData = [
+    { label: "Tổng doanh thu", revenue: revenue ?? 0 },
+  ];
+
+  const userGrowthData = [
+    { day: "Tổng", users: stats.totalUsers },
+    { day: "Free", users: stats.freeUsers },
+    { day: "Premium", users: stats.activeSubscriptions },
+  ];
+
+  const pieData = [
+    { name: "Free", value: stats.freeUsers },
+    { name: "Premium", value: stats.activeSubscriptions },  
+  ];
+  
+
+  const COLORS = ["#6366F1", "#EC4899", "#FBBF24"];
+
+  return (
+    <div className="flex flex-col w-full h-full bg-gray-50">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b bg-white">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-600">Chọn Top</span>
+          <TextField
+            type="number"
+            value={top}
+            onChange={(e) => setTop(Number(e.target.value))}
+            size="small"
+            className="bg-white rounded"
+            inputProps={{ min: 1 }}
+            label="Top"
+            variant="outlined"
           />
-        </svg>
-      ),
-      onClick: () => alert("Add new quiz!"),
-    },
-  },
-];
-
-// Dữ liệu chart User Growth
-const userGrowthOptions = {
-  chart: { type: "bar", height: 280, toolbar: { show: false } },
-  xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"] },
-  yaxis: { title: { text: "Users" }, min: 0 },
-  legend: { position: "top" },
-  dataLabels: { enabled: false },
-  stroke: { show: true, width: 2, colors: ["transparent"] },
-  colors: ["#1E90FF", "#20C997"],
-  plotOptions: { bar: { horizontal: false, columnWidth: "50%" } },
-  tooltip: { shared: true, intersect: false },
-};
-const userGrowthSeries = [
-  { name: "New Sign-In", data: [31000, 37000, 29000, 33000, 39000, 40000] },
-  { name: "Subscribers", data: [18000, 31000, 22000, 19000, 26000, 18000] },
-];
-
-
-
-// Dữ liệu podcast table
-const podcasts: Podcast[] = [
-  { name: "Nursing Today", author: "Dr. Smith", type: "Free", listens: 12000 },
-  { name: "Care & Cure", author: "Nurse Amy", type: "Premium", listens: 9500 },
-  { name: "Health Talk", author: "Dr. John", type: "Free", listens: 8700 },
-  {
-    name: "Wellness Weekly",
-    author: "Nurse Lee",
-    type: "Premium",
-    listens: 7600,
-  },
-];
-
-
-// Dữ liệu cho chart Thể loại blog được đọc nhiều nhất
-const topBlogGenresOptions = {
-  chart: { type: "pie" },
-  labels: ["Review", "News", "Tutorial", "Interview"],
-  legend: { position: "bottom" },
-};
-const topBlogGenresSeries = [8000, 6500, 4300, 2100];
-
-const AdminDashboard: React.FC = () => (
-  <div className="px-2 sm:px-4 md:px-8 py-4 md:py-8 max-w-full overflow-x-auto">
-    <main className=" px-2 sm:px-4 md:px-8 py-4 md:py-8">
-      <div className="mt-4">
-        <h2 className="text-2xl font-bold mb-6 text-gray-700">
-          Dashboard Overview
-        </h2>
-        <Overview stats={overviewStats} />
-        <div className="mb-5">
-          <ChartTopFavorites title="Top 10 phim được yêu thích" />
+          <button
+            onClick={handleConfirm}
+            className="bg-purple-500 hover:bg-purple-600 text-white normal-case shadow-md px-4 py-2 rounded-xl"
+          >
+            Xác nhận
+          </button>
         </div>
-        <section className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-8">
-          <ChartBox
-            title="User Growth"
-            options={userGrowthOptions}
-            series={userGrowthSeries}
-            type="bar"
-          />
-        </section>
-        <section className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-8">
-          <ChartBox
-            title="Top Blog Genres"
-            options={topBlogGenresOptions}
-            series={topBlogGenresSeries}
-            type="pie"
-          />
-        </section>
-        <PodcastTable podcasts={podcasts} />
       </div>
-    </main>
-  </div>
-);
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top Favorites section */}
+        <div className="bg-white shadow rounded-xl p-4 col-span-1 lg:col-span-2">
+          <h2 className="text-lg font-semibold mb-4">Top phim được yêu thích nhất</h2>
+          <TopFavorites top={confirmedTop} />
+        </div>
+        <div className="col-span-1 lg:col-span-2">
+          <StatsCharts />
+        </div>
+
+        {/* Charts */}
+        <div className="bg-white shadow rounded-xl p-4">
+          <h2 className="text-lg font-semibold mb-4">Tổng quan doanh thu</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={revenueData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="revenue" fill="#6366F1" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-white shadow rounded-xl p-4">
+          <h2 className="text-lg font-semibold mb-4">Phát triển người dùng</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={userGrowthData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="users"
+                stroke="#EC4899"
+                strokeWidth={3}
+                dot={{ r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="bg-white shadow rounded-xl p-4">
+          <h2 className="text-lg font-semibold mb-4">Phân bổ nội dung</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label
+              >
+                {pieData.map((_, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default AdminDashboard;
