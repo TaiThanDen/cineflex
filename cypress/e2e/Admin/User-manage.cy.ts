@@ -67,4 +67,36 @@ describe('Admin - Quản lý người dùng', () => {
     // Xác nhận trạng thái quay lại hoạt động
     cy.get('.shadow.p-4').eq(2).should('contain', 'Đang hoạt động');
   });
+
+  it('Chỉnh sửa thông tin người dùng', () => {
+    // Mở modal user thứ 2
+    cy.get('.shadow.p-4').eq(2).click();
+
+    cy.get('[role="dialog"]').within(() => {
+      // Sửa Email
+      cy.get('input[name="email"]')
+        .clear()
+        .type('newemail@example.com');
+
+      // Chọn lại vai trò Moderator
+      cy.get('select[name="role"]').select('Moderator');
+
+      // Lưu thay đổi
+      cy.contains('Lưu').click();
+    });
+
+    // Đảm bảo modal đóng
+    cy.get('[role="dialog"]').should('not.exist');
+
+    // Mở lại modal để kiểm tra dữ liệu đã update
+    cy.get('.shadow.p-4').eq(2).click();
+
+    cy.get('[role="dialog"]').within(() => {
+      cy.get('input[name="email"]').should('have.value', 'newemail@example.com');
+      cy.get('select[name="role"]').should('have.value', '1'); // 1 = Moderator
+    });
+  });
+
+
+
 });

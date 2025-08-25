@@ -2,19 +2,18 @@ describe("Bình luận phim", () => {
   beforeEach(() => {
     cy.loginAsAdmin();
     cy.visit("/home"); // Trang home
-    // Đóng quảng cáo nếu có nút ✕
-    cy.get("button")
-        .contains("✕", { timeout: 5000 })
-        .then(($btn) => {
-          if ($btn.length > 0) {
-            cy.wrap($btn).click({ multiple: true, force: true });
-          }
-        });
+    // cy.get("button")
+    //     .contains("✕", { timeout: 5000 })
+    //     .then(($btn) => {
+    //       if ($btn.length > 0) {
+    //         cy.wrap($btn).click({ multiple: true, force: true });
+    //       }
+    //     });
   });
 
   it("Nhập và gửi bình luận", () => {
     // Nhấn Watch Now
-    cy.contains("Watch Now").click();
+    cy.get('button[aria-label="Xem ngay"]').first().click();
 
     // Đợi load trang chi tiết phim
     cy.url().should("include", "/preview");
@@ -36,7 +35,7 @@ describe("Bình luận phim", () => {
   });
 
   it("Báo cáo bình luận", () => {
-    cy.contains("Watch Now").click();
+    cy.get('button[aria-label="Xem ngay"]').first().click();
     cy.url().should("include", "/preview");
     cy.contains("Bình luận").click();
 
@@ -53,10 +52,22 @@ describe("Bình luận phim", () => {
     cy.get('input[name="content"]').type(reasonText);
 
     // Xác nhận báo cáo
-    cy.contains("Xác nhận").click();
+  cy.contains("button", "Xác nhận").click();
 
     // Đảm bảo modal đóng lại
     cy.get('input[name="content"]').should("not.exist");
   });
+ 
+it("Xoá bình luận", () => {
+  cy.get('button[aria-label="Xem ngay"]').first().click();
+  cy.url().should("include", "/preview");
+  cy.contains("Bình luận").click();
 
+  // Mở menu của bình luận đầu tiên
+  cy.get('button[aria-label="add"]').first().click();
+
+  // Chọn Xóa trong menu
+  cy.contains("button", "Xóa").click();
+
+});
 });

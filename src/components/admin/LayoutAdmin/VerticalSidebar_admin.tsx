@@ -14,12 +14,12 @@ import { Link, useLocation } from "react-router";
 
 const navItems = [
   {
-    label: "Dashboard",
+    label: "Thống kê",
     icon: <LuLayoutDashboard size={18} />,
     to: "/admin/dashboard",
   },
   {
-    label: "Quản thể loại",
+    label: "Quản lý thể loại",
     icon: <LuTags size={18} />,
     to: "/admin/genres",
   },

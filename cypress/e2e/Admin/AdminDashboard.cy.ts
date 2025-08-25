@@ -1,5 +1,11 @@
 /// <reference types="cypress" />
 
+Cypress.on("uncaught:exception", (err) => {
+  if (err.message.includes("reading 'document'")) {
+    return false; // bỏ qua lỗi document null từ chart/lib
+  }
+});
+
 describe("Admin Dashboard", () => {
   beforeEach(() => {
     cy.loginAsAdmin().then(() => {
@@ -7,67 +13,69 @@ describe("Admin Dashboard", () => {
     });
   });
 
-  it("Hiển thị tổng quan dashboard", () => {
-    cy.contains("Dashboard Overview").should("be.visible");
-    cy.contains("Total Users").should("be.visible");
-    cy.contains("Total Movie").should("be.visible");
-    cy.contains("Total Profit").should("be.visible");
-  });
-
-  it("Hiển thị thông tin người dùng (User Stats)", () => {
-    cy.contains("Active users").scrollIntoView();
-    cy.contains("Active users").should("be.visible");
-    cy.contains("New Signups").should("be.visible");
-    cy.contains("Subscribed").should("be.visible");
-  });
-
-  it("Hiển thị biểu đồ User Growth", () => {
-    cy.contains("User Growth").scrollIntoView();
-    cy.contains("User Growth").parent().within(() => {
-      cy.get("div.apexcharts-canvas").should("exist");
-      cy.get("svg").should("exist");
+  it("Sidebar hiển thị đầy đủ mục quản lý", () => {
+    cy.get("aside").within(() => {
+      cy.contains("Thống kê").should("be.visible");
+      cy.contains("Quản lý thể loại").should("be.visible");
+      cy.contains("Quản lý phim").should("be.visible");
+      cy.contains("Quản lý người dùng").should("be.visible");
+      cy.contains("Quản lý VIP").should("be.visible");
+      cy.contains("Quản lý quảng cáo").should("be.visible");
     });
   });
 
-  it("Hiển thị biểu đồ Revenue Summary", () => {
-    cy.contains("Revenue Summary From Subscribers").scrollIntoView();
-    cy.contains("Revenue Summary From Subscribers").parent().within(() => {
-      cy.get("div.apexcharts-canvas").should("exist");
-      cy.get("svg").should("exist");
-    });
+  it("Hiển thị thống kê phim hot nhất", () => {
+    cy.contains("Thống kê phim hot nhất", { timeout: 10000 }).should("be.visible");
+
+    cy.contains("Thống kê phim hot nhất")
+      .parent()
+      .find("div", { timeout: 10000 })
+      .should("contain.text", "Smurf")
+      .and("contain.text", "F1 - The Movie")
+      .and("contain.text", "Together");
+
+    // kiểm tra có số lượt like (💜 có thể là icon, nên check container thay vì contains)
+    cy.get("div")
+      .contains(/💜|lượt thích/i, { timeout: 10000 })
+      .should("exist");
   });
 
-  it("Hiển thị biểu đồ Top Movie Genres", () => {
-    cy.contains("Top Movie Genres").scrollIntoView();
-    cy.contains("Top Movie Genres").should("be.visible");
-    cy.contains("Anime").should("exist");
-    cy.contains("Action").should("exist");
+  it("Hiển thị biểu đồ Tỉ lệ Free vs Premium", () => {
+    cy.contains("Tỉ lệ Free vs Premium", { timeout: 10000 })
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("Người dùng miễn phí").should("exist");
+    cy.contains("Người dùng premium").should("exist");
+    cy.get("svg", { timeout: 10000 }).should("exist");
   });
 
-  it("Hiển thị biểu đồ Top Blog Genres", () => {
-    cy.contains("Top Blog Genres").scrollIntoView();
-    cy.contains("Top Blog Genres").should("be.visible");
-    cy.contains("Review").should("exist");
-    cy.contains("News").should("exist");
+  it("Hiển thị biểu đồ Thống kê người dùng", () => {
+    cy.contains("Thống kê người dùng", { timeout: 10000 })
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("Người dùng").should("exist");
+    cy.get("svg", { timeout: 10000 }).should("exist");
   });
 
-  it("Hiển thị bảng Most Popular Podcast", () => {
-    cy.contains("Most Popular Podcast").scrollIntoView();
-    cy.contains("Most Popular Podcast").should("be.visible");
-    cy.contains("Nursing Today").should("exist");
-    cy.contains("Dr. Smith").should("exist");
-    cy.contains("Free").should("exist");
-    cy.contains("Premium").should("exist");
+  it("Hiển thị tổng quan doanh thu", () => {
+    cy.contains("Tổng quan doanh thu", { timeout: 10000 })
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("Tổng doanh thu").should("exist");
+    cy.contains("60.000", { timeout: 10000 }).should("exist"); // kiểm tra số liệu mẫu
   });
 
-  it("Sidebar có đầy đủ mục quản lý", () => {
-    cy.get("aside").should("be.visible");
-    cy.contains("Dashboard").should("exist");
-    cy.contains("Manage Movie").should("exist");
-    cy.contains("Manage Quiz").should("exist");
-    cy.contains("Manage Users").should("exist");
-    cy.contains("Subscription").should("exist");
-    cy.contains("Content Moderation").should("exist");
-    cy.contains("Settings").should("exist");
+  it("Hiển thị tổng số quảng cáo", () => {
+    cy.contains("Tổng số quảng cáo", { timeout: 10000 })
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("13").should("exist");
+  });
+
+  it("Hiển thị biểu đồ Phân bố nội dung", () => {
+    cy.contains("Phân bố nội dung", { timeout: 10000 })
+      .scrollIntoView()
+      .should("be.visible");
+    cy.get("svg", { timeout: 10000 }).should("exist");
   });
 });
