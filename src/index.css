@@ -123,3 +123,34 @@ button:focus-visible {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+/* Cho phép click vào controls của Mux Player */
+mux-player {
+    pointer-events: auto !important;
+}
+
+/* Ngăn selection nhưng vẫn cho phép interaction với controls */
+mux-player * {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Đảm bảo controls bar có thể click */
+mux-player .mux-control-bar,
+mux-player [slot="media-control-bar"],
+mux-player media-control-bar,
+mux-player media-time-range,
+mux-player media-seek-backward-button,
+mux-player media-seek-forward-button,
+mux-player media-play-button,
+mux-player media-mute-button,
+mux-player media-volume-range {
+    pointer-events: auto !important;
+}
+
+/* Ngăn outline khi focus vào controls */
+mux-player *:focus {
+    outline: none !important;
+}
