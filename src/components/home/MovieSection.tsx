@@ -23,7 +23,7 @@ const MovieSection = ({
           <h2 className="text-white text-xl font-semibold">{title}</h2>
           {showViewAll && (
             <button className="text-sm text-red-500 hover:underline">
-              View All
+              Xem tất cả
             </button>
           )}
         </div>
@@ -66,7 +66,7 @@ const MovieSection = ({
                     fill="currentFill"
                   />
                 </svg>
-                <span className="sr-only">Loading...</span>
+                <span className="sr-only">Đang tải...</span>
               </div>
             </>
           )}

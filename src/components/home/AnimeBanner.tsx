@@ -10,8 +10,8 @@ const AnimeBanner = () => {
         }, 0, 10),
     });
 
-    if (result.isLoading) return <>Loading</>
-    if (result.isError) return <>Error</>
+    if (result.isLoading) return <>Đang tải...</>
+    if (result.isError) return <>Lỗi</>
 
     return <Banner shows={result.data?.data ?? []} />
 }

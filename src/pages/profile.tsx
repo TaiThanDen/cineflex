@@ -4,7 +4,7 @@ import { me } from "@/lib/api";
 import Auth from "@/context/Auth";
 
 const Profile = () => {
-  const { setAuth } = useContext(Auth); 
+  const { setAuth } = useContext(Auth);
 
 
   const { data: account, isLoading, isError } = useQuery({
@@ -46,6 +46,7 @@ const Profile = () => {
           <div>
             <label className="text-sm">Username</label>
             <input
+              value={account?.username}
               disabled={!editing}
               name="username"
               className="w-full px-4 py-2 bg-[#2f3147] rounded text-white mt-1 disabled:opacity-60"
@@ -55,6 +56,7 @@ const Profile = () => {
             <label className="text-sm">Email</label>
             <input
               disabled={!editing}
+              value={account?.email}
               name="email"
               className="w-full px-4 py-2 bg-[#2f3147] rounded text-white mt-1 disabled:opacity-60"
             />
@@ -62,12 +64,12 @@ const Profile = () => {
         </div>
 
         <div className="flex justify-end mt-6 gap-2">
-            <button
-              onClick={() => {setAuth("")}} 
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-            >
-              Đăng xuất
-            </button>
+          <button
+            onClick={() => { setAuth("") }}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Đăng xuất
+          </button>
           {editing ? (
             <button
               onClick={() => setEditing(false)}

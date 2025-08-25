@@ -10,10 +10,10 @@ const FilmsBanner = () => {
         }, 0, 10),
     });
 
-    if (result.isLoading) return <>Loading</>
+    if (result.isLoading) return <>Đang tải...</>
     if (result.isError) {
         console.log(result.error);
-        return <>Error</>
+        return <>Lỗi</>
     }
 
     return <Banner shows={result.data?.data ?? []} />

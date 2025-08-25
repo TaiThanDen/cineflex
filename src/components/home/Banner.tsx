@@ -7,10 +7,10 @@ interface props {
     shows: Show[]
 }
 
-const Banner = ({ shows } : props) => {
+const Banner = ({ shows }: props) => {
     const isMobile = useIsMobile();
 
-    return isMobile?<MobileHeroBanner data={shows} title="Popular Movie " />:<PopularHeroBanner shows={shows}/>
+    return isMobile ? <MobileHeroBanner data={shows} title="Phim Phổ Biến " /> : <PopularHeroBanner shows={shows} />
 }
 
 export default Banner;

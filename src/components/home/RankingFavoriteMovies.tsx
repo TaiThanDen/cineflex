@@ -40,14 +40,14 @@ const RankingFavoriteMovies = () => {
 
     return (
         <div className="bg-[#23263a] text-white p-4 sm:p-6 flex flex-col gap-4 w-full">
-            <div className="px-4 mb-6">
-                <h2 className="text-xl font-bold ">Những bộ phim được yêu thích nhất thời đại</h2>
+            <div className="px-4 mb-3">
+                <h2 className="text-3xl font-bold ">Những bộ phim được yêu thích nhất thời đại</h2>
             </div>
 
             <div className="overflow-x-auto scrollbar-hide scroll-smooth">
                 <div className="flex w-max gap-4 px-4 pb-5">
                     {topMovies.map((movie, idx) => {
-                        const typeLabel = movie.isSeries ? "Series" : "Movie";
+                        const typeLabel = movie.isSeries ? "Phim bộ" : "Phim lẻ";
                         const statusLabel = movie.onGoing ? "Đang chiếu" : "Hoàn thành";
                         const favCount = (movie as any).favoriteCount ?? 0;
                         return (

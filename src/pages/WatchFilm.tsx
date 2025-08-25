@@ -114,9 +114,9 @@ function WatchFilm() {
     // const [currentSeason, setCurrentSeason] = useState(0);
     // const [currentEpisode, setCurrentEpisode] = useState(0);
 
-    if (currentEpisodeResult.isLoading || currentSeasonResult.isLoading || showResult.isLoading || allEpisodeLoading || allSeason.isLoading) return <>Loading</>
+    if (currentEpisodeResult.isLoading || currentSeasonResult.isLoading || showResult.isLoading || allEpisodeLoading || allSeason.isLoading) return <>Đang tải...</>
 
-    if (currentEpisodeResult.isError || currentSeasonResult.isError || showResult.isError || allEpisodeError || allSeason.isError) return <>Error</>
+    if (currentEpisodeResult.isError || currentSeasonResult.isError || showResult.isError || allEpisodeError || allSeason.isError) return <>Lỗi</>
 
 
     allSeason.data?.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));

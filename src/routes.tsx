@@ -44,6 +44,9 @@ import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import GenresList from "./pages/admin/GenresList.tsx";
 import Favorite from "./pages/Favorite.tsx";
 import Like from "./pages/Like.tsx";
+import NotFound from "./pages/NotFound.tsx";
+import UnauthorizedAccess from "./pages/UnauthorizedAccess.tsx";
+import FastAuthCheck from "./components/FastAuthCheck.tsx";
 
 const darkTheme = createTheme({
     colorSchemes: {
@@ -182,14 +185,15 @@ const AppRoutes = () => {
                                 <Route
                                     path="/admin"
                                     element={
-                                        <ThemeProvider theme={lightTheme}>
-                                            <AdminGuard allowed={[2]}>
-                                                <LayoutAdmin>
-                                                    <Outlet />
-                                                </LayoutAdmin>
-                                            </AdminGuard>
-                                        </ThemeProvider>
-
+                                        <FastAuthCheck>
+                                            <ThemeProvider theme={lightTheme}>
+                                                <AdminGuard allowed={[2]}>
+                                                    <LayoutAdmin>
+                                                        <Outlet />
+                                                    </LayoutAdmin>
+                                                </AdminGuard>
+                                            </ThemeProvider>
+                                        </FastAuthCheck>
                                     }
                                 >
                                     <Route path="genres" element={<GenresList />} />
@@ -206,13 +210,15 @@ const AppRoutes = () => {
                                 <Route
                                     path="/moderator"
                                     element={
-                                        <ThemeProvider theme={lightTheme}>
-                                            <AdminGuard allowed={[1, 2]}>
-                                                <LayoutModerator>
-                                                    <Outlet />
-                                                </LayoutModerator>
-                                            </AdminGuard>
-                                        </ThemeProvider>
+                                        <FastAuthCheck>
+                                            <ThemeProvider theme={lightTheme}>
+                                                <AdminGuard allowed={[1, 2]}>
+                                                    <LayoutModerator>
+                                                        <Outlet />
+                                                    </LayoutModerator>
+                                                </AdminGuard>
+                                            </ThemeProvider>
+                                        </FastAuthCheck>
                                     }
                                 >
                                     <Route path="sections/:id" element={<SingleCommentSection />} />
@@ -220,6 +226,12 @@ const AppRoutes = () => {
                                     <Route path="all-comments" element={<AllCommentsPage />} />
                                     <Route path="reports" element={<ReportsPage />} />
                                 </Route>
+
+                                {/* Route cho trang unauthorized */}
+                                <Route path="/unauthorized" element={<UnauthorizedAccess />} />
+
+                                {/* Route catch-all cho 404 - phải đặt cuối cùng */}
+                                <Route path="*" element={<NotFound />} />
                             </Routes>
                             <Footer />
                         </div>
@@ -229,6 +241,7 @@ const AppRoutes = () => {
                 </div>
             </div>
         </Subscription.Provider>
+
     );
 };
 

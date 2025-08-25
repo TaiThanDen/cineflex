@@ -12,7 +12,7 @@ interface EpisodePreview {
     duration: number
 }
 
-const EpisodePreview = ({ id, duration } : EpisodePreview) => {
+const EpisodePreview = ({ id, duration }: EpisodePreview) => {
     const currentEpisodeResult = useQuery({
         queryFn: () => getEpisodeById(id),
         queryKey: ["episode", id],
@@ -40,13 +40,13 @@ const EpisodePreview = ({ id, duration } : EpisodePreview) => {
             />
         </div>
         <div className="p-4">
-            <h3 className="text-xl font-semibold line-clamp-1">{currentEpisodeResult.data?.title ?? "Loading..."} - {currentSeasonResult.data?.title ?? "Loading..."}</h3>
-            <p className="text-sm text-gray-400 mb-3 line-clamp-3">{currentShowResult.data?.title ?? "Loading..."}</p>
+            <h3 className="text-xl font-semibold line-clamp-1">{currentEpisodeResult.data?.title ?? "Đang tải..."} - {currentSeasonResult.data?.title ?? "Đang tải..."}</h3>
+            <p className="text-sm text-gray-400 mb-3 line-clamp-3">{currentShowResult.data?.title ?? "Đang tải..."}</p>
         </div>
     </>
 }
 
-const ContinueCard = ({ viewHistory } : Props) => {
+const ContinueCard = ({ viewHistory }: Props) => {
 
 
 
@@ -73,7 +73,7 @@ const ContinueCard = ({ viewHistory } : Props) => {
                 <div className="p-4">
                     <Link to={`/watch/${viewHistory.episode}`}>
                         <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm">
-                            Resume
+                            Tiếp tục xem
                         </button>
                     </Link>
                 </div>

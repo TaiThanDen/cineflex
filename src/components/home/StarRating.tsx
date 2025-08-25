@@ -25,7 +25,7 @@ const StarRating: React.FC<StarRatingProps> = ({ showId }) => {
         setAvgRate(avg);
         setUserRate(user);
       } catch (e) {
-        console.error("Error fetching ratings", e);
+        console.error("Lỗi khi tải đánh giá", e);
       }
     };
     fetchData();
@@ -38,7 +38,7 @@ const StarRating: React.FC<StarRatingProps> = ({ showId }) => {
       const newAvg = await getShowAverageRate(showId);
       setAvgRate(newAvg);
     } catch (e) {
-      console.error("Error rating show", e);
+      console.error("Lỗi khi đánh giá phim", e);
     }
   };
 
@@ -51,9 +51,8 @@ const StarRating: React.FC<StarRatingProps> = ({ showId }) => {
           return (
             <Star
               key={star}
-              className={`w-7 h-7 cursor-pointer transition-colors ${
-                isFilled ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-              }`}
+              className={`w-7 h-7 cursor-pointer transition-colors ${isFilled ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                }`}
               onMouseEnter={() => setHoverRate(star)}
               onMouseLeave={() => setHoverRate(null)}
               onClick={() => handleRate(star)}
@@ -62,7 +61,7 @@ const StarRating: React.FC<StarRatingProps> = ({ showId }) => {
         })}
       </div>
       <p className="text-sm text-gray-500">
-        Avg: {avgRate.toFixed(1)} / 5
+        Trung bình: {avgRate.toFixed(1)} / 5
       </p>
     </div>
   );

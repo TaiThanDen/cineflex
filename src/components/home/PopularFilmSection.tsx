@@ -20,7 +20,7 @@ const PopularFilmSection = ({
       onSelect={onSelect}
       getImage={(item) => item.thumbnail}
       getTitle={(item) => item.title}
-      sectionTitle="Popular on CineFlex"
+      sectionTitle="Phổ biến trên CineFlex"
     />
   );
 };

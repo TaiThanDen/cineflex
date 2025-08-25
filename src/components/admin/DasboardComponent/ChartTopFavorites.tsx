@@ -78,7 +78,7 @@ const ChartTopFavorites: React.FC<{ title?: string; limit?: number }> = ({
                 const anyS = s as any;
                 const fav = typeof anyS.favoriteCount === "number" ? anyS.favoriteCount : series[seriesIndex][dataPointIndex];
                 const year = s.releaseDate ? new Date(s.releaseDate).getFullYear() : "";
-                const typeLabel = s.isSeries ? "Series" : "Movie";
+                const typeLabel = s.isSeries ? "Phim bộ" : "Phim lẻ";
                 const statusLabel = s.onGoing ? "Đang chiếu" : "Hoàn thành";
                 const id = anyS.id ?? "";
                 return `

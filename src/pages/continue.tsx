@@ -79,7 +79,7 @@ const ContinueWatching: React.FC = () => {
     return (
         <div className="min-h-screen bg-[#23263a] text-white py-10 px-6 pt-24">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl font-bold mb-8">Continue Watching</h2>
+                <h2 className="text-3xl font-bold mb-8">Tiếp tục xem</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {viewHistories.map((vh) => (
                         <ContinueCard key={vh.episode} viewHistory={vh} />
