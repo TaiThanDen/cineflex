@@ -1,4 +1,6 @@
 /// <reference types="cypress" />
+/// <reference path="./index.d.ts" />
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -35,6 +37,7 @@
 //     }
 //   }
 // }
+
 
 Cypress.Commands.add('loginAsAdmin', () => {
   cy.request("POST", "https://cineflex.mooo.com/api/authentication/login", {

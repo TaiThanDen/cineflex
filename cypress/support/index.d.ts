@@ -1,7 +1,11 @@
 /// <reference types="cypress" />
 
-declare namespace Cypress {
+declare global {
+  namespace Cypress {
     interface Chainable {
-        loginAsAdmin(): Chainable<void>;
+      loginAsAdmin(): Chainable<void>;
     }
+  }
 }
+
+export {}; 
