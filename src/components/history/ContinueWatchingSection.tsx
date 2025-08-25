@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { getViewHistory, getEpisodeById, getSeasonById, getShowById } from "@/lib/api";
-import type { ViewHistory } from "@/lib/types/ViewHistory";
 import { Link } from "react-router";
 import { Clock, Play } from "lucide-react";
 
 const ContinueWatchingSection = () => {
-    const [viewHistories, setViewHistories] = useState<ViewHistory[]>([]);
     const [enrichedHistories, setEnrichedHistories] = useState<any[]>([]);
 
     useEffect(() => {
@@ -13,7 +11,6 @@ const ContinueWatchingSection = () => {
             try {
                 const rsp = await getViewHistory(0, 10);
                 const histories = rsp.data || [];
-                setViewHistories(histories);
 
                 // Enrich with episode, season, and show data
                 const enriched = await Promise.all(
@@ -57,7 +54,7 @@ const ContinueWatchingSection = () => {
 
             <div className="overflow-x-auto scrollbar-hide scroll-smooth">
                 <div className="flex w-max gap-4 px-4 pb-5">
-                    {enrichedHistories.map((item, idx) => {
+                    {enrichedHistories.map((item) => {
                         const watchedMinutes = Math.trunc(item.duration / 60);
 
                         return (
