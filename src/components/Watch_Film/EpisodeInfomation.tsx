@@ -141,12 +141,12 @@ const EpisodeInformation = ({
     };
 
     return <>
-        <div className="h-15 flex items-center justify-between px-5">
-            <div className="flex items-center gap-8">
+        <div className="h-15 flex items-center justify-between px-2 sm:px-5">
+            <div className="flex items-center gap-2 sm:gap-8">
                 {/* View Count */}
-                <div className="gap-3 flex items-center">
-                    <Eye color="#ffffff" />
-                    <div className="text-white">
+                <div className="gap-1 sm:gap-3 flex items-center">
+                    <Eye color="#ffffff" size={18} className="sm:w-6 sm:h-6" />
+                    <div className="text-white text-xs sm:text-base">
                         {(viewCountResult.isError || viewCountResult.isLoading) ?
                             <>0</> :
                             <>{viewCountResult.data!}</>
@@ -162,17 +162,23 @@ const EpisodeInformation = ({
                     disabled={
                         likeEpisodeMutation.isPending || unlikeEpisodeMutation.isPending
                     }
-                    className="gap-3 flex items-center"
+                    className="gap-1 sm:gap-3 flex items-center min-w-0 p-1 sm:p-2"
+                    sx={{
+                        minWidth: 'auto',
+                        padding: { xs: '4px', sm: '8px' }
+                    }}
                 >
                     {
                         (isLikedResult.data === null ? <></> : <>
                             <ThumbsUp
                                 color="#ffffff"
                                 fill={isLikedResult.data ? '#ffffff' : '#ffffff00'}
+                                size={18}
+                                className="sm:w-6 sm:h-6"
                             />
                         </>)
                     }
-                    <div className="text-white">
+                    <div className="text-white text-xs sm:text-base">
                         {(likeCountResult.isError || likeCountResult.isLoading) ?
                             <>0</> :
                             <>{likeCountResult.data!}</>
@@ -183,24 +189,33 @@ const EpisodeInformation = ({
                 {/* Skip Intro */}
                 <Button
                     onClick={skipIntro}
-                    className="gap-3 flex items-center"
+                    className="gap-1 sm:gap-3 flex items-center min-w-0 p-1 sm:p-2"
+                    sx={{
+                        minWidth: 'auto',
+                        padding: { xs: '4px', sm: '8px' }
+                    }}
                 >
-                    <SkipForward color="#ffffff" />
-                    <div className="text-white">Bỏ qua Intro</div>
+                    <SkipForward color="#ffffff" size={18} className="sm:w-6 sm:h-6" />
+                    <div className="text-white hidden sm:block text-sm">Bỏ qua Intro</div>
+                    <div className="text-white block sm:hidden text-xs">Skip</div>
                 </Button>
             </div>
 
             {/* Right side controls */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 sm:gap-4">
                 {/* Previous Episode */}
                 {hasPrev && prevEpisode && (
                     <Button
                         onClick={prevEpisode}
-                        className="gap-2 flex items-center"
+                        className="gap-1 sm:gap-2 flex items-center min-w-0 p-1 sm:p-2"
                         title="Tập trước"
+                        sx={{
+                            minWidth: 'auto',
+                            padding: { xs: '4px', sm: '8px' }
+                        }}
                     >
-                        <ChevronLeft color="#ffffff" size={20} />
-                        <div className="text-white text-sm">Tập trước</div>
+                        <ChevronLeft color="#ffffff" size={18} className="sm:w-5 sm:h-5" />
+                        <div className="text-white text-xs hidden sm:block">Tập trước</div>
                     </Button>
                 )}
 
@@ -208,11 +223,15 @@ const EpisodeInformation = ({
                 {hasNext && nextEpisode && (
                     <Button
                         onClick={nextEpisode}
-                        className="gap-2 flex items-center"
+                        className="gap-1 sm:gap-2 flex items-center min-w-0 p-1 sm:p-2"
                         title="Tập tiếp theo"
+                        sx={{
+                            minWidth: 'auto',
+                            padding: { xs: '4px', sm: '8px' }
+                        }}
                     >
-                        <div className="text-white text-sm">Tập tiếp theo</div>
-                        <ChevronRight color="#ffffff" size={20} />
+                        <div className="text-white text-xs hidden sm:block">Tập tiếp theo</div>
+                        <ChevronRight color="#ffffff" size={18} className="sm:w-5 sm:h-5" />
                     </Button>
                 )}
 
@@ -220,31 +239,35 @@ const EpisodeInformation = ({
                 <div className="relative">
                     <Button
                         onClick={() => handleShare()}
-                        className="gap-2 flex items-center"
+                        className="gap-1 sm:gap-2 flex items-center min-w-0 p-1 sm:p-2"
                         title="Chia sẻ"
+                        sx={{
+                            minWidth: 'auto',
+                            padding: { xs: '4px', sm: '8px' }
+                        }}
                     >
-                        <Share2 color="#ffffff" size={20} />
-                        <div className="text-white text-sm">Chia sẻ</div>
+                        <Share2 color="#ffffff" size={18} className="sm:w-5 sm:h-5" />
+                        <div className="text-white text-xs hidden sm:block">Chia sẻ</div>
                     </Button>
 
                     {/* Share Menu */}
                     {showShareMenu && (
-                        <div className="absolute bottom-full right-0 mb-2 bg-gray-800 rounded-lg shadow-lg p-2 min-w-[150px]">
+                        <div className="absolute bottom-full right-0 mb-2 bg-gray-800 rounded-lg shadow-lg p-2 min-w-[120px] sm:min-w-[150px]">
                             <button
                                 onClick={() => handleShare('facebook')}
-                                className="w-full text-left px-3 py-2 text-white hover:bg-gray-700 rounded text-sm"
+                                className="w-full text-left px-2 sm:px-3 py-2 text-white hover:bg-gray-700 rounded text-xs sm:text-sm"
                             >
                                 Facebook
                             </button>
                             <button
                                 onClick={() => handleShare('twitter')}
-                                className="w-full text-left px-3 py-2 text-white hover:bg-gray-700 rounded text-sm"
+                                className="w-full text-left px-2 sm:px-3 py-2 text-white hover:bg-gray-700 rounded text-xs sm:text-sm"
                             >
                                 Twitter
                             </button>
                             <button
                                 onClick={() => handleShare('copy')}
-                                className="w-full text-left px-3 py-2 text-white hover:bg-gray-700 rounded text-sm"
+                                className="w-full text-left px-2 sm:px-3 py-2 text-white hover:bg-gray-700 rounded text-xs sm:text-sm"
                             >
                                 Sao chép link
                             </button>
@@ -256,14 +279,18 @@ const EpisodeInformation = ({
                 {onToggleLights && (
                     <Button
                         onClick={onToggleLights}
-                        className="gap-2 flex items-center"
+                        className="gap-1 sm:gap-2 flex items-center min-w-0 p-1 sm:p-2"
                         title={lightsOff ? "Bật đèn" : "Tắt đèn"}
+                        sx={{
+                            minWidth: 'auto',
+                            padding: { xs: '4px', sm: '8px' }
+                        }}
                     >
                         {lightsOff ?
-                            <Lightbulb color="#ffffff" size={20} /> :
-                            <LightbulbOff color="#ffffff" size={20} />
+                            <Lightbulb color="#ffffff" size={18} className="sm:w-5 sm:h-5" /> :
+                            <LightbulbOff color="#ffffff" size={18} className="sm:w-5 sm:h-5" />
                         }
-                        <div className="text-white text-sm">
+                        <div className="text-white text-xs hidden sm:block">
                             {lightsOff ? "Bật đèn" : "Tắt đèn"}
                         </div>
                     </Button>

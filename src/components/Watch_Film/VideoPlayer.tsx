@@ -15,6 +15,8 @@ type VideoPlayerProps = {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange, startTime }) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const playerRef = useRef<MuxPlayerRefAttributes>(null);
+
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(1);
     const [prevVolume, setPrevVolume] = useState(1);
@@ -27,7 +29,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
     const [showAdPopup, setShowAdPopup] = useState(false);
     const [lightsOff, setLightsOff] = useState(false); // Thêm state cho tắt đèn
     const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null);
-    const playerRef = useRef<MuxPlayerRefAttributes>(null);
 
     const skipIntro = () => {
         const player = playerRef.current;
@@ -54,11 +55,23 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
         }, 1000); // Poll every second
 
         const handleFullscreenChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
+            const isCurrentlyFullscreen = !!document.fullscreenElement;
+            setIsFullscreen(isCurrentlyFullscreen);
+
+            // Debug log
+            console.log('Fullscreen changed:', isCurrentlyFullscreen);
         };
+
         document.addEventListener("fullscreenchange", handleFullscreenChange);
+        document.addEventListener("webkitfullscreenchange", handleFullscreenChange); // Safari
+        document.addEventListener("mozfullscreenchange", handleFullscreenChange); // Firefox
+        document.addEventListener("MSFullscreenChange", handleFullscreenChange); // IE/Edge
+
         return () => {
             document.removeEventListener("fullscreenchange", handleFullscreenChange);
+            document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+            document.removeEventListener("mozfullscreenchange", handleFullscreenChange);
+            document.removeEventListener("MSFullscreenChange", handleFullscreenChange);
             clearInterval(interval);
 
         }
@@ -141,11 +154,21 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
         }
     };
 
-    const toggleFullscreen = () => {
+    const toggleFullscreen = async () => {
         const container = containerRef.current;
         if (!container) return;
-        if (document.fullscreenElement) document.exitFullscreen();
-        else container.requestFullscreen();
+
+        try {
+            if (document.fullscreenElement) {
+                // Currently in fullscreen, exit
+                await document.exitFullscreen();
+            } else {
+                // Not in fullscreen, enter
+                await container.requestFullscreen();
+            }
+        } catch (error) {
+            console.error('Fullscreen toggle error:', error);
+        }
     };
 
     const changePlaybackRate = (rate: number) => {
@@ -163,12 +186,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
     // Phím tắt tiện ích khi xem phim
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            // Prevent if user is typing in input fields
             if (
                 document.activeElement &&
                 (document.activeElement.tagName === "INPUT" ||
                     document.activeElement.tagName === "TEXTAREA")
-            )
+            ) {
                 return;
+            }
+
             switch (e.key) {
                 case " ":
                     e.preventDefault();
@@ -176,27 +202,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                     break;
                 case "m":
                 case "M":
+                    e.preventDefault();
                     toggleMute();
                     break;
                 case "f":
                 case "F":
+                    e.preventDefault();
                     toggleFullscreen();
                     break;
                 case "c":
                 case "C":
+                    e.preventDefault();
                     toggleCinemaMode();
                     break;
                 case "l":
                 case "L":
-                    toggleLights(); // Thêm phím tắt L cho tắt đèn
+                    e.preventDefault();
+                    toggleLights();
                     break;
                 case "ArrowRight":
+                    e.preventDefault();
                     skip(10);
                     break;
                 case "ArrowLeft":
+                    e.preventDefault();
                     skip(-10);
                     break;
                 case "ArrowUp":
+                    e.preventDefault();
                     setVolume((v) => {
                         const newVol = Math.min(1, v + 0.05);
                         if (playerRef.current) playerRef.current.volume = newVol;
@@ -204,6 +237,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                     });
                     break;
                 case "ArrowDown":
+                    e.preventDefault();
                     setVolume((v) => {
                         const newVol = Math.max(0, v - 0.05);
                         if (playerRef.current) playerRef.current.volume = newVol;
@@ -214,11 +248,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                     break;
             }
         };
+
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [isPlaying, volume, cinemaMode, isFullscreen, playbackRate]);
-
-
 
     return (
         <>
@@ -242,17 +275,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                 />
             )}
 
+            {/* Fixed container structure */}
             <div className={`bg-black mt-20 text-white w-[95%] mx-auto rounded-2xl relative overflow-hidden ${lightsOff ? 'z-40' : ''}`}>
-                {/* Overlay Cinema Mode */}
+                {/* Cinema Mode Overlay */}
                 {cinemaMode && (
                     <div
                         className="fixed inset-0 bg-black z-40 transition-all duration-300"
                         onClick={toggleCinemaMode}
                     />
                 )}
+
                 <div
                     ref={containerRef}
-                    className="relative w-full flex justify-center items-center overflow-hidden"
+                    className={`relative w-full ${isFullscreen ? 'h-screen' : 'aspect-video'} flex justify-center items-center overflow-hidden bg-black`}
                     tabIndex={0}
                 >
                     {/* Popup quảng cáo khi pause */}
@@ -261,22 +296,23 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                             setShowAdPopup(false)
                         }} />
                     )}
+
                     <MuxPlayer
                         ref={playerRef}
-                        className="w-full h-[90%] object-contain"
+                        className={`${isFullscreen ? 'w-full h-full' : 'w-full h-full'} object-contain`}
                         playbackId={episode.url}
                         autoPlay
                         metadata={{
-                            video_title: "Solo Leveling-S1E1-1080P",
+                            video_title: episode.title || "Video Player",
                             viewer_user_id: "Placeholder (optional)",
                         }}
                         onPause={handleMuxPause}
                         startTime={startTime}
                     />
 
-                    {/* Settings Dropdown */}
+                    {/* Settings Dropdown - chỉ hiện khi không fullscreen hoặc có controls */}
                     {showSettings && showControls && (
-                        <div className="absolute bottom-24 right-2 sm:right-8 bg-[#1e1e1e] rounded-xl shadow-lg text-sm w-56 p-4 space-y-3">
+                        <div className="absolute bottom-24 right-2 sm:right-8 bg-[#1e1e1e] rounded-xl shadow-lg text-sm w-56 p-4 space-y-3 z-50">
                             {!showSpeedMenu ? (
                                 <>
                                     <div className="font-bold border-b pb-2">Cài đặt</div>
@@ -291,7 +327,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                                         <span>Chất lượng</span>
                                         <span>4K</span>
                                     </div>
-                                    <div className="flex justify-between text-gray-400  ">
+                                    <div className="flex justify-between text-gray-400">
                                         <span>Phụ đề</span>
                                         <span>Tùy chỉnh</span>
                                     </div>
@@ -311,8 +347,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                                                 changePlaybackRate(speed);
                                                 setShowSpeedMenu(false);
                                             }}
-                                            className={`flex justify-between items-center px-2 py-1 rounded hover:bg-white/10 cursor-pointer ${playbackRate === speed ? "bg-white/10" : ""
-                                                }`}
+                                            className={`flex justify-between items-center px-2 py-1 rounded hover:bg-white/10 cursor-pointer ${playbackRate === speed ? "bg-white/10" : ""}`}
                                         >
                                             <span>{speed}x</span>
                                             {playbackRate === speed && (
@@ -326,12 +361,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ episode, onCurrentTimeChange,
                     )}
                 </div>
 
-                <EpisodeInformation
-                    episode={episode}
-                    skipIntro={skipIntro}
-                    lightsOff={lightsOff}
-                    onToggleLights={toggleLights}
-                />
+                {/* Episode Information - chỉ hiện khi không fullscreen */}
+                {!isFullscreen && (
+                    <EpisodeInformation
+                        episode={episode}
+                        skipIntro={skipIntro}
+                        lightsOff={lightsOff}
+                        onToggleLights={toggleLights}
+                    />
+                )}
             </div>
         </>
     );

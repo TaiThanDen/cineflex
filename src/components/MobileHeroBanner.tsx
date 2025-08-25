@@ -75,11 +75,7 @@ const MobileHeroBanner = ({ data, title }: MobileHeroBannerProps) => {
                   <h2 className="text-2xl font-bold text-white mb-2">
                     {movie.title}
                   </h2>
-                  <p className="text-sm text-gray-200 mb-2">bbbbb</p>
                   <div className="flex items-center justify-center gap-4">
-                    <span className="bg-white/20 text-xs px-2 py-1 rounded text-white">
-                      aaaa
-                    </span>
                     <span className="flex items-center text-white text-sm">
                       <svg
                         className="w-4 h-4 text-yellow-400 mr-1"

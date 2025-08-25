@@ -119,7 +119,7 @@ const HeroBanner = ({ item, children, isPreviewPage = false, firstEpisodeId }: H
 
             <p
               className="text-gray-200 max-w-full sm:max-w-xl text-xs sm:text-sm leading-relaxed overflow-y-auto scrollbar-hide "
-              style={{ maxHeight: "120px" }}
+              style={{ maxHeight: "90px" }}
             >
               {item.description}
             </p>
